@@ -12,8 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tipos', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->bigIncrements('idTipo');
+            $table->string('tipo');
+            $table->string('descripcion');
+            $table->boolean('estado');
         });
     }
 

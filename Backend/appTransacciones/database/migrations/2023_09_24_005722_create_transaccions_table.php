@@ -11,9 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transaccions', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::create('transacciones', function (Blueprint $table) {
+            $table->bigIncrements('idTransaccion');
+            $table->unsignedBigInteger('idUsuario');
+            $table->unsignedBigInteger('idProducto');
+            $table->unsignedBigInteger('idLocal');
+            $table->unsignedBigInteger('idTipo');
+            $table->integer('cantidad');
+            $table->double('valor');
+            $table->string('observacion');
+            $table->date('fecha');
+
+            $table->foreign('idUsuario')->references('idUsuario')->on('usuarios')->onDelete('cascade');
+            $table->foreign('idProducto')->references('idProducto')->on('productos')->onDelete('cascade');
+            $table->foreign('idLocal')->references('idLocal')->on('locales')->onDelete('cascade');
+            $table->foreign('idTipo')->references('idTipo')->on('tipos')->onDelete('cascade');
         });
     }
 
@@ -22,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('transaccions');
+        Schema::dropIfExists('transacciones');
     }
 };

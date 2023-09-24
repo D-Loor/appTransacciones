@@ -12,7 +12,13 @@ class UsuarioController extends Controller
      */
     public function index()
     {
-        //
+        $datos=Usuario::orderBy('apellidos', 'asc')->get();
+        $num_rows = count($datos);
+        if($num_rows != 0){
+            return response()->json(['data'=>$datos, 'code'=>'200']);
+        }else{
+            return response()->json(['code'=>'204']);
+        }        
     }
 
     /**
