@@ -4,8 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\UsuarioController;
-use App\Http\Controllers\TipoController;
-use App\Http\Controllers\SubTipoController;
+use App\Http\Controllers\TiposCategoriaController;
+use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\TransaccionController;
 use App\Http\Controllers\LocalController;
@@ -27,8 +27,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::resource('roles', RolController::class);
 Route::resource('usuarios', UsuarioController::class);
-Route::resource('subtipos', SubTipoController::class);
-Route::resource('tipos', TipoController::class);
+Route::resource('subtipos', TiposCategoriaController::class);
+Route::resource('tipos', CategoriaController::class);
 Route::resource('productos', ProductoController::class);
 Route::resource('locales', LocalController::class);
 Route::resource('transacciones', TransaccionController::class);
