@@ -13,13 +13,14 @@ return new class extends Migration
     {
         Schema::create('productos', function (Blueprint $table) {
             $table->bigIncrements('idProducto');
-            $table->unsignedBigInteger('idTipo');
+            $table->unsignedBigInteger('idCategoria');
             $table->string('nombre');
             $table->string('descripcion');
             $table->double('precio');
+            $table->integer('stock');
             $table->boolean('estado');
 
-            $table->foreign('idTipo')->references('idTipo')->on('tipos')->onDelete('cascade');
+            $table->foreign('idCategoria')->references('idCategoria')->on('categorias')->onDelete('cascade');
         });
     }
 

@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('subTipos', function (Blueprint $table) {
-            $table->bigIncrements('idSubTipo');
-            $table->unsignedBigInteger('idTipo');
-            $table->string('subTipo');
+        Schema::create('tiposCategorias', function (Blueprint $table) {
+            $table->bigIncrements('idTipoCategoria');
+            $table->string('tipo');
             $table->string('descripcion');
             $table->boolean('estado');
-
-            $table->foreign('idTipo')->references('idTipo')->on('tipos')->onDelete('cascade');
         });
     }
 
@@ -27,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('subTipos');
+        Schema::dropIfExists('tiposCategorias');
     }
 };

@@ -16,16 +16,19 @@ class DatabaseSeeder extends Seeder
         DB::table('roles')->insert([
         [
             'rol' => 'Administrador',
+            'acceso' => '1',
             'descripcion' => 'Rol principal del sistema.',
             'estado' => '1',            
         ],
         [
             'rol' => 'Encargado de Ventas',
+            'acceso' => '2',
             'descripcion' => 'Rol encargado de la venta de los productos.',
             'estado' => '1',            
         ],
         [
             'rol' => 'Inspector de Ventas',
+            'acceso' => '3',
             'descripcion' => 'Rol encargado de supervisar el stock de los productos.',
             'estado' => '1',            
         ]]);

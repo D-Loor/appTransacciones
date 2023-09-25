@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('roles', function (Blueprint $table) {
             $table->bigIncrements('idRol');
             $table->string('rol');
+            $table->string('acceso');
             $table->string('descripcion');
             $table->boolean('estado');
         });

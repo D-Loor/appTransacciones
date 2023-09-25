@@ -34,7 +34,19 @@ class RolController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $valida=Rol::where('rol', $request->rol)->get()->first();
+        if($valida != null){
+            return response()->json(['code'=>'400']);
+        }else{
+            $datos=new Rol();
+            $datos->rol=$request->rol;
+            $datos->acceso=$request->acceso;
+            $datos->descripcion=$request->descripcion;
+            $datos->estado=$request->estado;
+            $datos->save();
+            
+            return response()->json(['code'=>'200']);
+        }
     }
 
     /**
@@ -56,16 +68,45 @@ class RolController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, rol $rol)
+    public function update(Request $request, $idRol)
     {
-        //
+        $datos=Rol::where('idRol',$idRol)->get()->first();
+        if($datos != null){
+            if($datos->rol == $request->rol){
+                $datos->acceso=$request->acceso;
+                $datos->descripcion=$request->descripcion;
+                $datos->estado=$request->estado;            
+                $datos->update();
+                return response()->json(['code'=>'200']);
+            }else{
+                $valida=Rol::where('rol', $request->rol)->get()->first();
+                if($valida != null){
+                    return response()->json(['code'=>'400']);
+                }else{
+                    $datos->rol=$request->rol;
+                    $datos->acceso=$request->acceso;
+                    $datos->descripcion=$request->descripcion;
+                    $datos->estado=$request->estado;   
+                    $datos->update();
+                    return response()->json(['code'=>'200']);
+                }    
+            }
+        }else {
+            return response()->json(['code'=>'400']);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(rol $rol)
+    public function destroy($idRol)
     {
-        //
+        $datos=Rol::find($idRol);  
+        if($datos != null){
+            $datos->delete();
+            return response()->json(['code'=>'200']);
+        }else{
+            return response()->json(['code'=>'204']);
+        }
     }
 }

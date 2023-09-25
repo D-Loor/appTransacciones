@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Local;
+use App\Models\Categoria;
 use Illuminate\Http\Request;
 
-class LocalController extends Controller
+class CategoriaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $datos=Local::orderBy('nombre', 'asc')->get();
+        $datos=Categoria::orderBy('categoria', 'asc')->get();
         $num_rows = count($datos);
         if($num_rows != 0){
             return response()->json(['data'=>$datos, 'code'=>'200']);
         }else{
             return response()->json(['code'=>'204']);
-        }       
+        } 
     }
 
     /**
@@ -34,12 +34,13 @@ class LocalController extends Controller
      */
     public function store(Request $request)
     {
-        $valida=Local::where('nombre', $request->nombre)->get()->first();
+        $valida=Categoria::where('categoria', $request->categoria)->get()->first();
         if($valida != null){
             return response()->json(['code'=>'400']);
         }else{
-            $datos=new Local();
-            $datos->nombre=$request->nombre;
+            $datos=new Categoria();
+            $datos->idTipoCategoria=$request->idTipoCategoria;
+            $datos->categoria=$request->categoria;
             $datos->descripcion=$request->descripcion;
             $datos->estado=$request->estado;
             $datos->save();
@@ -51,7 +52,7 @@ class LocalController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Local $local)
+    public function show(Categoria $categoria)
     {
         //
     }
@@ -59,7 +60,7 @@ class LocalController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Local $local)
+    public function edit(Categoria $categoria)
     {
         //
     }
@@ -67,21 +68,23 @@ class LocalController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $idLocal)
+    public function update(Request $request, $idCategoria)
     {
-        $datos=Local::where('idLocal',$idLocal)->get()->first();
+        $datos=Categoria::where('idCategoria',$idCategoria)->get()->first();
         if($datos != null){
-            if($datos->nombre == $request->nombre){
+            if($datos->categoria == $request->categoria){
+                $datos->idTipoCategoria=$request->idTipoCategoria;
                 $datos->descripcion=$request->descripcion;
                 $datos->estado=$request->estado;          
                 $datos->update();
                 return response()->json(['code'=>'200']);
             }else{
-                $valida=Local::where('nombre', $request->nombre)->get()->first();
+                $valida=Categoria::where('categoria', $request->categoria)->get()->first();
                 if($valida != null){
                     return response()->json(['code'=>'400']);
                 }else{
-                    $datos->nombre=$request->nombre;
+                    $datos->idTipoCategoria=$request->idTipoCategoria;
+                    $datos->categoria=$request->categoria;
                     $datos->descripcion=$request->descripcion;
                     $datos->estado=$request->estado;  
                     $datos->update();
@@ -96,9 +99,9 @@ class LocalController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($idLocal)
+    public function destroy($idCategoria)
     {
-        $datos=Local::find($idLocal);  
+        $datos=Categoria::find($idCategoria);  
         if($datos != null){
             $datos->delete();
             return response()->json(['code'=>'200']);

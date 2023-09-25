@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('idUsuario');
             $table->unsignedBigInteger('idProducto');
             $table->unsignedBigInteger('idLocal');
-            $table->unsignedBigInteger('idTipo');
+            $table->unsignedBigInteger('idCategoria');
             $table->integer('cantidad');
             $table->double('valor');
             $table->string('observacion');
@@ -25,7 +25,7 @@ return new class extends Migration
             $table->foreign('idUsuario')->references('idUsuario')->on('usuarios')->onDelete('cascade');
             $table->foreign('idProducto')->references('idProducto')->on('productos')->onDelete('cascade');
             $table->foreign('idLocal')->references('idLocal')->on('locales')->onDelete('cascade');
-            $table->foreign('idTipo')->references('idTipo')->on('tipos')->onDelete('cascade');
+            $table->foreign('idCategoria')->references('idCategoria')->on('categorias')->onDelete('cascade');
         });
     }
 

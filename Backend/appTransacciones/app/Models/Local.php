@@ -9,8 +9,8 @@ class Local extends Model
 {
     use HasFactory;
     public $timestamps=false;
-    protected $table = 'stock';
-    protected $primaryKey = 'idStock';
+    protected $table = 'locales';
+    protected $primaryKey = 'idLocal';
     protected $fillable = [
         'nombre', 'descripcion', 'estado'
     ];

@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Local;
+use App\Models\TiposCategoria;
 use Illuminate\Http\Request;
 
-class LocalController extends Controller
+class TiposCategoriaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $datos=Local::orderBy('nombre', 'asc')->get();
+        $datos=TiposCategoria::orderBy('tipo', 'asc')->get();
         $num_rows = count($datos);
         if($num_rows != 0){
             return response()->json(['data'=>$datos, 'code'=>'200']);
         }else{
             return response()->json(['code'=>'204']);
-        }       
+        } 
     }
 
     /**
@@ -34,14 +34,14 @@ class LocalController extends Controller
      */
     public function store(Request $request)
     {
-        $valida=Local::where('nombre', $request->nombre)->get()->first();
+        $valida=TiposCategoria::where('tipo', $request->tipo)->get()->first();
         if($valida != null){
             return response()->json(['code'=>'400']);
         }else{
-            $datos=new Local();
-            $datos->nombre=$request->nombre;
+            $datos=new TiposCategoria();
+            $datos->tipo=$request->tipo;
             $datos->descripcion=$request->descripcion;
-            $datos->estado=$request->estado;
+            $datos->estado=$request->estado; 
             $datos->save();
             
             return response()->json(['code'=>'200']);
@@ -51,7 +51,7 @@ class LocalController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Local $local)
+    public function show(TiposCategoria $tipoCategoria)
     {
         //
     }
@@ -59,7 +59,7 @@ class LocalController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Local $local)
+    public function edit(TiposCategoria $tipoCategoria)
     {
         //
     }
@@ -67,21 +67,21 @@ class LocalController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $idLocal)
+    public function update(Request $request, $idTipoCategoria)
     {
-        $datos=Local::where('idLocal',$idLocal)->get()->first();
+        $datos=TiposCategoria::where('idTipoCategoria',$idTipoCategoria)->get()->first();
         if($datos != null){
-            if($datos->nombre == $request->nombre){
+            if($datos->tipo == $request->tipo){
                 $datos->descripcion=$request->descripcion;
                 $datos->estado=$request->estado;          
                 $datos->update();
                 return response()->json(['code'=>'200']);
             }else{
-                $valida=Local::where('nombre', $request->nombre)->get()->first();
+                $valida=TiposCategoria::where('tipo', $request->tipo)->get()->first();
                 if($valida != null){
                     return response()->json(['code'=>'400']);
                 }else{
-                    $datos->nombre=$request->nombre;
+                    $datos->tipo=$request->tipo;
                     $datos->descripcion=$request->descripcion;
                     $datos->estado=$request->estado;  
                     $datos->update();
@@ -96,9 +96,9 @@ class LocalController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($idLocal)
+    public function destroy($idTipoCategoria)
     {
-        $datos=Local::find($idLocal);  
+        $datos=TiposCategoria::find($idTipoCategoria);  
         if($datos != null){
             $datos->delete();
             return response()->json(['code'=>'200']);
