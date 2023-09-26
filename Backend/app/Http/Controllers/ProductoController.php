@@ -43,7 +43,6 @@ class ProductoController extends Controller
             $datos->nombre=$request->nombre;
             $datos->descripcion=$request->descripcion;
             $datos->precio=$request->precio; 
-            $datos->stock=$request->stock; 
             $datos->estado=$request->estado; 
             $datos->save();
             
@@ -78,7 +77,6 @@ class ProductoController extends Controller
                 $datos->idTipo=$request->idTipo;
                 $datos->descripcion=$request->descripcion;
                 $datos->precio=$request->precio;
-                $datos->stock=$request->stock;  
                 $datos->estado=$request->estado;          
                 $datos->update();
                 return response()->json(['code'=>'200']);
@@ -91,7 +89,6 @@ class ProductoController extends Controller
                     $datos->nombre=$request->nombre;
                     $datos->descripcion=$request->descripcion;
                     $datos->precio=$request->precio; 
-                    $datos->stock=$request->stock; 
                     $datos->estado=$request->estado;
                     $datos->update();
                     return response()->json(['code'=>'200']);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaccion;
+use App\Models\Stock;
 use Illuminate\Http\Request;
 
 class TransaccionController extends Controller
@@ -12,7 +13,7 @@ class TransaccionController extends Controller
      */
     public function index()
     {
-        $datos=Transaccion::orderBy('fecha', 'asc')->with('usuarioTransaccion', 'productoTransaccion', 'localTransaccion', 'categoriaTransaccion')->get();
+        $datos=Transaccion::orderBy('fecha', 'asc')->with('usuarioTransaccion', 'productoTransaccion', 'localTransaccion')->get();
         $num_rows = count($datos);
         if($num_rows != 0){
             return response()->json(['data'=>$datos, 'code'=>'200']);
@@ -38,12 +39,37 @@ class TransaccionController extends Controller
         $datos->idUsuario=$request->idUsuario;
         $datos->idProducto=$request->idProducto;
         $datos->idLocal=$request->idLocal;
-        $datos->idCategoria=$request->idCategoria;
+        $datos->tipo=$request->tipo;
         $datos->cantidad=$request->cantidad;
         $datos->valor=$request->valor;
         $datos->observacion=$request->observacion;
         $datos->fecha=$request->fecha;
         $datos->save();
+
+        $stock=Stock::where('idLocal',$request->idLocal)->where('idProducto',$request->idProducto)->get()->first();
+
+        if($stock != null){
+            if($request->tipo == "Compra"){
+                $stock->stock=$stock->stock + $request->cantidad;
+            }else{
+                if($stock->stock >= $stock->cantidad){
+                    $stock->stock=$stock->stock - $request->cantidad;
+                }else {
+                    return response()->json(['code'=>'400']); 
+                }
+            }
+        }else{
+            if($request->tipo == "Compra"){
+                $nuevoStock=new Stock();
+                $nuevoStock->idLocal=$request->idLocal;
+                $nuevoStock->idProducto=$request->idProducto;
+                $nuevoStock->stock=$request->cantidad;
+                $nuevoStock->save();
+            }else{
+                return response()->json(['code'=>'400']); 
+            }
+        }
+        
         return response()->json(['code'=>'200']);        
     }
 
@@ -70,10 +96,35 @@ class TransaccionController extends Controller
     {
         $datos=Transaccion::where('idTransaccion', $idTransaccion)->get()->first();
         if($datos != null){
+
+            $stock=Stock::where('idLocal',$request->idLocal)->where('idProducto',$request->idProducto)->get()->first();
+
+            if($stock != null){
+                if($request->tipo == "Compra"){
+                    $stock->stock=$stock->stock + $request->cantidad;
+                }else{
+                    if($stock->stock >= $stock->cantidad){
+                        $stock->stock=$stock->stock - $request->cantidad;
+                    }else {
+                        return response()->json(['code'=>'400']); 
+                    }
+                }
+            }else{
+                if($request->tipo == "Compra"){
+                    $nuevoStock=new Stock();
+                    $nuevoStock->idLocal=$request->idLocal;
+                    $nuevoStock->idProducto=$request->idProducto;
+                    $nuevoStock->stock=$request->cantidad;
+                    $nuevoStock->save();
+                }else{
+                    return response()->json(['code'=>'400']); 
+                }
+            }
+
             $datos->idUsuario=$request->idUsuario;
             $datos->idProducto=$request->idProducto;
             $datos->idLocal=$request->idLocal;
-            $datos->idCategoria=$request->idCategoria;
+            $datos->tipo=$request->tipo;
             $datos->cantidad=$request->cantidad;
             $datos->valor=$request->valor;
             $datos->observacion=$request->observacion;

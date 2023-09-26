@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('nombre');
             $table->string('descripcion');
             $table->double('precio');
-            $table->integer('stock');
             $table->boolean('estado');
 
             $table->foreign('idCategoria')->references('idCategoria')->on('categorias')->onDelete('cascade');

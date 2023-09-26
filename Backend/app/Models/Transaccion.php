@@ -12,7 +12,7 @@ class Transaccion extends Model
     protected $table = 'transacciones';
     protected $primaryKey = 'idTransaccion';
     protected $fillable = [
-        'idUsuario', 'idProducto', 'idLocal', 'idCategoria', 'cantidad', 'valor', 'observacion', 'fecha'
+        'idUsuario', 'idProducto', 'idLocal', 'tipo', 'cantidad', 'valor', 'observacion', 'fecha'
     ];
 
     public function usuarioTransaccion(){
@@ -27,7 +27,4 @@ class Transaccion extends Model
         return $this->belongsTo('App\Models\Local','idLocal');
     }
 
-    public function categoriaTransaccion(){
-        return $this->belongsTo('App\Models\Categorias','idCategoria');
-    }
 }
