@@ -44,16 +44,16 @@ class TransaccionController extends Controller
         $datos->valor=$request->valor;
         $datos->observacion=$request->observacion;
         $datos->fecha=$request->fecha;
-        $datos->save();
 
-        $stock=Stock::where('idLocal',$request->idLocal)->where('idProducto',$request->idProducto)->get()->first();
+        $stockActual=Stock::where('idLocal',$request->idLocal)->where('idProducto',$request->idProducto)->get()->first();
 
-        if($stock != null){
+        if($stockActual != null){
             if($request->tipo == "Compra"){
-                $stock->stock=$stock->stock + $request->cantidad;
+                $stockActual->stock=$stockActual->stock + $request->cantidad;
             }else{
-                if($stock->stock >= $stock->cantidad){
-                    $stock->stock=$stock->stock - $request->cantidad;
+                if($stockActual->stock >= $request->cantidad){
+                    $stockActual->stock=$stockActual->stock - $request->cantidad;
+                    $stockActual->update();
                 }else {
                     return response()->json(['code'=>'400']); 
                 }
@@ -70,6 +70,7 @@ class TransaccionController extends Controller
             }
         }
         
+        $datos->save();
         return response()->json(['code'=>'200']);        
     }
 
@@ -97,29 +98,30 @@ class TransaccionController extends Controller
         $datos=Transaccion::where('idTransaccion', $idTransaccion)->get()->first();
         if($datos != null){
 
-            $stock=Stock::where('idLocal',$request->idLocal)->where('idProducto',$request->idProducto)->get()->first();
+            $stockActual=Stock::where('idLocal',$request->idLocal)->where('idProducto',$request->idProducto)->get()->first();
 
-            if($stock != null){
+            if($datos->tipo == $request->tipo){
                 if($request->tipo == "Compra"){
-                    $stock->stock=$stock->stock + $request->cantidad;
+                    $stockActual->stock=$stockActual->stock + ($request->cantidad - $datos->cantidad);
                 }else{
-                    if($stock->stock >= $stock->cantidad){
-                        $stock->stock=$stock->stock - $request->cantidad;
+                    if($stockActual->stock >= ($request->cantidad - $datos->cantidad)){
+                        $stockActual->stock=$stockActual->stock - ($request->cantidad - $datos->cantidad);
                     }else {
                         return response()->json(['code'=>'400']); 
                     }
                 }
             }else{
                 if($request->tipo == "Compra"){
-                    $nuevoStock=new Stock();
-                    $nuevoStock->idLocal=$request->idLocal;
-                    $nuevoStock->idProducto=$request->idProducto;
-                    $nuevoStock->stock=$request->cantidad;
-                    $nuevoStock->save();
+                    $stockActual->stock=$stockActual->stock + ($request->cantidad + $datos->cantidad);
                 }else{
-                    return response()->json(['code'=>'400']); 
+                    if($stockActual->stock >= ($request->cantidad + $datos->cantidad)){
+                        $stockActual->stock=$stockActual->stock - ($request->cantidad + $datos->cantidad);
+                    }else {
+                        return response()->json(['code'=>'400']); 
+                    }
                 }
-            }
+
+            }            
 
             $datos->idUsuario=$request->idUsuario;
             $datos->idProducto=$request->idProducto;
@@ -130,6 +132,7 @@ class TransaccionController extends Controller
             $datos->observacion=$request->observacion;
             $datos->fecha=$request->fecha;
             $datos->update();
+            $stockActual->update();
             return response()->json(['code'=>'200']);
         }else {
             return response()->json(['code'=>'400']);

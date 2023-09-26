@@ -39,7 +39,7 @@ class ProductoController extends Controller
             return response()->json(['code'=>'400']);
         }else{
             $datos=new Producto();
-            $datos->idTipo=$request->idTipo;
+            $datos->idCategoria=$request->idCategoria;
             $datos->nombre=$request->nombre;
             $datos->descripcion=$request->descripcion;
             $datos->precio=$request->precio; 
@@ -74,7 +74,7 @@ class ProductoController extends Controller
         $datos=Producto::where('idProducto',$idProducto)->get()->first();
         if($datos != null){
             if($datos->nombre == $request->nombre){
-                $datos->idTipo=$request->idTipo;
+                $datos->idCategoria=$request->idCategoria;
                 $datos->descripcion=$request->descripcion;
                 $datos->precio=$request->precio;
                 $datos->estado=$request->estado;          
@@ -85,7 +85,7 @@ class ProductoController extends Controller
                 if($valida != null){
                     return response()->json(['code'=>'400']);
                 }else{
-                    $datos->idTipo=$request->idTipo;
+                    $datos->idCategoria=$request->idCategoria;
                     $datos->nombre=$request->nombre;
                     $datos->descripcion=$request->descripcion;
                     $datos->precio=$request->precio; 
