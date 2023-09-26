@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('locales', function (Blueprint $table) {
-            $table->bigIncrements('idlocal');
+            $table->bigIncrements('idLocal');
             $table->string('nombre');
             $table->string('descripcion');
             $table->boolean('estado');

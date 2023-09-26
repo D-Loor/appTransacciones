@@ -9,6 +9,7 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\TransaccionController;
 use App\Http\Controllers\LocalController;
+use App\Http\Controllers\StockController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,11 +28,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::resource('roles', RolController::class);
 Route::resource('usuarios', UsuarioController::class);
-Route::resource('subtipos', TiposCategoriaController::class);
-Route::resource('tipos', CategoriaController::class);
+Route::resource('tiposCategorias', TiposCategoriaController::class);
+Route::resource('categorias', CategoriaController::class);
 Route::resource('productos', ProductoController::class);
 Route::resource('locales', LocalController::class);
 Route::resource('transacciones', TransaccionController::class);
+Route::resource('stocks', StockController::class);
 
 
 Route::get('login/{cedula}/{clave}','App\Http\Controllers\UsuarioController@Login');
