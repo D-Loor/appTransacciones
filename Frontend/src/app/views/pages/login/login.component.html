@@ -1,6 +1,5 @@
 <div class="bg-light min-vh-100 d-flex flex-row align-items-center">
   <c-container>
-    <c-toaster *ngFor="let pos of positions | slice : 1" [ngClass]="'p-3'" position="fixed" placement="{{pos}}"></c-toaster>
     <c-row class="justify-content-center">
       <c-col md="8">
         <c-card-group>
@@ -61,3 +60,5 @@
     </c-row>
   </c-container>
 </div>
+
+<c-toaster class="p-3" position="fixed" [placement]="placement"></c-toaster>

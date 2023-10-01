@@ -16,6 +16,8 @@ import { CategoriasComponent } from './categorias/categorias.component';
 import { ProductosComponent } from './productos/productos.component';
 import { StocksComponent } from './stocks/stocks.component';
 import { TableModule, UtilitiesModule, PaginationModule, BadgeModule, ModalModule } from '@coreui/angular';
+import { NotificarComponent } from './notify/notificar/notificar.component';
+import { LocalesComponent } from './locales/locales.component';
 
 @NgModule({
   declarations: [
@@ -24,11 +26,13 @@ import { TableModule, UtilitiesModule, PaginationModule, BadgeModule, ModalModul
     Page404Component,
     Page500Component,
     RolesComponent,
+    LocalesComponent,
     UsuariosComponent,
     TiposCategoriasComponent,
     CategoriasComponent,
     ProductosComponent,
-    StocksComponent
+    StocksComponent,
+    NotificarComponent
   ],
   imports: [
     CommonModule,
