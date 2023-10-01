@@ -2,14 +2,78 @@ import { INavData } from '@coreui/angular';
 
 export const navItems: INavData[] = [
   {
-    name: 'Dashboard',
-    url: '/dashboard',
-    iconComponent: { name: 'cil-speedometer' },
-    badge: {
-      color: 'info',
-      text: 'NEW'
-    }
+    name: 'Estadísticas',
+    url: '/estadisticas',
+    iconComponent: { name: 'cil-calendar' }
   },
+
+//Mercaderia
+  {
+    title: true,
+    name: 'Mercadería'
+  },
+  {
+    name: 'Productos',
+    url: '/pages/productos',
+    iconComponent: { name: 'cil-basket' }
+  },
+  {
+    name: 'Stocks',
+    url: '/pages/stocks',
+    iconComponent: { name: 'cil-list-numbered' }
+  },
+  {
+    name: 'Categorías',
+    iconComponent: { name: 'cil-layers' },
+    url: '/pages/categorias',
+    children: [
+      {
+        name: 'Tipos',
+        url: '/pages/categorias/tipos'
+      },
+      {
+        name: 'Categorías',
+        url: '/pages/categorias/categorias'
+      }
+    ]
+  },
+//Movimientos
+  {
+    title: true,
+    name: 'Movimientos'
+  },
+  {
+    name: 'Transacciones',
+    url: '/pages/transacciones',
+    iconComponent: { name: 'cil-dollar' }
+  },
+//Estableciomientos
+  {
+    title: true,
+    name: 'Establecimientos'
+  },
+  {
+    name: 'Locales',
+    url: '/pages/locales',
+    iconComponent: { name: 'cil-home' }
+  },
+//Administracion
+  {
+    title: true,
+    name: 'Administración'
+  },
+  {
+    name: 'Usuarios',
+    url: '/pages/usuarios',
+    iconComponent: { name: 'cil-user' }
+  },
+  {
+    name: 'Roles',
+    url: '/pages/roles',
+    iconComponent: { name: 'cil-lock-locked' }
+  },
+
+
   {
     title: true,
     name: 'Theme'

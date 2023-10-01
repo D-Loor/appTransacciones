@@ -1,0 +1,132 @@
+<c-card>
+    <c-card-header>
+        <strong>Roles</strong>
+        <button cButton [cModalToggle]="registroModal.id" class="float-end" style="color: white;" color="success">
+            <svg cIcon name="cilNotes"></svg>
+        </button>
+    </c-card-header>
+    <c-card-body>
+
+        <p cCardText>Vista de gestión para administrar información de usuarios.</p>
+        <div class="table-responsive">
+            <table cTable class="table">
+                <thead cTableColor="dark">
+                    <tr>
+                        <th scope="col">Acceso</th>
+                        <th scope="col">Rol</th>
+                        <th scope="col">Descripción</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>
+                            <c-badge color="dark">Activo</c-badge>
+                        </td>
+                        <td>
+                            <button cButton size="sm" color="success" style="margin-right: 5px;">
+                                <svg cIcon name="cilPencil" title="Numbered List Icon" style="color: white;"></svg>
+                            </button>
+                            <button cButton size="sm" color="danger">
+                                <svg cIcon name="cilTrash" title="Numbered List Icon" style="color: white;"></svg>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>
+                            <c-badge color="light"
+                                style="color: white; background-color: darkgray !important;">Inactivo</c-badge>
+                        </td>
+                        <td>@fat</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Larry the Bird</td>
+                        <td>@twitter</td>
+                        <td>@fat</td>
+                        <td>@fat</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+      
+        <c-pagination align="center" aria-label="Page navigation example">
+            <li cPageItem [disabled]="true">
+                <a cPageLink [routerLink]>Anterior</a>
+            </li>
+            <li cPageItem>
+                <a cPageLink [routerLink]>1</a>
+            </li>
+            <li cPageItem>
+                <a cPageLink [routerLink]>2</a>
+            </li>
+            <li cPageItem>
+                <a cPageLink [routerLink]>3</a>
+            </li>
+            <li cPageItem>
+                <a cPageLink [routerLink]>Siguiente</a>
+            </li>
+        </c-pagination>
+    </c-card-body>
+
+</c-card>
+
+<c-modal #registroModal backdrop="static" id="registroModal" size="xl" alignment="center">
+    <c-modal-header>
+        <h5 cModalTitle>{{tituloModal}}</h5>
+        <button [cModalToggle]="registroModal.id" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+        <form #browserDefaultsForm="ngForm" (ngSubmit)="registrarDatos()" [gutter]="3" [validated]="formularioValido"
+            cForm cRow ngNativeValidate>
+            <c-col [md]="8">
+                <label cLabel for="validationDefault01">Nombre Rol</label>
+                <input cFormControl id="validationDefault01" required type="text"/>
+                <c-form-feedback [valid]="true">Looks good!</c-form-feedback>
+            </c-col>
+            
+            <c-col [md]="4">
+                <label cLabel for="validationDefault04">Nivel de acceso</label>
+                <select cSelect id="validationDefault04" required>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+                <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback>
+            </c-col>
+            <c-col [md]="8">
+                <label cLabel for="validationDefault05">Descripción</label>
+                <textarea cFormControl id="exampleFormControlTextarea1"required rows="3"></textarea>
+                <c-form-feedback [valid]="false">Please provide a valid zip.</c-form-feedback>
+            </c-col>
+            <c-col [md]="4">
+                <label cLabel for="validationDefault04">Estado</label>
+                <select cSelect id="validationDefault04" required>
+                    <option value="Activo">Activo</option>
+                    <option value="Inactivo">Inactivo</option>
+                </select>
+                <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback>
+            </c-col>
+
+            <hr>
+        
+            <c-col [xs]="12">
+                <div style="float: right;">
+                    <button [cModalToggle]="registroModal.id" cButton color="secondary" style="margin-right: 10px;">
+                        Cancelar
+                    </button>
+                    <button cButton color="success" type="submit">Registrar</button>
+                </div>
+            </c-col>
+        </form>
+
+    </c-modal-body>
+</c-modal>
