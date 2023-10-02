@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ToasterComponent, ToasterPlacement } from '@coreui/angular';
 import { NotificarComponent } from './../notify/notificar/notificar.component';
+import { LocalesService } from './../../../services/locales.service'
+import { LocalModel } from './../../../models/local.model'
 
 @Component({
   selector: 'app-locales',
@@ -8,19 +10,102 @@ import { NotificarComponent } from './../notify/notificar/notificar.component';
   styleUrls: ['./locales.component.scss']
 })
 export class LocalesComponent implements OnInit{
-
   tituloModal = "";
-  formularioValido : boolean = false;
+  visibleModal = false;
+  formularioValido: boolean = false;
   placement = ToasterPlacement.TopEnd;
+  listaLocales: LocalModel[] = [];
+  local: LocalModel = new LocalModel;
+
 
   @ViewChild(ToasterComponent) toaster!: ToasterComponent;
 
-  registrarDatos(){
+  constructor(public localService: LocalesService) {
 
   }
-  
-  ngOnInit(): void {
-    this.tituloModal = "Agregar un nuevo Local"
+
+  ngOnInit() {
+    this.tituloModal = "Agregar";
+    this.obtenerDatos();
+  }
+
+  obtenerDatos() {
+    this.localService.obtener().then(data => {
+      let resp = data as any;
+      if (resp['code'] === "204") {
+        this.showToast('No existen Locales registrados.!', 'info');
+      } else {
+        this.listaLocales = resp['data'];
+        console.log("lista ", this.listaLocales);
+      }
+    }).catch(error => {
+      console.log(error);
+    });
+  }
+
+  registrarDatos() {
+    this.localService.guardar(this.local).then(data => {
+      let resp = data as any;
+      if (resp['code'] == '400') {
+        this.showToast("Ya existe un local con este nombre.", "warning");
+      } else if (resp['code'] == '200'){
+        this.showToast("El local se ha creado correctamente.", "success");
+        this.obtenerDatos();
+        this.limpiarFormulario();
+        this.visibleModal = false;
+      }else {
+        this.showToast("Se ha presentado un error al guardar.", "danger");
+      }
+    }).catch(error => {
+      console.log(error);
+    });
+  }
+
+  eliminarDato(idlocal: number){
+    this.localService.eliminar(idlocal).then(data => {
+      let resp = data as any;
+      if (resp['code'] == '204') {
+        this.showToast("No existe este local.", "warning");
+      } else if (resp['code'] == '200'){
+        this.showToast("El local se ha eliminado correctamente.", "success");
+        this.obtenerDatos();
+      }else {
+        this.showToast("Se ha presentado un error al eliminar.", "danger");
+      }
+    }).catch(error => {
+      console.log(error);
+    });
+  }
+
+  cargarDatos(datosModal: LocalModel){
+    this.tituloModal = "Editar";
+    this.local = { ...datosModal };
+    this.visibleModal = true;
+  }
+
+  editarDato(){
+    this.localService.editar(this.local).then(data => {
+      let resp = data as any;
+      if (resp['code'] == '400') {
+        this.showToast("Ya existe un local con este nombre.", "warning");
+      } else if (resp['code'] == '200'){
+        this.showToast("El local se ha editado correctamente.", "success");
+        this.obtenerDatos();
+        this.limpiarFormulario();
+        this.visibleModal = false;
+      }else {
+        this.showToast("Se ha presentado un error al editar.", "danger");
+      }
+    }).catch(error => {
+      console.log(error);
+    });
+  }
+
+  limpiarFormulario(){
+    this.local.idLocal = undefined;
+    this.local.nombre = undefined;
+    this.local.descripcion = undefined
+    this.local.estado = undefined;
   }
 
   showToast(mensaje: string, color: string) {
@@ -32,5 +117,9 @@ export class LocalesComponent implements OnInit{
       autohide: true,
     }
     const componentRef = this.toaster.addToast(NotificarComponent, { ...options });
+  }
+
+  handleLiveDemoChange(event: any) {
+    this.visibleModal = event;
   }
 }

@@ -18,36 +18,23 @@
                         <th scope="col">Opciones</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody *ngFor="let item of listaLocales">
                     <tr>
-                        <td>Mark</td>
-                        <td>Otto</td>
+                        <td>{{item.nombre}}</td>
+                        <td>{{item.descripcion}}</td>
                         <td>
-                            <c-badge color="dark">Activo</c-badge>
+                            <c-badge color="dark" *ngIf="item.estado == 1">Activo</c-badge>
+                            <c-badge color="light" *ngIf="item.estado == 0"
+                                style="color: white; background-color: darkgray !important;">Inactivo</c-badge>
                         </td>
                         <td>
-                            <button cButton size="sm" color="success" style="margin-right: 5px;">
+                            <button cButton size="sm" color="success" style="margin-right: 5px;" (click)="cargarDatos(item)">
                                 <svg cIcon name="cilPencil" title="Numbered List Icon" style="color: white;"></svg>
                             </button>
-                            <button cButton size="sm" color="danger">
+                            <button cButton size="sm" color="danger" (click)="item.idLocal !== undefined && eliminarDato(item.idLocal)">
                                 <svg cIcon name="cilTrash" title="Numbered List Icon" style="color: white;"></svg>
                             </button>
                         </td>
-                    </tr>
-                    <tr>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>
-                            <c-badge color="light"
-                                style="color: white; background-color: darkgray !important;">Inactivo</c-badge>
-                        </td>
-                        <td>@fat</td>
-                    </tr>
-                    <tr>
-                        <td>Larry the Bird</td>
-                        <td>@twitter</td>
-                        <td>@fat</td>
-                        <td>@fat</td>
                     </tr>
                 </tbody>
             </table>
@@ -74,52 +61,44 @@
 
 </c-card>
 
-<c-modal #registroModal backdrop="static" id="registroModal" size="xl" alignment="center">
+<c-modal #registroModal backdrop="static" [visible]="visibleModal" (visibleChange)="handleLiveDemoChange($event)" id="registroModal" size="xl" alignment="center">
     <c-modal-header>
         <h5 cModalTitle>{{tituloModal}} Local</h5>
-        <button [cModalToggle]="registroModal.id" cButtonClose></button>
+        <button [cModalToggle]="registroModal.id" cButtonClose (click)="limpiarFormulario()"></button>
     </c-modal-header>
     <c-modal-body>
         <form #browserDefaultsForm="ngForm" (ngSubmit)="registrarDatos()" [gutter]="3" [validated]="formularioValido"
             cForm cRow ngNativeValidate>
             <c-col [md]="8">
-                <label cLabel for="validationDefault01">Nombre Rol</label>
-                <input cFormControl id="validationDefault01" required type="text"/>
+                <label cLabel for="validationDefault01">Nombre Local</label>
+                <input cFormControl [(ngModel)]="local.nombre" id="validationDefault01" autocomplete="off" required type="text" [ngModelOptions]="{standalone: true}"/>
                 <c-form-feedback [valid]="true">Looks good!</c-form-feedback>
             </c-col>
-            
             <c-col [md]="4">
-                <label cLabel for="validationDefault04">Nivel de acceso</label>
-                <select cSelect id="validationDefault04" required>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
+                <label cLabel for="validationDefault04">Estado</label>
+                <select cSelect id="validationDefault04" [(ngModel)]="local.estado" [ngModelOptions]="{standalone: true}" required>
+                    <option value="1">Activo</option>
+                    <option value="0">Inactivo</option>
                 </select>
                 <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback>
             </c-col>
             <c-col [md]="8">
                 <label cLabel for="validationDefault05">Descripción</label>
-                <textarea cFormControl id="exampleFormControlTextarea1"required rows="3"></textarea>
+                <textarea cFormControl [(ngModel)]="local.descripcion" [ngModelOptions]="{standalone: true}" id="exampleFormControlTextarea1"required rows="3"></textarea>
                 <c-form-feedback [valid]="false">Please provide a valid zip.</c-form-feedback>
             </c-col>
-            <c-col [md]="4">
-                <label cLabel for="validationDefault04">Estado</label>
-                <select cSelect id="validationDefault04" required>
-                    <option value="Activo">Activo</option>
-                    <option value="Inactivo">Inactivo</option>
-                </select>
-                <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback>
-            </c-col>
+        
 
             <hr>
         
             <c-col [xs]="12">
                 <div style="float: right;">
-                    <button [cModalToggle]="registroModal.id" cButton color="secondary" style="margin-right: 10px;">
+                    <button [cModalToggle]="registroModal.id" cButton color="secondary" (click)="limpiarFormulario()"
+                    style="margin-right: 10px;">
                         Cancelar
                     </button>
-                    <button cButton color="success" type="submit">Registrar</button>
+                    <button cButton color="success" type="submit" *ngIf="tituloModal === 'Agregar'">Registrar</button>
+                    <button cButton color="success" type="button" *ngIf="tituloModal === 'Editar'" (click)="editarDato()">Editar</button>
                 </div>
             </c-col>
         </form>
