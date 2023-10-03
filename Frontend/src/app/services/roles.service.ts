@@ -7,12 +7,13 @@ import { RolModel } from '../models/rol.model';
 })
 export class RolesService {
 
+  private urlService = "http://127.0.0.1:8000/api/roles/" ;
+
   constructor(private http: HttpClient) { }
 
   guardar(data: RolModel){
-    let  url = 'http://127.0.0.1:8000/api/roles/';
     return new Promise ((resolve, reject) => {
-      this.http.post(url,data).subscribe(res => {
+      this.http.post(this.urlService,data).subscribe(res => {
         resolve(res);{
         }
       }, error => {
@@ -22,9 +23,8 @@ export class RolesService {
   }
 
   obtener(){
-    let  url = 'http://127.0.0.1:8000/api/roles/';
     return new Promise ((resolve, reject) => {
-      this.http.get(url).subscribe(res => {
+      this.http.get(this.urlService).subscribe(res => {
         resolve(res);{
         }
       }, error => {
@@ -34,9 +34,8 @@ export class RolesService {
   }
 
   editar(data: RolModel){
-    let  url = 'http://127.0.0.1:8000/api/roles/' + data.idRol;
     return new Promise ((resolve, reject) => {
-      this.http.put(url, data).subscribe(res => {
+      this.http.put(this.urlService + data.idRol, data).subscribe(res => {
         resolve(res);{
         }
       }, error => {
@@ -46,9 +45,8 @@ export class RolesService {
   }
 
   eliminar(idRol: number){
-    let  url = 'http://127.0.0.1:8000/api/roles/' + idRol;
     return new Promise ((resolve, reject) => {
-      this.http.delete(url).subscribe(res => {
+      this.http.delete(this.urlService + idRol).subscribe(res => {
         resolve(res);{
         }
       }, error => {
