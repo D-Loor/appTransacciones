@@ -7,12 +7,13 @@ import { LocalModel } from '../models/local.model';
 })
 export class LocalesService {
 
+  private urlService = "http://127.0.0.1:8000/api/locales/" ;
+
   constructor(private http: HttpClient) { }
 
   guardar(data: LocalModel){
-    let  url = 'http://127.0.0.1:8000/api/locales/';
     return new Promise ((resolve, reject) => {
-      this.http.post(url,data).subscribe(res => {
+      this.http.post(this.urlService ,data).subscribe(res => {
         resolve(res);{
         }
       }, error => {
@@ -22,9 +23,8 @@ export class LocalesService {
   }
 
   obtener(){
-    let  url = 'http://127.0.0.1:8000/api/locales/';
     return new Promise ((resolve, reject) => {
-      this.http.get(url).subscribe(res => {
+      this.http.get(this.urlService).subscribe(res => {
         resolve(res);{
         }
       }, error => {
@@ -34,10 +34,8 @@ export class LocalesService {
   }
 
   editar(data: LocalModel){
-    let  url = 'http://127.0.0.1:8000/api/locales/' + data.idLocal;
-    console.log(data.idLocal+""+data.nombre+""+data.descripcion+""+data.estado);
     return new Promise ((resolve, reject) => {
-      this.http.put(url, data).subscribe(res => {
+      this.http.put(this.urlService + data.idLocal, data).subscribe(res => {
         resolve(res);{
         }
       }, error => {
@@ -46,10 +44,9 @@ export class LocalesService {
     });
   }
 
-  eliminar(idlocal: number){
-    let  url = 'http://127.0.0.1:8000/api/locales/' + idlocal;
+  eliminar(idLocal: number){
     return new Promise ((resolve, reject) => {
-      this.http.delete(url).subscribe(res => {
+      this.http.delete(this.urlService + idLocal).subscribe(res => {
         resolve(res);{
         }
       }, error => {

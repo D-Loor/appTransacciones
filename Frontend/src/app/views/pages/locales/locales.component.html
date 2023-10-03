@@ -1,7 +1,7 @@
 <c-card>
     <c-card-header>
         <strong>Locales</strong>
-        <button cButton [cModalToggle]="registroModal.id" class="float-end" style="color: white;" color="success">
+        <button cButton [cModalToggle]="registroModal.id" class="float-end" style="color: white;" color="success" (click)="tituloModal = 'Agregar'">
             <svg cIcon name="cilNotes"></svg>
         </button>
     </c-card-header>
