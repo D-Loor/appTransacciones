@@ -4,5 +4,4 @@ export class RolModel {
     descripcion?: string;
     acceso?: string;
     estado?: number;
-
 }

@@ -29,6 +29,7 @@ export class RolesComponent implements OnInit {
   }
 
   obtenerDatos() {
+    this.listaRoles = [];
     this.rolService.obtener().then(data => {
       let resp = data as any;
       if (resp['code'] === "204") {
