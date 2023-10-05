@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TiposCategoria;
+use App\Models\Tipo;
 use Illuminate\Http\Request;
 
-class TiposCategoriaController extends Controller
+class tipoController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $datos=TiposCategoria::orderBy('tipo', 'asc')->get();
+        $datos=Tipo::orderBy('tipo', 'asc')->with('tipoCategoria')->get();
         $num_rows = count($datos);
         if($num_rows != 0){
             return response()->json(['data'=>$datos, 'code'=>'200']);
@@ -34,11 +34,12 @@ class TiposCategoriaController extends Controller
      */
     public function store(Request $request)
     {
-        $valida=TiposCategoria::where('tipo', $request->tipo)->get()->first();
+        $valida=Tipo::where('tipo', $request->tipo)->get()->first();
         if($valida != null){
             return response()->json(['code'=>'400']);
         }else{
-            $datos=new TiposCategoria();
+            $datos=new Tipo();
+            $datos->idCategoria=$request->idCategoria;
             $datos->tipo=$request->tipo;
             $datos->descripcion=$request->descripcion;
             $datos->estado=$request->estado; 
@@ -51,7 +52,7 @@ class TiposCategoriaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(TiposCategoria $tipoCategoria)
+    public function show(Tipo $tipoCategoria)
     {
         //
     }
@@ -59,7 +60,7 @@ class TiposCategoriaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(TiposCategoria $tipoCategoria)
+    public function edit(Tipo $tipoCategoria)
     {
         //
     }
@@ -67,20 +68,22 @@ class TiposCategoriaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $idTipoCategoria)
+    public function update(Request $request, $idTipo)
     {
-        $datos=TiposCategoria::where('idTipoCategoria',$idTipoCategoria)->get()->first();
+        $datos=Tipo::where('idTipo',$idTipo)->get()->first();
         if($datos != null){
             if($datos->tipo == $request->tipo){
+                $datos->idCategoria=$request->idCategoria;
                 $datos->descripcion=$request->descripcion;
                 $datos->estado=$request->estado;          
                 $datos->update();
                 return response()->json(['code'=>'200']);
             }else{
-                $valida=TiposCategoria::where('tipo', $request->tipo)->get()->first();
+                $valida=Tipo::where('tipo', $request->tipo)->get()->first();
                 if($valida != null){
                     return response()->json(['code'=>'400']);
                 }else{
+                    $datos->idCategoria=$request->idCategoria;
                     $datos->tipo=$request->tipo;
                     $datos->descripcion=$request->descripcion;
                     $datos->estado=$request->estado;  
@@ -96,9 +99,9 @@ class TiposCategoriaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($idTipoCategoria)
+    public function destroy($idTipo)
     {
-        $datos=TiposCategoria::find($idTipoCategoria);  
+        $datos=Tipo::find($idTipo);  
         if($datos != null){
             $datos->delete();
             return response()->json(['code'=>'200']);

@@ -12,7 +12,7 @@ class CategoriaController extends Controller
      */
     public function index()
     {
-        $datos=Categoria::orderBy('categoria', 'asc')->with('tipoCategoria')->get();
+        $datos=Categoria::orderBy('categoria', 'asc')->get();
         $num_rows = count($datos);
         if($num_rows != 0){
             return response()->json(['data'=>$datos, 'code'=>'200']);
@@ -39,7 +39,6 @@ class CategoriaController extends Controller
             return response()->json(['code'=>'400']);
         }else{
             $datos=new Categoria();
-            $datos->idTipoCategoria=$request->idTipoCategoria;
             $datos->categoria=$request->categoria;
             $datos->descripcion=$request->descripcion;
             $datos->estado=$request->estado;
@@ -73,7 +72,6 @@ class CategoriaController extends Controller
         $datos=Categoria::where('idCategoria',$idCategoria)->get()->first();
         if($datos != null){
             if($datos->categoria == $request->categoria){
-                $datos->idTipoCategoria=$request->idTipoCategoria;
                 $datos->descripcion=$request->descripcion;
                 $datos->estado=$request->estado;          
                 $datos->update();

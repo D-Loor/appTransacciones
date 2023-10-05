@@ -12,10 +12,10 @@ class Producto extends Model
     protected $table = 'productos';
     protected $primaryKey = 'idProducto';
     protected $fillable = [
-        'idCategoria', 'nombre', 'descripcion', 'precio', 'estado'
+        'idTipo', 'nombre', 'descripcion', 'precio', 'estado'
     ];
 
-    public function categoriaProducto(){
-        return $this->belongsTo('App\Models\Categorias','idCategoria');
+    public function tipoProducto(){
+        return $this->belongsTo('App\Models\Tipo','idTipo');
     }
 }

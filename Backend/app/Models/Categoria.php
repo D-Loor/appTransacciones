@@ -12,10 +12,6 @@ class Categoria extends Model
     protected $table = 'categorias';
     protected $primaryKey = 'idCategorias';
     protected $fillable = [
-        'idTipoCategoria', 'categoria', 'descripcion', 'estado'
+        'categoria', 'descripcion', 'estado'
     ];
-
-    public function tipoCategoria(){
-        return $this->belongsTo('App\Models\TiposCategoria','idTipoCategoria');
-    }
 }
