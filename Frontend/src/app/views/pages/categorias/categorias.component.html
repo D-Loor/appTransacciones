@@ -1,20 +1,19 @@
 <c-card>
     <c-card-header>
-        <strong>Categorias</strong>
+        <strong>Categorías</strong>
         <button cButton [cModalToggle]="registroModal.id" class="float-end" style="color: white;" color="success" (click)="tituloModal = 'Agregar'">
             <svg cIcon name="cilNotes"></svg>
         </button>
     </c-card-header>
     <c-card-body>
 
-        <p cCardText>Vista de gestión para administrar información de categorias.</p>
+        <p cCardText>Vista de gestión para administrar información de categorías.</p>
         <div class="table-responsive">
             <table cTable class="table">
                 <thead cTableColor="dark">
                     <tr>
-                        <th scope="col">Categoria</th>
+                        <th scope="col">Categoría</th>
                         <th scope="col">Descripcion</th>
-                        <th scope="col">Tipo</th>
                         <th scope="col">Estado</th>
                         <th scope="col">Opciones</th>
                     </tr>
@@ -23,7 +22,6 @@
                     <tr>
                         <td>{{item.categoria}}</td>
                         <td>{{item.descripcion}}</td>
-                        <td >{{item.tipo_categoria?.tipo}}</td>
                         <td>
                             <c-badge color="dark" *ngIf="item.estado == 1">Activo</c-badge>
                             <c-badge color="light" *ngIf="item.estado == 0"
@@ -65,29 +63,17 @@
 
 <c-modal #registroModal backdrop="static" [visible]="visibleModal" (visibleChange)="handleLiveDemoChange($event)" id="registroModal" size="xl" alignment="center">
     <c-modal-header>
-        <h5 cModalTitle>{{tituloModal}} Categoria</h5>
+        <h5 cModalTitle>{{tituloModal}} Categoría</h5>
         <button [cModalToggle]="registroModal.id" cButtonClose (click)="limpiarFormulario()"></button>
     </c-modal-header>
     <c-modal-body>
         <form #browserDefaultsForm="ngForm" (ngSubmit)="registrarDatos()" [gutter]="3" [validated]="formularioValido"
             cForm cRow ngNativeValidate>
-            <c-col [md]="6">
-                <label cLabel for="validationDefault01">Tipo</label>
+            <c-col [md]="8">
+                <label cLabel for="validationDefault01">Nombre</label>
                 <input cFormControl [(ngModel)]="categoria.categoria" id="validationDefault02" autocomplete="off" required type="text" [ngModelOptions]="{standalone: true}"/>
                 <c-form-feedback [valid]="true">Looks good!</c-form-feedback>
-            </c-col>        
-            <c-col [md]="6">
-                <label cLabel for="validationDefault05">Descripcion</label>
-                <input cFormControl [(ngModel)]="categoria.descripcion" [ngModelOptions]="{standalone: true}" id="exampleFormControlTextarea1"required rows="3"/>
-                <c-form-feedback [valid]="false">Please provide a valid zip.</c-form-feedback>
-            </c-col>
-            <c-col [md]="8">
-                <label cLabel for="validationDefault08">Tipo categorias</label>
-                <select [(ngModel)]="categoria.idTipoCategoria" cSelect id="validationDefault09" [ngModelOptions]="{standalone: true}" required>
-                    <option *ngFor="let item of listaTipos" [value]="item.idTipoCategoria">{{item.tipo}}</option>
-                </select>
-                <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback>
-            </c-col>
+            </c-col>   
             <c-col [md]="4">
                 <label cLabel for="validationDefault10">Estado</label>
                 <select cSelect id="validationDefault11" [(ngModel)]="categoria.estado" [ngModelOptions]="{standalone: true}" required>
@@ -96,7 +82,13 @@
                 </select>
                 <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback>
             </c-col>
-
+     
+            <c-col [md]="12">
+                <label cLabel for="validationDefault05">Descripcion</label>
+                <input cFormControl [(ngModel)]="categoria.descripcion" [ngModelOptions]="{standalone: true}" id="exampleFormControlTextarea1"required rows="3"/>
+                <c-form-feedback [valid]="false">Please provide a valid zip.</c-form-feedback>
+            </c-col>
+            
             <hr>
         
             <c-col [xs]="12">

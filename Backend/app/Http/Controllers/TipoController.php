@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Tipo;
 use Illuminate\Http\Request;
 
-class tipoController extends Controller
+class TipoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -52,7 +52,7 @@ class tipoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Tipo $tipoCategoria)
+    public function show(string $id)
     {
         //
     }
@@ -60,7 +60,7 @@ class tipoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Tipo $tipoCategoria)
+    public function edit(string $id)
     {
         //
     }
@@ -108,5 +108,16 @@ class tipoController extends Controller
         }else{
             return response()->json(['code'=>'204']);
         }
+    }
+
+    public function obtenerTiposPorCategoria($idCategoria)
+    {
+        $datos=Tipo::where('idCategoria', $idCategoria)->orderBy('tipo', 'asc')->with('tipoCategoria')->get();
+        $num_rows = count($datos);
+        if($num_rows != 0){
+            return response()->json(['data'=>$datos, 'code'=>'200']);
+        }else{
+            return response()->json(['code'=>'204']);
+        } 
     }
 }

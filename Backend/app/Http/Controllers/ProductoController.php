@@ -12,7 +12,7 @@ class ProductoController extends Controller
      */
     public function index()
     {
-        $datos=Producto::orderBy('nombre', 'asc')->with('categoriaProducto')->get();
+        $datos=Producto::orderBy('nombre', 'asc')->with('tipoProducto')->get();
         $num_rows = count($datos);
         if($num_rows != 0){
             return response()->json(['data'=>$datos, 'code'=>'200']);

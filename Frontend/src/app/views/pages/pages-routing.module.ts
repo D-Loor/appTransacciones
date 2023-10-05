@@ -6,7 +6,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { RolesComponent } from './roles/roles.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
-import { TiposCategoriasComponent } from './tipos-categorias/tipos-categorias.component';
+import { TiposComponent } from './tipos/tipos.component';
 import { CategoriasComponent } from './categorias/categorias.component';
 import { ProductosComponent } from './productos/productos.component';
 import { LocalesComponent } from './locales/locales.component';
@@ -58,7 +58,7 @@ const routes: Routes = [
   },
   {
     path: 'categorias/tipos',
-    component: TiposCategoriasComponent,
+    component: TiposComponent,
     data: {
       title: 'Tipos Categorías'
     }

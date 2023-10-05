@@ -3,6 +3,10 @@ import { ToasterComponent, ToasterPlacement } from '@coreui/angular';
 import { NotificarComponent } from './../notify/notificar/notificar.component';
 import { ProductosService } from 'src/app/services/productos.service';
 import { ProductoModel } from 'src/app/models/producto.model';
+import { CategoriaModel } from 'src/app/models/categoria.model';
+import { TipoModel } from 'src/app/models/tipo.model';
+import { CategoriasService } from 'src/app/services/categorias.service';
+import { TiposService } from 'src/app/services/tipos.service';
 
 @Component({
   selector: 'app-productos',
@@ -14,13 +18,15 @@ export class ProductosComponent implements OnInit {
   visibleModal = false;
   formularioValido: boolean = false;
   placement = ToasterPlacement.TopEnd;
-  listaUsuarios: ProductoModel[] = [];
+  listaProductos: ProductoModel[] = [];
+  listaCategorias: CategoriaModel[] = [];
+  listaTipos: TipoModel[] = [];
   producto: ProductoModel = new ProductoModel;
-
+  categoriaSeleccionada: number = 0;
 
   @ViewChild(ToasterComponent) toaster!: ToasterComponent;
 
-  constructor(public productoService: ProductosService) {
+  constructor(public productoService: ProductosService, public categoriaService: CategoriasService, public tipoService: TiposService) {
 
   }
 
@@ -30,15 +36,15 @@ export class ProductosComponent implements OnInit {
   }
 
   obtenerDatos() {
-    this.listaUsuarios = [];
-    this.obtenerDatosRoles();
+    this.listaProductos = [];
+    this.obtenerCategorias();
     this.productoService.obtener().then(data => {
       let resp = data as any;
       if (resp['code'] === "204") {
-        this.showToast('No existen Usuarios registrados.!', 'info');
+        this.showToast('No existen Productos registrados.!', 'info');
       } else {
-        this.listaUsuarios = resp['data'];
-        console.log("lista ", this.listaUsuarios);
+        this.listaProductos = resp['data'];
+        console.log("listaProductos ", this.listaProductos);
       }
     }).catch(error => {
       console.log(error);
@@ -46,23 +52,21 @@ export class ProductosComponent implements OnInit {
   }
 
   registrarDatos() {
-    if(this.validarPassword()){
-      this.productoService.guardar(this.producto).then(data => {
-        let resp = data as any;
-        if (resp['code'] == '400') {
-          this.showToast("Ya existe un producto con este nombre.", "warning");
-        } else if (resp['code'] == '200'){
-          this.showToast("El producto se ha creado correctamente.", "success");
-          this.obtenerDatos();
-          this.limpiarFormulario();
-          this.visibleModal = false;
-        }else {
-          this.showToast("Se ha presentado un error al guardar.", "danger");
-        }
-      }).catch(error => {
-        console.log(error);
-      });
-    }
+    this.productoService.guardar(this.producto).then(data => {
+      let resp = data as any;
+      if (resp['code'] == '400') {
+        this.showToast("Ya existe un producto con este nombre.", "warning");
+      } else if (resp['code'] == '200'){
+        this.showToast("El producto se ha creado correctamente.", "success");
+        this.obtenerDatos();
+        this.limpiarFormulario();
+        this.visibleModal = false;
+      }else {
+        this.showToast("Se ha presentado un error al guardar.", "danger");
+      }
+    }).catch(error => {
+      console.log(error);
+    });
   }
 
   eliminarDato(idProducto: number){
@@ -88,7 +92,6 @@ export class ProductosComponent implements OnInit {
   }
 
   editarDato(){
-    if(this.validarPassword()){
       this.productoService.editar(this.producto).then(data => {
         let resp = data as any;
         if (resp['code'] == '400') {
@@ -103,14 +106,12 @@ export class ProductosComponent implements OnInit {
         }
       }).catch(error => {
         console.log(error);
-      });
-    }
-    
+      });    
   }
 
   limpiarFormulario(){
     this.producto.idProducto = undefined
-    this.producto.idCategoria = undefined;
+    this.producto.idTipo = undefined;
     this.producto.nombre = undefined;
     this.producto.descripcion = undefined;
     this.producto.precio = undefined;
@@ -132,18 +133,34 @@ export class ProductosComponent implements OnInit {
     this.visibleModal = event;
   }
  
-  obtenerDatosT() {
-    this.listaRoles = [];
-    this.rolService.obtener().then(data => {
+  obtenerCategorias() {
+    this.listaCategorias = [];
+    this.categoriaService.obtener().then(data => {
       let resp = data as any;
       if (resp['code'] === "204") {
-        this.showToast('No existen Roles registrados.!', 'info');
+        this.showToast('No existen Categorias registradas.!', 'info');
       } else {
-        this.listaRoles = resp['data'];
-        console.log("lista ", this.listaRoles);
+        this.listaCategorias = resp['data'];
+        console.log("listaCategorias ", this.listaCategorias);
       }
     }).catch(error => {
       console.log(error);
     });
   }
+
+  obtenerTipos() {
+    this.listaTipos = [];
+    this.tipoService.obtenerPorCategoria(this.categoriaSeleccionada).then(data => {
+      let resp = data as any;
+      if (resp['code'] === "204") {
+        this.showToast('No existen tipos registrados en esta categoría.!', 'info');
+      } else {
+        this.listaTipos = resp['data'];
+        console.log("listaTipos ", this.listaCategorias);
+      }
+    }).catch(error => {
+      console.log(error);
+    });
+  }
+
 }

@@ -1,11 +1,11 @@
-import { RolModel } from "./rol.model";
+import { TipoModel } from "./tipo.model";
 
 export class ProductoModel {
     idProducto?: number;
-    idCategoria?: number;
+    idTipo?: number;
     nombre?: string;
     descripcion?: string;
     precio?: number;
     estado?: number;
-    tipo_producto?: any;
+    tipo_producto?: TipoModel;
 }

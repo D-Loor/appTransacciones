@@ -12,7 +12,7 @@ export class UsuariosService {
   constructor(private http: HttpClient) { }
 
   validarLogin(cedula:string, clave:string) {
-    let  url = 'http://127.0.0.1:8000/api/login/' + cedula + '/' + clave;
+    let  url = this.urlService + 'login/' + cedula + '/' + clave;
     return new Promise ((resolve, reject) => {
       this.http.get(url).subscribe(res => {
         resolve(res);

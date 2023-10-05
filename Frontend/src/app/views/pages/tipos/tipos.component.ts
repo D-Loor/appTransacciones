@@ -1,15 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ToasterComponent, ToasterPlacement } from '@coreui/angular';
-import { NotificarComponent } from './../notify/notificar/notificar.component';
-import { TiposService } from './../../../services/tipos.service'
+import { NotificarComponent } from '../notify/notificar/notificar.component';
+import { TiposService } from '../../../services/tipos.service'
 import { TipoModel } from '../../../models/tipo.model'
 
 @Component({
-  selector: 'app-tipos-categorias',
-  templateUrl: './tipos-categorias.component.html',
-  styleUrls: ['./tipos-categorias.component.scss']
+  selector: 'app-tipos',
+  templateUrl: './tipos.component.html',
+  styleUrls: ['./tipos.component.scss']
 })
-export class TiposCategoriasComponent implements OnInit{
+export class TiposComponent implements OnInit{
   tituloModal = "";
   visibleModal = false;
   formularioValido: boolean = false;
@@ -103,7 +103,7 @@ export class TiposCategoriasComponent implements OnInit{
   }
 
   limpiarFormulario(){
-    this.tipo.idTipoCategoria = undefined;
+    this.tipo.idTipo = undefined;
     this.tipo.tipo = undefined;
     this.tipo.descripcion = undefined
     this.tipo.estado = undefined;

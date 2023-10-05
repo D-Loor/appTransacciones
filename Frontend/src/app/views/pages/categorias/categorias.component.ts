@@ -3,7 +3,7 @@ import { ToasterComponent, ToasterPlacement } from '@coreui/angular';
 import { NotificarComponent } from './../notify/notificar/notificar.component';
 import { CategoriasService } from 'src/app/services/categorias.service';
 import { TiposService } from 'src/app/services/tipos.service';
-import { CategoriaModel } from 'src/app/models/categoria.model ';
+import { CategoriaModel } from 'src/app/models/categoria.model';
 import { TipoModel } from 'src/app/models/tipo.model';
 
 @Component({
@@ -35,11 +35,10 @@ export class CategoriasComponent implements OnInit {
 
   obtenerDatos() {
     this.listaCategorias = [];
-    this.obtenerDatosTipos();
     this.categoriaService.obtener().then(data => {
       let resp = data as any;
       if (resp['code'] === "204") {
-        this.showToast('No existen Categorias registradas.!', 'info');
+        this.showToast('No existen Categorías registradas.!', 'info');
       } else {
         this.listaCategorias = resp['data'];
         console.log("lista ", this.listaCategorias);
@@ -53,9 +52,9 @@ export class CategoriasComponent implements OnInit {
     this.categoriaService.guardar(this.categoria).then(data => {
       let resp = data as any;
       if (resp['code'] == '400') {
-        this.showToast("Ya existe una categoria con este nombre.", "warning");
+        this.showToast("Ya existe una categoría con este nombre.", "warning");
       } else if (resp['code'] == '200') {
-        this.showToast("El usuario se ha creado correctamente.", "success");
+        this.showToast("La categoría se ha creado correctamente.", "success");
         this.obtenerDatos();
         this.limpiarFormulario();
         this.visibleModal = false;
@@ -71,9 +70,9 @@ export class CategoriasComponent implements OnInit {
     this.categoriaService.eliminar(idCategoria).then(data => {
       let resp = data as any;
       if (resp['code'] == '204') {
-        this.showToast("No existe esta categoria.", "warning");
+        this.showToast("No existe esta categoría.", "warning");
       } else if (resp['code'] == '200') {
-        this.showToast("La categoria se ha eliminado correctamente.", "success");
+        this.showToast("La categoría se ha eliminado correctamente.", "success");
         this.obtenerDatos();
       } else {
         this.showToast("Se ha presentado un error al eliminar.", "danger");
@@ -93,9 +92,9 @@ export class CategoriasComponent implements OnInit {
     this.categoriaService.editar(this.categoria).then(data => {
       let resp = data as any;
       if (resp['code'] == '400') {
-        this.showToast("Ya existe una categoria con este nombre.", "warning");
+        this.showToast("Ya existe una categoría con este nombre.", "warning");
       } else if (resp['code'] == '200') {
-        this.showToast("La categoria se ha editado correctamente.", "success");
+        this.showToast("La categoría se ha editado correctamente.", "success");
         this.obtenerDatos();
         this.limpiarFormulario();
         this.visibleModal = false;
@@ -109,7 +108,6 @@ export class CategoriasComponent implements OnInit {
 
   limpiarFormulario() {
     this.categoria.idCategoria = undefined
-    this.categoria.idTipoCategoria = undefined;
     this.categoria.categoria = undefined;
     this.categoria.descripcion = undefined;
     this.categoria.estado = undefined;
@@ -130,18 +128,4 @@ export class CategoriasComponent implements OnInit {
     this.visibleModal = event;
   }
 
-  obtenerDatosTipos() {
-    this.listaTipos = [];
-    this.tipoService.obtener().then(data => {
-      let resp = data as any;
-      if (resp['code'] === "204") {
-        this.showToast('No existen Tipos Categorias registrados.!', 'info');
-      } else {
-        this.listaTipos = resp['data'];
-        console.log("lista ", this.listaTipos);
-      }
-    }).catch(error => {
-      console.log(error);
-    });
-  }
 }

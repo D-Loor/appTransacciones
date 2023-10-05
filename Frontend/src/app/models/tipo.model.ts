@@ -1,4 +1,4 @@
-import { CategoriaModel } from "./categoria.model ";
+import { CategoriaModel } from "./categoria.model";
 
 export class TipoModel {
     idTipo?: number;

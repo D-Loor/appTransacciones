@@ -35,7 +35,7 @@ export class TiposService {
 
   editar(data: TipoModel){
     return new Promise ((resolve, reject) => {
-      this.http.put(this.urlService + data.idTipoCategoria, data).subscribe(res => {
+      this.http.put(this.urlService + data.idTipo, data).subscribe(res => {
         resolve(res);{
         }
       }, error => {
@@ -44,9 +44,9 @@ export class TiposService {
     });
   }
 
-  eliminar(idTipoCategoria: number){
+  eliminar(idTipo: number){
     return new Promise ((resolve, reject) => {
-      this.http.delete(this.urlService + idTipoCategoria).subscribe(res => {
+      this.http.delete(this.urlService + idTipo).subscribe(res => {
         resolve(res);{
         }
       }, error => {
@@ -54,4 +54,16 @@ export class TiposService {
       });
     });
   }
+
+  obtenerPorCategoria(idCategoria: number){
+    return new Promise ((resolve, reject) => {
+      this.http.get(this.urlService + "obtenerTiposPorCategoria/" + idCategoria).subscribe(res => {
+        resolve(res);{
+        }
+      }, error => {
+        reject(error);
+      });
+    });
+  }
+
 }

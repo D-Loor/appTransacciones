@@ -1,29 +1,29 @@
 <c-card>
     <c-card-header>
-        <strong>Roles</strong>
+        <strong>Productos</strong>
         <button cButton [cModalToggle]="registroModal.id" class="float-end" style="color: white;" color="success" (click)="tituloModal = 'Agregar'">
             <svg cIcon name="cilNotes"></svg>
         </button>
     </c-card-header>
     <c-card-body>
 
-        <p cCardText>Vista de gestión para administrar información de usuarios.</p>
+        <p cCardText>Vista de gestión para administrar información de productos.</p>
         <div class="table-responsive">
             <table cTable class="table">
                 <thead cTableColor="dark">
                     <tr>
-                        <th scope="col">Usuario</th>
-                        <th scope="col">Cedula</th>
-                        <th scope="col">Rol</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Precio</th>
                         <th scope="col">Estado</th>
                         <th scope="col">Opciones</th>
                     </tr>
                 </thead>
-                <tbody *ngFor="let item of listaUsuarios">
+                <tbody *ngFor="let item of listaProductos">
                     <tr>
-                        <td>{{item.nombres}} {{item.apellidos}}</td>
-                        <td>{{item.cedula}}</td>
-                        <td >{{item.rol_usuario?.rol}}</td>
+                        <td>{{item.nombre}}</td>
+                        <td>{{item.tipo_producto?.tipo}}</td>
+                        <td >{{item.precio}}</td>
                         <td>
                             <c-badge color="dark" *ngIf="item.estado == 1">Activo</c-badge>
                             <c-badge color="light" *ngIf="item.estado == 0"
@@ -33,7 +33,7 @@
                             <button cButton size="sm" color="success" style="margin-right: 5px;" (click)="cargarDatos(item)">
                                 <svg cIcon name="cilPencil" title="Numbered List Icon" style="color: white;"></svg>
                             </button>
-                            <button cButton size="sm" color="danger" (click)="item.idUsuario !== undefined && eliminarDato(item.idUsuario)">
+                            <button cButton size="sm" color="danger" (click)="item.idProducto !== undefined && eliminarDato(item.idProducto)">
                                 <svg cIcon name="cilTrash" title="Numbered List Icon" style="color: white;"></svg>
                             </button>
                         </td>
@@ -65,53 +65,49 @@
 
 <c-modal #registroModal backdrop="static" [visible]="visibleModal" (visibleChange)="handleLiveDemoChange($event)" id="registroModal" size="xl" alignment="center">
     <c-modal-header>
-        <h5 cModalTitle>{{tituloModal}} Usuario</h5>
+        <h5 cModalTitle>{{tituloModal}} producto</h5>
         <button [cModalToggle]="registroModal.id" cButtonClose (click)="limpiarFormulario()"></button>
     </c-modal-header>
     <c-modal-body>
         <form #browserDefaultsForm="ngForm" (ngSubmit)="registrarDatos()" [gutter]="3" [validated]="formularioValido"
             cForm cRow ngNativeValidate>
-            <c-col [md]="6">
-                <label cLabel for="validationDefault01">Nombres</label>
-                <input cFormControl [(ngModel)]="usuario.nombres" id="validationDefault02" autocomplete="off" required type="text" [ngModelOptions]="{standalone: true}"/>
-                <c-form-feedback [valid]="true">Looks good!</c-form-feedback>
-            </c-col>
-            <c-col [md]="6">
-                <label cLabel for="validationDefault03">Apellidos</label>
-                <input cFormControl [(ngModel)]="usuario.apellidos" id="validationDefault04" autocomplete="off" required type="text" [ngModelOptions]="{standalone: true}"/>
-                <c-form-feedback [valid]="true">Looks good!</c-form-feedback>
-            </c-col>            
-            <c-col [md]="4">
-                <label cLabel for="validationDefault05">Cedula</label>
-                <input cFormControl [(ngModel)]="usuario.cedula" [ngModelOptions]="{standalone: true}" id="exampleFormControlTextarea1"required rows="3"/>
-                <c-form-feedback [valid]="false">Please provide a valid zip.</c-form-feedback>
-            </c-col>
-            <c-col [md]="4">
-                <label cLabel for="validationDefault06">Contraseña</label>
-                <input cFormControl type="password" [(ngModel)]="usuario.password" [ngModelOptions]="{standalone: true}" id="exampleFormControlTextarea2"required rows="3"/>
-                <c-form-feedback [valid]="false">Please provide a valid zip.</c-form-feedback>
-            </c-col>
-            <c-col [md]="4">
-                <label cLabel for="validationDefault07">Confirmar contraseña</label>
-                <input cFormControl type="password" [(ngModel)]="confirmarPass" [ngModelOptions]="{standalone: true}" id="exampleFormControlTextarea3"required rows="3"/>
-                <c-form-feedback [valid]="false">Please provide a valid zip.</c-form-feedback>
-            </c-col>
             <c-col [md]="8">
-                <label cLabel for="validationDefault08">Rol</label>
-                <select [(ngModel)]="usuario.idRol" cSelect id="validationDefault09" [ngModelOptions]="{standalone: true}" required>
-                    <option *ngFor="let item of listaRoles" [value]="item.idRol">{{item.rol}}</option>
+                <label cLabel for="validationDefault01">Nombre</label>
+                <input cFormControl [(ngModel)]="producto.nombre" id="validationDefault02" autocomplete="off" required type="text" [ngModelOptions]="{standalone: true}"/>
+                <c-form-feedback [valid]="true">Looks good!</c-form-feedback>
+            </c-col>
+            <c-col [md]="4">
+                <label cLabel for="validationDefault03">Precio</label>
+                <input cFormControl [(ngModel)]="producto.precio" id="validationDefault04" autocomplete="off" required type="text" [ngModelOptions]="{standalone: true}"/>
+                <c-form-feedback [valid]="true">Looks good!</c-form-feedback>
+            </c-col>  
+            <c-col [md]="6">
+                <label cLabel for="validationDefault08">Categoría</label>
+                <select [(ngModel)]="categoriaSeleccionada" cSelect id="validationDefault09" [ngModelOptions]="{standalone: true}" (change)="obtenerTipos()" required>
+                    <option *ngFor="let item of listaCategorias" [value]="item.idCategoria">{{item.categoria}}</option>
                 </select>
                 <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback>
+            </c-col>          
+            <c-col [md]="6">
+                <label cLabel for="validationDefault10">Tipo</label>
+                <select [(ngModel)]="producto.idTipo" cSelect id="validationDefault11" [ngModelOptions]="{standalone: true}" required>
+                    <option *ngFor="let item of listaTipos" [value]="item.idTipo">{{item.tipo}}</option>
+                </select>
+                <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback>
+            </c-col>   
+            <c-col [md]="8">
+                <label cLabel for="validationDefault05">Descripcion</label>
+                <input cFormControl [(ngModel)]="producto.descripcion" [ngModelOptions]="{standalone: true}" id="exampleFormControlTextarea1"required rows="3"/>
+                <c-form-feedback [valid]="false">Please provide a valid zip.</c-form-feedback>
             </c-col>
             <c-col [md]="4">
                 <label cLabel for="validationDefault10">Estado</label>
-                <select cSelect id="validationDefault11" [(ngModel)]="usuario.estado" [ngModelOptions]="{standalone: true}" required>
+                <select cSelect id="validationDefault11" [(ngModel)]="producto.estado" [ngModelOptions]="{standalone: true}" required>
                     <option value="1">Activo</option>
                     <option value="0">Inactivo</option>
                 </select>
                 <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback>
             </c-col>
-
             <hr>
         
             <c-col [xs]="12">

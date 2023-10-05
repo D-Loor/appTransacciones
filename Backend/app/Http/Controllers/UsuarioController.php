@@ -115,7 +115,7 @@ class UsuarioController extends Controller
         }
     }
 
-    public function Login($cedula, $clave)
+    public function login($cedula, $clave)
     {
         $datos=Usuario::where('cedula',$cedula)->where('password',$clave)->where('estado','1')->with('rolUsuario')->get()->first(); 
         if($datos != null){

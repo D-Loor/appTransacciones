@@ -11,7 +11,7 @@ import { IconModule } from '@coreui/icons-angular';
 import { FormsModule } from '@angular/forms';
 import { RolesComponent } from './roles/roles.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
-import { TiposCategoriasComponent } from './tipos-categorias/tipos-categorias.component';
+import { TiposComponent } from './tipos/tipos.component';
 import { CategoriasComponent } from './categorias/categorias.component';
 import { ProductosComponent } from './productos/productos.component';
 import { StocksComponent } from './stocks/stocks.component';
@@ -28,7 +28,7 @@ import { LocalesComponent } from './locales/locales.component';
     RolesComponent,
     LocalesComponent,
     UsuariosComponent,
-    TiposCategoriasComponent,
+    TiposComponent,
     CategoriasComponent,
     ProductosComponent,
     StocksComponent,

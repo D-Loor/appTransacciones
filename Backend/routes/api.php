@@ -34,4 +34,6 @@ Route::resource('locales', LocalController::class);
 Route::resource('transacciones', TransaccionController::class);
 
 
-Route::get('login/{cedula}/{clave}','App\Http\Controllers\UsuarioController@Login');
+Route::get('usuarios/login/{cedula}/{clave}','App\Http\Controllers\UsuarioController@login');
+Route::get('tipos/obtenerTiposPorCategoria/{idCategoria}','App\Http\Controllers\TipoController@obtenerTiposPorCategoria');
+

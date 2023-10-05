@@ -31,7 +31,7 @@
                             <button cButton size="sm" color="success" style="margin-right: 5px;" (click)="cargarDatos(item)">
                                 <svg cIcon name="cilPencil" title="Numbered List Icon" style="color: white;"></svg>
                             </button>
-                            <button cButton size="sm" color="danger" (click)="item.idTipoCategoria !== undefined && eliminarDato(item.idTipoCategoria)">
+                            <button cButton size="sm" color="danger" (click)="item.idTipo !== undefined && eliminarDato(item.idTipo)">
                                 <svg cIcon name="cilTrash" title="Numbered List Icon" style="color: white;"></svg>
                             </button>
                         </td>
@@ -63,14 +63,14 @@
 
 <c-modal #registroModal backdrop="static" [visible]="visibleModal" (visibleChange)="handleLiveDemoChange($event)" id="registroModal" size="xl" alignment="center">
     <c-modal-header>
-        <h5 cModalTitle>{{tituloModal}} Tipo Categoria</h5>
+        <h5 cModalTitle>{{tituloModal}} tipo</h5>
         <button [cModalToggle]="registroModal.id" cButtonClose (click)="limpiarFormulario()"></button>
     </c-modal-header>
     <c-modal-body>
         <form #browserDefaultsForm="ngForm" (ngSubmit)="registrarDatos()" [gutter]="3" [validated]="formularioValido"
             cForm cRow ngNativeValidate>
             <c-col [md]="8">
-                <label cLabel for="validationDefault01">Tipo Categoria</label>
+                <label cLabel for="validationDefault01">Tipo</label>
                 <input cFormControl [(ngModel)]="tipo.tipo" id="validationDefault01" autocomplete="off" required type="text" [ngModelOptions]="{standalone: true}"/>
                 <c-form-feedback [valid]="true">Looks good!</c-form-feedback>
             </c-col>
