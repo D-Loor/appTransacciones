@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('categorias', function (Blueprint $table) {
             $table->bigIncrements('idCategoria');
             $table->unsignedBigInteger('idTipoCategoria');
-            $table->string('tipo');
+            $table->string('categoria');
             $table->string('descripcion');
             $table->boolean('estado');
 

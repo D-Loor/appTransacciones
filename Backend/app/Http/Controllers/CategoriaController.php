@@ -12,7 +12,7 @@ class CategoriaController extends Controller
      */
     public function index()
     {
-        $datos=Categoria::orderBy('categoria', 'asc')->get();
+        $datos=Categoria::orderBy('categoria', 'asc')->with('tipoCategoria')->get();
         $num_rows = count($datos);
         if($num_rows != 0){
             return response()->json(['data'=>$datos, 'code'=>'200']);

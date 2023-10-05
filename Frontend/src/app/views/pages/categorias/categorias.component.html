@@ -1,1 +1,117 @@
-<p>categorias works!</p>
+<c-card>
+    <c-card-header>
+        <strong>Categorias</strong>
+        <button cButton [cModalToggle]="registroModal.id" class="float-end" style="color: white;" color="success" (click)="tituloModal = 'Agregar'">
+            <svg cIcon name="cilNotes"></svg>
+        </button>
+    </c-card-header>
+    <c-card-body>
+
+        <p cCardText>Vista de gestión para administrar información de categorias.</p>
+        <div class="table-responsive">
+            <table cTable class="table">
+                <thead cTableColor="dark">
+                    <tr>
+                        <th scope="col">Categoria</th>
+                        <th scope="col">Descripcion</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let item of listaCategorias">
+                    <tr>
+                        <td>{{item.categoria}}</td>
+                        <td>{{item.descripcion}}</td>
+                        <td >{{item.tipo_categoria?.tipo}}</td>
+                        <td>
+                            <c-badge color="dark" *ngIf="item.estado == 1">Activo</c-badge>
+                            <c-badge color="light" *ngIf="item.estado == 0"
+                                style="color: white; background-color: darkgray !important;">Inactivo</c-badge>
+                        </td>
+                        <td>
+                            <button cButton size="sm" color="success" style="margin-right: 5px;" (click)="cargarDatos(item)">
+                                <svg cIcon name="cilPencil" title="Numbered List Icon" style="color: white;"></svg>
+                            </button>
+                            <button cButton size="sm" color="danger" (click)="item.idCategoria !== undefined && eliminarDato(item.idCategoria)">
+                                <svg cIcon name="cilTrash" title="Numbered List Icon" style="color: white;"></svg>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+      
+        <c-pagination align="center" aria-label="Page navigation example">
+            <li cPageItem [disabled]="true">
+                <a cPageLink [routerLink]>Anterior</a>
+            </li>
+            <li cPageItem>
+                <a cPageLink [routerLink]>1</a>
+            </li>
+            <li cPageItem>
+                <a cPageLink [routerLink]>2</a>
+            </li>
+            <li cPageItem>
+                <a cPageLink [routerLink]>3</a>
+            </li>
+            <li cPageItem>
+                <a cPageLink [routerLink]>Siguiente</a>
+            </li>
+        </c-pagination>
+    </c-card-body>
+
+</c-card>
+
+<c-modal #registroModal backdrop="static" [visible]="visibleModal" (visibleChange)="handleLiveDemoChange($event)" id="registroModal" size="xl" alignment="center">
+    <c-modal-header>
+        <h5 cModalTitle>{{tituloModal}} Categoria</h5>
+        <button [cModalToggle]="registroModal.id" cButtonClose (click)="limpiarFormulario()"></button>
+    </c-modal-header>
+    <c-modal-body>
+        <form #browserDefaultsForm="ngForm" (ngSubmit)="registrarDatos()" [gutter]="3" [validated]="formularioValido"
+            cForm cRow ngNativeValidate>
+            <c-col [md]="6">
+                <label cLabel for="validationDefault01">Tipo</label>
+                <input cFormControl [(ngModel)]="categoria.categoria" id="validationDefault02" autocomplete="off" required type="text" [ngModelOptions]="{standalone: true}"/>
+                <c-form-feedback [valid]="true">Looks good!</c-form-feedback>
+            </c-col>        
+            <c-col [md]="6">
+                <label cLabel for="validationDefault05">Descripcion</label>
+                <input cFormControl [(ngModel)]="categoria.descripcion" [ngModelOptions]="{standalone: true}" id="exampleFormControlTextarea1"required rows="3"/>
+                <c-form-feedback [valid]="false">Please provide a valid zip.</c-form-feedback>
+            </c-col>
+            <c-col [md]="8">
+                <label cLabel for="validationDefault08">Tipo categorias</label>
+                <select [(ngModel)]="categoria.idTipoCategoria" cSelect id="validationDefault09" [ngModelOptions]="{standalone: true}" required>
+                    <option *ngFor="let item of listaTipos" [value]="item.idTipoCategoria">{{item.tipo}}</option>
+                </select>
+                <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback>
+            </c-col>
+            <c-col [md]="4">
+                <label cLabel for="validationDefault10">Estado</label>
+                <select cSelect id="validationDefault11" [(ngModel)]="categoria.estado" [ngModelOptions]="{standalone: true}" required>
+                    <option value="1">Activo</option>
+                    <option value="0">Inactivo</option>
+                </select>
+                <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback>
+            </c-col>
+
+            <hr>
+        
+            <c-col [xs]="12">
+                <div style="float: right;">
+                    <button [cModalToggle]="registroModal.id" cButton color="secondary" (click)="limpiarFormulario()"
+                    style="margin-right: 10px;">
+                        Cancelar
+                    </button>
+                    <button cButton color="success" type="submit" *ngIf="tituloModal === 'Agregar'">Registrar</button>
+                    <button cButton color="success" type="button" *ngIf="tituloModal === 'Editar'" (click)="editarDato()">Editar</button>
+                </div>
+            </c-col>
+        </form>
+
+    </c-modal-body>
+</c-modal>
+
+<c-toaster class="p-3" position="fixed" [placement]="placement" ></c-toaster>
