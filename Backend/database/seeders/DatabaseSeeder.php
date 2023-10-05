@@ -34,43 +34,58 @@ class DatabaseSeeder extends Seeder
         ]]);
 
         DB::table('usuarios')->insert([
-        [
-            'idRol' => '1',
-            'nombres' => 'Rolando',
-            'apellidos' => 'Morán Chávez',
-            'cedula' => '111',
-            'password' => '123',
-            'estado' => '1',               
-        ],
-        [
-            'idRol' => '1',
-            'nombres' => 'Aaron',
-            'apellidos' => 'Loor Morán',
-            'cedula' => '222',
-            'password' => '123',
-            'estado' => '1',             
-        ],
-        [
-            'idRol' => '1',
-            'nombres' => 'Diego',
-            'apellidos' => 'Loor Morán',
-            'cedula' => '333',
-            'password' => '123',
-            'estado' => '1',           
-        ],
-        [
-            'idRol' => '2',
-            'nombres' => 'Toño',
-            'apellidos' => 'Morán Chávez',
-            'cedula' => '444',
-            'password' => '123',
-            'estado' => '1',           
-        ]]);
+            [
+                'idRol' => '1',
+                'nombres' => 'Rolando',
+                'apellidos' => 'Morán Chávez',
+                'cedula' => '111',
+                'password' => '123',
+                'estado' => '1',               
+            ],
+            [
+                'idRol' => '1',
+                'nombres' => 'Aaron',
+                'apellidos' => 'Loor Morán',
+                'cedula' => '222',
+                'password' => '123',
+                'estado' => '1',             
+            ],
+            [
+                'idRol' => '1',
+                'nombres' => 'Diego',
+                'apellidos' => 'Loor Morán',
+                'cedula' => '333',
+                'password' => '123',
+                'estado' => '1',           
+            ],
+            [
+                'idRol' => '2',
+                'nombres' => 'Toño',
+                'apellidos' => 'Morán Chávez',
+                'cedula' => '444',
+                'password' => '123',
+                'estado' => '1',           
+            ]
+        ]);
 
         DB::table('locales')->insert([
             'nombre' => 'Puerto López',
             'descripcion' => 'Local principal.',
             'estado' => '1',            
         ]);
+
+        DB::table('categorias')->insert([
+            [
+                'categoria' => 'Frutas',
+                'descripcion' => 'Frutos comestibles.',
+                'estado' => '1',            
+            ],
+            [
+                'categoria' => 'Madera',
+                'descripcion' => 'Material del tronco de un árbol.',
+                'estado' => '1',            
+            ]
+        ]);
+    
     }
 }
