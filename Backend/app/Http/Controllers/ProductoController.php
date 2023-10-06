@@ -81,7 +81,7 @@ class ProductoController extends Controller
                 $datos->update();
                 return response()->json(['code'=>'200']);
             }else{
-                $valida=Producto::where('tipo', $request->tipo)->get()->first();
+                $valida=Producto::where('nombre', $request->nombre)->get()->first();
                 if($valida != null){
                     return response()->json(['code'=>'400']);
                 }else{

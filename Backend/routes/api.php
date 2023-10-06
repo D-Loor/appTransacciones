@@ -9,6 +9,7 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\TransaccionController;
 use App\Http\Controllers\LocalController;
+use App\Http\Controllers\StockController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,7 @@ Route::resource('tipos', TipoController::class);
 Route::resource('productos', ProductoController::class);
 Route::resource('locales', LocalController::class);
 Route::resource('transacciones', TransaccionController::class);
+Route::resource('stocks', StockController::class);
 
 
 Route::get('usuarios/login/{cedula}/{clave}','App\Http\Controllers\UsuarioController@login');

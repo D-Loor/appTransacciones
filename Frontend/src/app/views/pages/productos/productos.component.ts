@@ -87,11 +87,14 @@ export class ProductosComponent implements OnInit {
 
   cargarDatos(datosModal: ProductoModel){
     this.tituloModal = "Editar";
+    this.categoriaSeleccionada = datosModal.tipo_producto?.idCategoria || 0;
+    this.obtenerTipos();
     this.producto = { ...datosModal };
     this.visibleModal = true;
   }
 
   editarDato(){
+    console.log("edit ", this.producto)
       this.productoService.editar(this.producto).then(data => {
         let resp = data as any;
         if (resp['code'] == '400') {
@@ -113,6 +116,7 @@ export class ProductosComponent implements OnInit {
     this.producto.idProducto = undefined
     this.producto.idTipo = undefined;
     this.producto.nombre = undefined;
+    this.categoriaSeleccionada = 0;
     this.producto.descripcion = undefined;
     this.producto.precio = undefined;
     this.producto.estado = undefined;

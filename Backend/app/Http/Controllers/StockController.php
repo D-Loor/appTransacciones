@@ -12,7 +12,7 @@ class StockController extends Controller
      */
     public function index()
     {
-        $datos=Stock::orderBy('stock', 'asc')->with('productoStock', 'localStock')->get();
+        $datos=Stock::orderBy('stock', 'asc')->with('productoStock', 'productoStock.tipoProducto', 'localStock')->get();
         $num_rows = count($datos);
         if($num_rows != 0){
             return response()->json(['data'=>$datos, 'code'=>'200']);
