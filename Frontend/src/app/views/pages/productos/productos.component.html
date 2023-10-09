@@ -4,6 +4,9 @@
         <button cButton [cModalToggle]="registroModal.id" class="float-end" style="color: white;" color="success" (click)="tituloModal = 'Agregar'">
             <svg cIcon name="cilNotes"></svg>
         </button>
+        <button cButton class="float-end" style="color: white; margin-right: 5px;" color="info" (click)="obtenerDatos()">
+            <svg cIcon name="cilShare"></svg>
+        </button>
     </c-card-header>
     <c-card-body>
 
@@ -22,7 +25,7 @@
                 <tbody *ngFor="let item of listaProductos">
                     <tr>
                         <td>{{item.nombre}}</td>
-                        <td>{{item.tipo_producto?.tipo}}</td>
+                        <td>{{item.tipo_producto?.tipo_categoria?.categoria}}/{{item.tipo_producto?.tipo}}</td>
                         <td >{{item.precio}}</td>
                         <td>
                             <c-badge color="dark" *ngIf="item.estado == 1">Activo</c-badge>
@@ -33,7 +36,7 @@
                             <button cButton size="sm" color="success" style="margin-right: 5px;" (click)="cargarDatos(item)">
                                 <svg cIcon name="cilPencil" title="Numbered List Icon" style="color: white;"></svg>
                             </button>
-                            <button cButton size="sm" color="danger" (click)="item.idProducto !== undefined && eliminarDato(item.idProducto)">
+                            <button cButton size="sm" color="danger" [cModalToggle]="confirmacionModal.id" (click)="item !== undefined && producto =item">
                                 <svg cIcon name="cilTrash" title="Numbered List Icon" style="color: white;"></svg>
                             </button>
                         </td>
@@ -123,6 +126,22 @@
         </form>
 
     </c-modal-body>
+</c-modal>
+
+<c-modal #confirmacionModal backdrop="static" alignment="center" id="confirmacionModal" [visible]="visibleModalConfirmacion" (visibleChange)="handleChangeConfirmacion($event)">
+  <c-modal-header>
+    <h5 cModalTitle>Ventana de Confirmación</h5>
+    <button [cModalToggle]="confirmacionModal.id" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    ¿Desea eliminar el producto <b>{{producto.nombre}}</b>?
+  </c-modal-body>
+  <c-modal-footer>
+    <button [cModalToggle]="confirmacionModal.id" cButton color="secondary">
+      Cancelar
+    </button>
+    <button cButton color="danger" (click)="eliminarDato()">Aceptar</button>
+  </c-modal-footer>
 </c-modal>
 
 <c-toaster class="p-3" position="fixed" [placement]="placement" ></c-toaster>

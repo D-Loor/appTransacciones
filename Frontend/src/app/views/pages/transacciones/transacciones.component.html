@@ -1,1 +1,189 @@
-<p>transacciones works!</p>
+<c-card>
+    <c-card-header>
+        <strong>Transacciones</strong>
+        <button cButton [cModalToggle]="registroModal.id" class="float-end" style="color: white;" color="success"
+            (click)="tituloModal = 'Agregar'">
+            <svg cIcon name="cilNotes"></svg>
+        </button>
+        <button cButton class="float-end" style="color: white; margin-right: 5px;" color="info" (click)="obtenerDatos()">
+            <svg cIcon name="cilShare"></svg>
+        </button>
+    </c-card-header>
+    <c-card-body>
+
+        <p cCardText>Vista de gestión para administrar información de transacciones.</p>
+        <div class="table-responsive">
+            <table cTable class="table">
+                <thead cTableColor="dark">
+                    <tr>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Producto</th>
+                        <th scope="col">Local</th>
+                        <th scope="col">Cantidad</th>
+                        <th scope="col">Valor</th>
+                        <th scope="col">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let item of listaTransacciones">
+                    <tr>
+                        <td>{{item.tipo}}</td>
+                        <td>{{item.producto_transaccion?.nombre}}</td>
+                        <td>{{item.local_transaccion?.nombre}}</td>
+                        <td>{{item.cantidad}}</td>
+                        <td>{{item.valor}}</td>
+                        <td>
+                            <button cButton size="sm" color="success" style="margin-right: 5px;"
+                                (click)="cargarDatos(item)">
+                                <svg cIcon name="cilPencil" title="Numbered List Icon" style="color: white;"></svg>
+                            </button>
+                            <button cButton size="sm" color="info" [cModalToggle]="detalleModal.id"
+                                (click)="item !== undefined && transaccion = item">
+                                <svg cIcon name="cilSpeech" title="Numbered List Icon" style="color: white;"></svg>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <c-pagination align="center" aria-label="Page navigation example">
+            <li cPageItem [disabled]="true">
+                <a cPageLink [routerLink]>Anterior</a>
+            </li>
+            <li cPageItem>
+                <a cPageLink [routerLink]>1</a>
+            </li>
+            <li cPageItem>
+                <a cPageLink [routerLink]>2</a>
+            </li>
+            <li cPageItem>
+                <a cPageLink [routerLink]>3</a>
+            </li>
+            <li cPageItem>
+                <a cPageLink [routerLink]>Siguiente</a>
+            </li>
+        </c-pagination>
+    </c-card-body>
+
+</c-card>
+
+<c-modal #registroModal backdrop="static" [visible]="visibleModal" (visibleChange)="handleLiveDemoChange($event)"
+    id="registroModal" size="xl" alignment="center">
+    <c-modal-header>
+        <h5 cModalTitle>{{tituloModal}} Transacción</h5>
+        <button [cModalToggle]="registroModal.id" cButtonClose (click)="limpiarFormulario()"></button>
+    </c-modal-header>
+    <c-modal-body>
+        <form #browserDefaultsForm="ngForm" (ngSubmit)="registrarDatos()" [gutter]="3" [validated]="formularioValido"
+            cForm cRow ngNativeValidate>
+            <c-col [md]="6">
+                <label cLabel for="validationDefault01">Categoria</label>
+                <select [(ngModel)]="categoriaSeleccionada" cSelect id="validationDefault02"
+                    (change)="obtenerDatosTipos()" [ngModelOptions]="{standalone: true}" required>
+                    <option *ngFor="let item of listaCategorias" [value]="item.idCategoria">{{item.categoria}}</option>
+                </select>
+                <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback>
+            </c-col>
+            <c-col [md]="6">
+                <label cLabel for="validationDefault03">Tipo</label>
+                <select [(ngModel)]="tipoSeleccionado" cSelect id="validationDefault04"
+                    (change)="obtenerDatosProductos()" [ngModelOptions]="{standalone: true}" required>
+                    <option *ngFor="let item of listaTipos" [value]="item.idTipo">{{item.tipo}}</option>
+                </select>
+                <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback>
+            </c-col>
+            <c-col [md]="6">
+                <label cLabel for="validationDefault05">Producto</label>
+                <select [(ngModel)]="transaccion.idProducto" cSelect id="validationDefault06"
+                    [ngModelOptions]="{standalone: true}" required>
+                    <option *ngFor="let item of listaProductos" [value]="item.idProducto">{{item.nombre}}</option>
+                </select>
+                <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback>
+            </c-col>
+            <c-col [md]="6">
+                <label cLabel for="validationDefault07">Local</label>
+                <select [(ngModel)]="transaccion.idLocal" cSelect id="validationDefault08"
+                    [ngModelOptions]="{standalone: true}" required>
+                    <option *ngFor="let item of listaLocales" [value]="item.idLocal">{{item.nombre}}</option>
+                </select>
+                <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback>
+            </c-col>
+            <c-col [md]="6">
+                <label cLabel for="validationDefault09">Transacción</label>
+                <select [(ngModel)]="transaccion.tipo" cSelect id="validationDefault10"
+                    [ngModelOptions]="{standalone: true}" required>
+                    <option value="Compra">Compra</option>
+                    <option value="Venta">Venta</option>
+                </select>
+                <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback>
+            </c-col>
+
+            <c-col [md]="3">
+                <label cLabel for="validationDefault11">Cantidad</label>
+                <input cFormControl [(ngModel)]="transaccion.cantidad" id="validationDefault12" autocomplete="off"
+                    required type="number" [ngModelOptions]="{standalone: true}" />
+                <c-form-feedback [valid]="true">Looks good!</c-form-feedback>
+            </c-col>
+            <c-col [md]="3">
+                <label cLabel for="validationDefault13">Valor</label>
+                <input cFormControl [(ngModel)]="transaccion.valor" id="validationDefault14" autocomplete="off" required
+                    type="text" [ngModelOptions]="{standalone: true}" />
+                <c-form-feedback [valid]="true">Looks good!</c-form-feedback>
+            </c-col>
+            <c-col [md]="12">
+                <label cLabel for="validationDefault14">Descripcion</label>
+                <input cFormControl [(ngModel)]="transaccion.observacion" [ngModelOptions]="{standalone: true}"
+                    id="exampleFormControlTextarea2" required rows="3" />
+                <c-form-feedback [valid]="false">Please provide a valid zip.</c-form-feedback>
+            </c-col>
+
+            <hr>
+
+            <c-col [xs]="12">
+                <div style="float: right;">
+                    <button [cModalToggle]="registroModal.id" cButton color="secondary" (click)="limpiarFormulario()"
+                        style="margin-right: 10px;">
+                        Cancelar
+                    </button>
+                    <button cButton color="success" type="submit" *ngIf="tituloModal === 'Agregar'">Registrar</button>
+                    <button cButton color="success" type="button" *ngIf="tituloModal === 'Editar'"
+                        (click)="editarDato()">Editar</button>
+                </div>
+            </c-col>
+        </form>
+
+    </c-modal-body>
+</c-modal>
+
+<c-modal #detalleModal backdrop="static" alignment="center" id="detalleModal" [visible]="visibleModalDetalle"
+    (visibleChange)="handleChangeDetalle($event)">
+    <c-modal-header>
+        <h5 cModalTitle>Detalles de la Transacción</h5>
+        <button [cModalToggle]="detalleModal.id" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+        <strong> Tipo: </strong>{{transaccion.tipo}}
+        <br>
+        <strong> Producto: </strong>{{transaccion.producto_transaccion?.nombre}}
+        <br>
+        <strong> Local: </strong>{{transaccion.local_transaccion?.nombre}}
+        <br>
+        <strong> Usuario: </strong>{{transaccion.usuario_transaccion?.nombres}}
+        {{transaccion.usuario_transaccion?.apellidos}}
+        <br>
+        <strong> Cantidad: </strong>{{transaccion.cantidad}}
+        <br>
+        <strong> Valor: </strong>{{transaccion.valor}}
+        <br>
+        <strong> Fecha: </strong>{{transaccion.fecha}}
+        <br>
+        <strong> Observación: </strong>{{transaccion.observacion}}
+    </c-modal-body>
+    <c-modal-footer>
+        <button [cModalToggle]="detalleModal.id" cButton color="secondary">
+            Cerrar
+        </button>
+    </c-modal-footer>
+</c-modal>
+
+<c-toaster class="p-3" position="fixed" [placement]="placement"></c-toaster>

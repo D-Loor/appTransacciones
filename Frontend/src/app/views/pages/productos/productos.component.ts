@@ -16,6 +16,7 @@ import { TiposService } from 'src/app/services/tipos.service';
 export class ProductosComponent implements OnInit {
   tituloModal = "";
   visibleModal = false;
+  visibleModalConfirmacion = false;
   formularioValido: boolean = false;
   placement = ToasterPlacement.TopEnd;
   listaProductos: ProductoModel[] = [];
@@ -38,7 +39,7 @@ export class ProductosComponent implements OnInit {
   obtenerDatos() {
     this.listaProductos = [];
     this.obtenerCategorias();
-    this.productoService.obtener().then(data => {
+    this.productoService.obtener("*").then(data => {
       let resp = data as any;
       if (resp['code'] === "204") {
         this.showToast('No existen Productos registrados.!', 'info');
@@ -69,12 +70,13 @@ export class ProductosComponent implements OnInit {
     });
   }
 
-  eliminarDato(idProducto: number){
-    this.productoService.eliminar(idProducto).then(data => {
+  eliminarDato(){
+    this.productoService.eliminar(this.producto?.idProducto || 0).then(data => {
       let resp = data as any;
       if (resp['code'] == '204') {
         this.showToast("No existe este producto.", "warning");
       } else if (resp['code'] == '200'){
+        this.visibleModalConfirmacion = false;
         this.showToast("El producto se ha eliminado correctamente.", "success");
         this.obtenerDatos();
       }else {
@@ -133,13 +135,9 @@ export class ProductosComponent implements OnInit {
     const componentRef = this.toaster.addToast(NotificarComponent, { ...options });
   }
 
-  handleLiveDemoChange(event: any) {
-    this.visibleModal = event;
-  }
- 
   obtenerCategorias() {
     this.listaCategorias = [];
-    this.categoriaService.obtener().then(data => {
+    this.categoriaService.obtener("1").then(data => {
       let resp = data as any;
       if (resp['code'] === "204") {
         this.showToast('No existen Categorias registradas.!', 'info');
@@ -165,6 +163,14 @@ export class ProductosComponent implements OnInit {
     }).catch(error => {
       console.log(error);
     });
+  }
+
+  handleLiveDemoChange(event: any) {
+    this.visibleModal = event;
+  }
+ 
+  handleChangeConfirmacion(event: any) {
+    this.visibleModalConfirmacion = event;
   }
 
 }

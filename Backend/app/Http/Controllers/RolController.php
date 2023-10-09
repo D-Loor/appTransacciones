@@ -10,9 +10,14 @@ class RolController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($estado)
     {
-        $datos=Rol::orderBy('idRol', 'asc')->get();
+        if($estado == "*"){
+            $datos=Rol::orderBy('idRol', 'asc')->get();
+        }else{
+            $datos=Rol::orderBy('idRol', 'asc')->where('estado', $estado)->get();
+        }
+
         $num_rows = count($datos);
         if($num_rows != 0){
             return response()->json(['data'=>$datos, 'code'=>'200']);

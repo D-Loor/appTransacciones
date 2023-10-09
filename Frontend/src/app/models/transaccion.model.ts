@@ -11,7 +11,8 @@ export class TransaccionModel {
     cantidad?: number;
     valor?: number;
     observacion?: string;
-    usuarioTransaccion?: UsuarioModel;
-    productoTransaccion?: ProductoModel;
-    localTransaccion?: LocalModel;
+    fecha?: String;
+    usuario_transaccion?: UsuarioModel;
+    producto_transaccion?: ProductoModel;
+    local_transaccion?: LocalModel;
 }

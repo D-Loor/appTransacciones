@@ -4,6 +4,9 @@
         <button cButton [cModalToggle]="registroModal.id" class="float-end" style="color: white;" color="success" (click)="tituloModal = 'Agregar'">
             <svg cIcon name="cilNotes"></svg>
         </button>
+        <button cButton class="float-end" style="color: white; margin-right: 5px;" color="info" (click)="obtenerDatos()">
+            <svg cIcon name="cilShare"></svg>
+        </button>
     </c-card-header>
     <c-card-body>
 
@@ -33,7 +36,7 @@
                             <button cButton size="sm" color="success" style="margin-right: 5px;" (click)="cargarDatos(item)">
                                 <svg cIcon name="cilPencil" title="Numbered List Icon" style="color: white;"></svg>
                             </button>
-                            <button cButton size="sm" color="danger" (click)="item.idUsuario !== undefined && eliminarDato(item.idUsuario)">
+                            <button cButton size="sm" color="danger"  [cModalToggle]="confirmacionModal.id" (click)="item !== undefined && usuario = item">
                                 <svg cIcon name="cilTrash" title="Numbered List Icon" style="color: white;"></svg>
                             </button>
                         </td>
@@ -127,6 +130,23 @@
         </form>
 
     </c-modal-body>
+</c-modal>
+
+<c-modal #confirmacionModal backdrop="static" alignment="center" id="confirmacionModal" [visible]="visibleModalConfirmacion"
+    (visibleChange)="handleChangeConfirmacion($event)">
+    <c-modal-header>
+        <h5 cModalTitle>Ventana de Confirmación</h5>
+        <button [cModalToggle]="confirmacionModal.id" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+        ¿Desea eliminar el usuario <b>{{usuario.nombres}} {{usuario.apellidos}}</b>?
+    </c-modal-body>
+    <c-modal-footer>
+        <button [cModalToggle]="confirmacionModal.id" cButton color="secondary">
+            Cancelar
+        </button>
+        <button cButton color="danger" (click)="eliminarDato()">Aceptar</button>
+    </c-modal-footer>
 </c-modal>
 
 <c-toaster class="p-3" position="fixed" [placement]="placement" ></c-toaster>

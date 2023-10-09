@@ -22,9 +22,9 @@ export class ProductosService {
     });
   }
 
-  obtener(){
+  obtener(estado: string){
     return new Promise ((resolve, reject) => {
-      this.http.get(this.urlService).subscribe(res => {
+      this.http.get(this.urlService +  "estado/" + estado).subscribe(res => {
         resolve(res);{
         }
       }, error => {
@@ -54,4 +54,16 @@ export class ProductosService {
       });
     });
   }
+
+  obtenerPorTipo(idTipo: number){
+    return new Promise ((resolve, reject) => {
+      this.http.get(this.urlService + "obtenerProductosPorTipo/" + idTipo).subscribe(res => {
+        resolve(res);{
+        }
+      }, error => {
+        reject(error);
+      });
+    });
+  }
+
 }

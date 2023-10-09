@@ -33,9 +33,9 @@ export class UsuariosService {
     });
   }
 
-  obtener(){
+  obtener(estado: string){
     return new Promise ((resolve, reject) => {
-      this.http.get(this.urlService).subscribe(res => {
+      this.http.get(this.urlService +  "estado/" + estado).subscribe(res => {
         resolve(res);{
         }
       }, error => {

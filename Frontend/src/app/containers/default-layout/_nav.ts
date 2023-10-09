@@ -28,12 +28,12 @@ export const navItems: INavData[] = [
     url: '/pages/categorias',
     children: [
       {
-        name: 'Tipos',
-        url: '/pages/categorias/tipos'
-      },
-      {
         name: 'Categorías',
         url: '/pages/categorias/categorias'
+      },
+      {
+        name: 'Tipos',
+        url: '/pages/categorias/tipos'
       }
     ]
   },

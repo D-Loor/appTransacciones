@@ -10,9 +10,14 @@ class LocalController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($estado)
     {
-        $datos=Local::orderBy('nombre', 'asc')->get();
+        if($estado == "*"){
+            $datos=Local::orderBy('nombre', 'asc')->get();
+        }else{
+            $datos=Local::orderBy('nombre', 'asc')->where('estado', $estado)->get();
+        }
+
         $num_rows = count($datos);
         if($num_rows != 0){
             return response()->json(['data'=>$datos, 'code'=>'200']);

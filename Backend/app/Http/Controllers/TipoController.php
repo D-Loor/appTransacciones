@@ -10,9 +10,14 @@ class TipoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($estado)
     {
-        $datos=Tipo::orderBy('tipo', 'asc')->with('tipoCategoria')->get();
+        if($estado == "*"){
+            $datos=Tipo::orderBy('tipo', 'asc')->with('tipoCategoria')->get();
+        }else{
+            $datos=Tipo::orderBy('tipo', 'asc')->where('estado', $estado)->with('tipoCategoria')->get();
+        }
+
         $num_rows = count($datos);
         if($num_rows != 0){
             return response()->json(['data'=>$datos, 'code'=>'200']);
@@ -112,7 +117,7 @@ class TipoController extends Controller
 
     public function obtenerTiposPorCategoria($idCategoria)
     {
-        $datos=Tipo::where('idCategoria', $idCategoria)->orderBy('tipo', 'asc')->with('tipoCategoria')->get();
+        $datos=Tipo::where('idCategoria', $idCategoria)->where('estado', "1")->orderBy('tipo', 'asc')->with('tipoCategoria')->get();
         $num_rows = count($datos);
         if($num_rows != 0){
             return response()->json(['data'=>$datos, 'code'=>'200']);
@@ -120,4 +125,5 @@ class TipoController extends Controller
             return response()->json(['code'=>'204']);
         } 
     }
+    
 }

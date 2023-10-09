@@ -38,4 +38,12 @@ Route::resource('stocks', StockController::class);
 
 Route::get('usuarios/login/{cedula}/{clave}','App\Http\Controllers\UsuarioController@login');
 Route::get('tipos/obtenerTiposPorCategoria/{idCategoria}','App\Http\Controllers\TipoController@obtenerTiposPorCategoria');
+Route::get('productos/obtenerProductosPorTipo/{idTipo}','App\Http\Controllers\ProductoController@obtenerProductosPorTipo');
+
+Route::get('roles/estado/{estado}', 'App\Http\Controllers\RolController@index');
+Route::get('usuarios/estado/{estado}', 'App\Http\Controllers\UsuarioController@index');
+Route::get('categorias/estado/{estado}', 'App\Http\Controllers\CategoriaController@index');
+Route::get('tipos/estado/{estado}', 'App\Http\Controllers\TipoController@index');
+Route::get('productos/estado/{estado}', 'App\Http\Controllers\ProductoController@index');
+Route::get('locales/estado/{estado}', 'App\Http\Controllers\LocalController@index');
 

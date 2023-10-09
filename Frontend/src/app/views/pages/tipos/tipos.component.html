@@ -4,6 +4,9 @@
         <button cButton [cModalToggle]="registroModal.id" class="float-end" style="color: white;" color="success" (click)="tituloModal = 'Agregar'">
             <svg cIcon name="cilNotes"></svg>
         </button>
+        <button cButton class="float-end" style="color: white; margin-right: 5px;" color="info" (click)="obtenerDatos()">
+            <svg cIcon name="cilShare"></svg>
+        </button>
     </c-card-header>
     <c-card-body>
 
@@ -31,7 +34,7 @@
                             <button cButton size="sm" color="success" style="margin-right: 5px;" (click)="cargarDatos(item)">
                                 <svg cIcon name="cilPencil" title="Numbered List Icon" style="color: white;"></svg>
                             </button>
-                            <button cButton size="sm" color="danger" (click)="item.idTipo !== undefined && eliminarDato(item.idTipo)">
+                            <button cButton size="sm" color="danger" [cModalToggle]="confirmacionModal.id" (click)="item !== undefined && tipo = item">
                                 <svg cIcon name="cilTrash" title="Numbered List Icon" style="color: white;"></svg>
                             </button>
                         </td>
@@ -69,10 +72,22 @@
     <c-modal-body>
         <form #browserDefaultsForm="ngForm" (ngSubmit)="registrarDatos()" [gutter]="3" [validated]="formularioValido"
             cForm cRow ngNativeValidate>
-            <c-col [md]="8">
-                <label cLabel for="validationDefault01">Tipo</label>
+            <c-col [md]="6">
+                <label cLabel for="validationDefault01">Nombre</label>
                 <input cFormControl [(ngModel)]="tipo.tipo" id="validationDefault01" autocomplete="off" required type="text" [ngModelOptions]="{standalone: true}"/>
                 <c-form-feedback [valid]="true">Looks good!</c-form-feedback>
+            </c-col>
+            <c-col [md]="6">
+                <label cLabel for="validationDefault08">Categoría</label>
+                <select [(ngModel)]="tipo.idCategoria" cSelect id="validationDefault09" [ngModelOptions]="{standalone: true}" required>
+                    <option *ngFor="let item of listaCategorias" [value]="item.idCategoria">{{item.categoria}}</option>
+                </select>
+                <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback>
+            </c-col>   
+            <c-col [md]="8">
+                <label cLabel for="validationDefault05">Descripción</label>
+                <textarea cFormControl [(ngModel)]="tipo.descripcion" [ngModelOptions]="{standalone: true}" id="exampleFormControlTextarea1"required rows="3"></textarea>
+                <c-form-feedback [valid]="false">Please provide a valid zip.</c-form-feedback>
             </c-col>
             <c-col [md]="4">
                 <label cLabel for="validationDefault04">Estado</label>
@@ -81,13 +96,7 @@
                     <option value="0">Inactivo</option>
                 </select>
                 <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback>
-            </c-col>
-            <c-col [md]="8">
-                <label cLabel for="validationDefault05">Descripción</label>
-                <textarea cFormControl [(ngModel)]="tipo.descripcion" [ngModelOptions]="{standalone: true}" id="exampleFormControlTextarea1"required rows="3"></textarea>
-                <c-form-feedback [valid]="false">Please provide a valid zip.</c-form-feedback>
-            </c-col>
-        
+            </c-col>        
 
             <hr>
         
@@ -106,4 +115,21 @@
     </c-modal-body>
 </c-modal>
 
+<c-modal #confirmacionModal backdrop="static" alignment="center" id="confirmacionModal" [visible]="visibleModalConfirmacion" (visibleChange)="handleChangeConfirmacion($event)">
+    <c-modal-header>
+      <h5 cModalTitle>Ventana de Confirmación</h5>
+      <button [cModalToggle]="confirmacionModal.id" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+      ¿Desea eliminar el tipo <b>{{tipo.tipo}}</b>?
+    </c-modal-body>
+    <c-modal-footer>
+      <button [cModalToggle]="confirmacionModal.id" cButton color="secondary">
+        Cancelar
+      </button>
+      <button cButton color="danger" (click)="eliminarDato()">Aceptar</button>
+    </c-modal-footer>
+  </c-modal>
+
+  
 <c-toaster class="p-3" position="fixed" [placement]="placement"></c-toaster>

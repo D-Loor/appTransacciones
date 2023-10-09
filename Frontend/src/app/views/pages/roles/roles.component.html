@@ -1,8 +1,12 @@
 <c-card>
     <c-card-header>
         <strong>Roles</strong>
-        <button cButton [cModalToggle]="registroModal.id" class="float-end" style="color: white;" color="success" (click)="tituloModal = 'Agregar'">
+        <button cButton [cModalToggle]="registroModal.id" class="float-end" style="color: white;" color="success"
+            (click)="tituloModal = 'Agregar'">
             <svg cIcon name="cilNotes"></svg>
+        </button>
+        <button cButton class="float-end" style="color: white; margin-right: 5px;" color="info" (click)="obtenerDatos()">
+            <svg cIcon name="cilShare"></svg>
         </button>
     </c-card-header>
     <c-card-body>
@@ -30,10 +34,12 @@
                                 style="color: white; background-color: darkgray !important;">Inactivo</c-badge>
                         </td>
                         <td>
-                            <button cButton size="sm" color="success" style="margin-right: 5px;" (click)="cargarDatos(item)">
+                            <button cButton size="sm" color="success" style="margin-right: 5px;"
+                                (click)="cargarDatos(item)">
                                 <svg cIcon name="cilPencil" title="Numbered List Icon" style="color: white;"></svg>
                             </button>
-                            <button cButton size="sm" color="danger" (click)="item.idRol !== undefined && eliminarDato(item.idRol)">
+                            <button cButton size="sm" color="danger" [cModalToggle]="confirmacionModal.id"
+                                (click)="item !== undefined && rol = item">
                                 <svg cIcon name="cilTrash" title="Numbered List Icon" style="color: white;"></svg>
                             </button>
                         </td>
@@ -41,7 +47,7 @@
                 </tbody>
             </table>
         </div>
-      
+
         <c-pagination align="center" aria-label="Page navigation example">
             <li cPageItem [disabled]="true">
                 <a cPageLink [routerLink]>Anterior</a>
@@ -63,7 +69,8 @@
 
 </c-card>
 
-<c-modal #registroModal backdrop="static" [visible]="visibleModal" (visibleChange)="handleLiveDemoChange($event)" id="registroModal" size="xl" alignment="center">
+<c-modal #registroModal backdrop="static" [visible]="visibleModal" (visibleChange)="handleLiveDemoChange($event)"
+    id="registroModal" size="xl" alignment="center">
     <c-modal-header>
         <h5 cModalTitle>{{tituloModal}} Rol</h5>
         <button [cModalToggle]="registroModal.id" cButtonClose (click)="limpiarFormulario()"></button>
@@ -73,13 +80,15 @@
             cForm cRow ngNativeValidate>
             <c-col [md]="8">
                 <label cLabel for="validationDefault01">Nombre Rol</label>
-                <input cFormControl [(ngModel)]="rol.rol" id="validationDefault01" autocomplete="off" required type="text" [ngModelOptions]="{standalone: true}"/>
+                <input cFormControl [(ngModel)]="rol.rol" id="validationDefault01" autocomplete="off" required
+                    type="text" [ngModelOptions]="{standalone: true}" />
                 <c-form-feedback [valid]="true">Looks good!</c-form-feedback>
             </c-col>
-            
+
             <c-col [md]="4">
                 <label cLabel for="validationDefault04">Nivel de acceso</label>
-                <select [(ngModel)]="rol.acceso" cSelect id="validationDefault04" [ngModelOptions]="{standalone: true}" required>
+                <select [(ngModel)]="rol.acceso" cSelect id="validationDefault04" [ngModelOptions]="{standalone: true}"
+                    required>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -89,12 +98,14 @@
             </c-col>
             <c-col [md]="8">
                 <label cLabel for="validationDefault05">Descripción</label>
-                <textarea cFormControl [(ngModel)]="rol.descripcion" [ngModelOptions]="{standalone: true}" id="exampleFormControlTextarea1"required rows="3"></textarea>
+                <textarea cFormControl [(ngModel)]="rol.descripcion" [ngModelOptions]="{standalone: true}"
+                    id="exampleFormControlTextarea1" required rows="3"></textarea>
                 <c-form-feedback [valid]="false">Please provide a valid zip.</c-form-feedback>
             </c-col>
             <c-col [md]="4">
                 <label cLabel for="validationDefault04">Estado</label>
-                <select cSelect id="validationDefault04" [(ngModel)]="rol.estado" [ngModelOptions]="{standalone: true}" required>
+                <select cSelect id="validationDefault04" [(ngModel)]="rol.estado" [ngModelOptions]="{standalone: true}"
+                    required>
                     <option value="1">Activo</option>
                     <option value="0">Inactivo</option>
                 </select>
@@ -102,15 +113,16 @@
             </c-col>
 
             <hr>
-        
+
             <c-col [xs]="12">
                 <div style="float: right;">
                     <button [cModalToggle]="registroModal.id" cButton color="secondary" (click)="limpiarFormulario()"
-                    style="margin-right: 10px;">
+                        style="margin-right: 10px;">
                         Cancelar
                     </button>
                     <button cButton color="success" type="submit" *ngIf="tituloModal === 'Agregar'">Registrar</button>
-                    <button cButton color="success" type="button" *ngIf="tituloModal === 'Editar'" (click)="editarDato()">Editar</button>
+                    <button cButton color="success" type="button" *ngIf="tituloModal === 'Editar'"
+                        (click)="editarDato()">Editar</button>
                 </div>
             </c-col>
         </form>
@@ -118,4 +130,21 @@
     </c-modal-body>
 </c-modal>
 
-<c-toaster class="p-3" position="fixed" [placement]="placement" ></c-toaster>
+<c-modal #confirmacionModal backdrop="static" alignment="center" id="confirmacionModal" [visible]="visibleModalConfirmacion"
+    (visibleChange)="handleChangeConfirmacion($event)">
+    <c-modal-header>
+        <h5 cModalTitle>Ventana de Confirmación</h5>
+        <button [cModalToggle]="confirmacionModal.id" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+        ¿Desea eliminar el rol <b>{{rol.rol}}</b>?
+    </c-modal-body>
+    <c-modal-footer>
+        <button [cModalToggle]="confirmacionModal.id" cButton color="secondary">
+            Cancelar
+        </button>
+        <button cButton color="danger" (click)="eliminarDato()">Aceptar</button>
+    </c-modal-footer>
+</c-modal>
+
+<c-toaster class="p-3" position="fixed" [placement]="placement"></c-toaster>

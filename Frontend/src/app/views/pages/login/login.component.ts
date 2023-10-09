@@ -35,6 +35,7 @@ export class LoginComponent {
         } else {
           localStorage.setItem('sesionLoginInicio', 'iniciar');
           localStorage.setItem('imagenUser', "");
+          localStorage.setItem('idUsuario', resp['data'].idUsuario);
           localStorage.setItem('rolUser', resp['data'].rol_usuario.rol);
           localStorage.setItem('rolAcceso', resp['data'].rol_usuario.acceso);
           localStorage.setItem('cedulaUser', resp['data'].cedula);

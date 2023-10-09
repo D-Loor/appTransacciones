@@ -15,6 +15,7 @@ export class CategoriasComponent implements OnInit {
   confirmarPass: any;
   tituloModal = "";
   visibleModal = false;
+  visibleModalConfirmacion = false;
   formularioValido: boolean = false;
   placement = ToasterPlacement.TopEnd;
   listaCategorias: CategoriaModel[] = [];
@@ -35,7 +36,7 @@ export class CategoriasComponent implements OnInit {
 
   obtenerDatos() {
     this.listaCategorias = [];
-    this.categoriaService.obtener().then(data => {
+    this.categoriaService.obtener("*").then(data => {
       let resp = data as any;
       if (resp['code'] === "204") {
         this.showToast('No existen Categorías registradas.!', 'info');
@@ -66,12 +67,13 @@ export class CategoriasComponent implements OnInit {
     });
   }
 
-  eliminarDato(idCategoria: number) {
-    this.categoriaService.eliminar(idCategoria).then(data => {
+  eliminarDato() {
+    this.categoriaService.eliminar(this.categoria.idCategoria || 0).then(data => {
       let resp = data as any;
       if (resp['code'] == '204') {
         this.showToast("No existe esta categoría.", "warning");
       } else if (resp['code'] == '200') {
+        this.visibleModalConfirmacion = false;
         this.showToast("La categoría se ha eliminado correctamente.", "success");
         this.obtenerDatos();
       } else {
@@ -128,4 +130,8 @@ export class CategoriasComponent implements OnInit {
     this.visibleModal = event;
   }
 
+  handleChangeConfirmacion(event: any) {
+    this.visibleModalConfirmacion = event;
+  }
+  
 }

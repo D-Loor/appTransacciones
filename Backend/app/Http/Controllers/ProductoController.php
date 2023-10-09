@@ -10,9 +10,14 @@ class ProductoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($estado)
     {
-        $datos=Producto::orderBy('nombre', 'asc')->with('tipoProducto')->get();
+        if($estado == "*"){
+            $datos=Producto::orderBy('nombre', 'asc')->with('tipoProducto', 'tipoProducto.tipoCategoria')->get();
+        }else{
+            $datos=Producto::orderBy('nombre', 'asc')->where('estado', $estado)->with('tipoProducto', 'tipoProducto.tipoCategoria')->get();
+        }
+
         $num_rows = count($datos);
         if($num_rows != 0){
             return response()->json(['data'=>$datos, 'code'=>'200']);
@@ -112,4 +117,16 @@ class ProductoController extends Controller
             return response()->json(['code'=>'204']);
         }
     }
+
+    public function obtenerProductosPorTipo($idTipo)
+    {
+        $datos=Producto::where('idTipo', $idTipo)->where('estado', "1")->orderBy('nombre', 'asc')->with('tipoProducto')->get();
+        $num_rows = count($datos);
+        if($num_rows != 0){
+            return response()->json(['data'=>$datos, 'code'=>'200']);
+        }else{
+            return response()->json(['code'=>'204']);
+        } 
+    }
+
 }

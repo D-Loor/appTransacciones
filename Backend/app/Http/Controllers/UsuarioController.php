@@ -10,9 +10,14 @@ class UsuarioController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($estado)
     {
-        $datos=Usuario::orderBy('apellidos', 'asc')->with('rolUsuario')->get();
+        if($estado == "*"){
+            $datos=Usuario::orderBy('apellidos', 'asc')->with('rolUsuario')->get();
+        }else{
+            $datos=Usuario::orderBy('apellidos', 'asc')->where('estado', $estado)->with('rolUsuario')->get();
+        }
+
         $num_rows = count($datos);
         if($num_rows != 0){
             return response()->json(['data'=>$datos, 'code'=>'200']);

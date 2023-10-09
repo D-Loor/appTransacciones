@@ -10,9 +10,14 @@ class CategoriaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($estado)
     {
-        $datos=Categoria::orderBy('categoria', 'asc')->get();
+        if($estado == "*"){
+            $datos=Categoria::orderBy('categoria', 'asc')->get();
+        }else{
+            $datos=Categoria::orderBy('categoria', 'asc')->where('estado', $estado)->get();
+        }
+        
         $num_rows = count($datos);
         if($num_rows != 0){
             return response()->json(['data'=>$datos, 'code'=>'200']);
@@ -81,7 +86,6 @@ class CategoriaController extends Controller
                 if($valida != null){
                     return response()->json(['code'=>'400']);
                 }else{
-                    $datos->idTipoCategoria=$request->idTipoCategoria;
                     $datos->categoria=$request->categoria;
                     $datos->descripcion=$request->descripcion;
                     $datos->estado=$request->estado;  

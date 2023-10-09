@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('cantidad');
             $table->double('valor');
             $table->string('observacion');
-            $table->date('fecha');
+            $table->timestamp('fecha');
 
             $table->foreign('idUsuario')->references('idUsuario')->on('usuarios')->onDelete('cascade');
             $table->foreign('idProducto')->references('idProducto')->on('productos')->onDelete('cascade');

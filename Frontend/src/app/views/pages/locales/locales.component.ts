@@ -31,7 +31,7 @@ export class LocalesComponent implements OnInit{
 
   obtenerDatos() {
     this.listaLocales = [];
-    this.localService.obtener().then(data => {
+    this.localService.obtener("*").then(data => {
       let resp = data as any;
       if (resp['code'] === "204") {
         this.showToast('No existen Locales registrados.!', 'info');

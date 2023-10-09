@@ -11,6 +11,7 @@ import { RolModel } from './../../../models/rol.model'
 export class RolesComponent implements OnInit {
   tituloModal = "";
   visibleModal = false;
+  visibleModalConfirmacion = false;
   formularioValido: boolean = false;
   placement = ToasterPlacement.TopEnd;
   listaRoles: RolModel[] = [];
@@ -30,7 +31,7 @@ export class RolesComponent implements OnInit {
 
   obtenerDatos() {
     this.listaRoles = [];
-    this.rolService.obtener().then(data => {
+    this.rolService.obtener("*").then(data => {
       let resp = data as any;
       if (resp['code'] === "204") {
         this.showToast('No existen Roles registrados.!', 'info');
@@ -61,12 +62,13 @@ export class RolesComponent implements OnInit {
     });
   }
 
-  eliminarDato(idRol: number){
-    this.rolService.eliminar(idRol).then(data => {
+  eliminarDato(){
+    this.rolService.eliminar(this.rol.idRol || 0).then(data => {
       let resp = data as any;
       if (resp['code'] == '204') {
         this.showToast("No existe este rol.", "warning");
       } else if (resp['code'] == '200'){
+        this.visibleModalConfirmacion = false;
         this.showToast("El rol se ha eliminado correctamente.", "success");
         this.obtenerDatos();
       }else {
@@ -122,6 +124,10 @@ export class RolesComponent implements OnInit {
 
   handleLiveDemoChange(event: any) {
     this.visibleModal = event;
+  }
+
+  handleChangeConfirmacion(event: any) {
+    this.visibleModalConfirmacion = event;
   }
 
 }

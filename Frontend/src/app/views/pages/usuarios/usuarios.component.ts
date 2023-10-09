@@ -15,6 +15,7 @@ export class UsuariosComponent implements OnInit {
   confirmarPass: any;
   tituloModal = "";
   visibleModal = false;
+  visibleModalConfirmacion = false;
   formularioValido: boolean = false;
   placement = ToasterPlacement.TopEnd;
   listaUsuarios: UsuarioModel[] = [];
@@ -36,7 +37,7 @@ export class UsuariosComponent implements OnInit {
   obtenerDatos() {
     this.listaUsuarios = [];
     this.obtenerDatosRoles();
-    this.usuarioService.obtener().then(data => {
+    this.usuarioService.obtener("*").then(data => {
       let resp = data as any;
       if (resp['code'] === "204") {
         this.showToast('No existen Usuarios registrados.!', 'info');
@@ -69,12 +70,13 @@ export class UsuariosComponent implements OnInit {
     }
   }
 
-  eliminarDato(idUsuario: number){
-    this.usuarioService.eliminar(idUsuario).then(data => {
+  eliminarDato(){
+    this.usuarioService.eliminar(this.usuario.idUsuario || 0).then(data => {
       let resp = data as any;
       if (resp['code'] == '204') {
         this.showToast("No existe este usuario.", "warning");
       } else if (resp['code'] == '200'){
+        this.visibleModalConfirmacion = false;
         this.showToast("El usuario se ha eliminado correctamente.", "success");
         this.obtenerDatos();
       }else {
@@ -134,10 +136,6 @@ export class UsuariosComponent implements OnInit {
     const componentRef = this.toaster.addToast(NotificarComponent, { ...options });
   }
 
-  handleLiveDemoChange(event: any) {
-    this.visibleModal = event;
-  }
- 
   validarPassword():boolean {
     if(this.usuario.password === this.confirmarPass){
       return true;
@@ -148,7 +146,7 @@ export class UsuariosComponent implements OnInit {
 
   obtenerDatosRoles() {
     this.listaRoles = [];
-    this.rolService.obtener().then(data => {
+    this.rolService.obtener("1").then(data => {
       let resp = data as any;
       if (resp['code'] === "204") {
         this.showToast('No existen Roles registrados.!', 'info');
@@ -160,4 +158,13 @@ export class UsuariosComponent implements OnInit {
       console.log(error);
     });
   }
+
+  handleLiveDemoChange(event: any) {
+    this.visibleModal = event;
+  }
+  
+  handleChangeConfirmacion(event: any) {
+    this.visibleModalConfirmacion = event;
+  }
+ 
 }
