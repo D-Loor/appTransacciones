@@ -35,29 +35,19 @@ class TransaccionController extends Controller
      */
     public function store(Request $request)
     {        
-        $datos=new Transaccion();
-        $datos->idUsuario=$request->idUsuario;
-        $datos->idProducto=$request->idProducto;
-        $datos->idLocal=$request->idLocal;
-        $datos->tipo=$request->tipo;
-        $datos->cantidad=$request->cantidad;
-        $datos->valor=$request->valor;
-        $datos->observacion=$request->observacion;
-        $datos->fecha=$request->fecha;
-        $datos->save();
-
         $stock=Stock::where('idLocal',$request->idLocal)->where('idProducto',$request->idProducto)->get()->first();
 
         if($stock != null){
             if($request->tipo == "Compra"){
                 $stock->stock=$stock->stock + $request->cantidad;
             }else{
-                if($stock->stock >= $stock->cantidad){
+                if($stock->stock >= $request->cantidad){
                     $stock->stock=$stock->stock - $request->cantidad;
                 }else {
-                    return response()->json(['code'=>'400']); 
+                    return response()->json(['code'=>'204', 'total'=> $stock->stock]); 
                 }
             }
+            $stock->update();
         }else{
             if($request->tipo == "Compra"){
                 $nuevoStock=new Stock();
@@ -69,6 +59,17 @@ class TransaccionController extends Controller
                 return response()->json(['code'=>'400']); 
             }
         }
+
+        $datos=new Transaccion();
+        $datos->idUsuario=$request->idUsuario;
+        $datos->idProducto=$request->idProducto;
+        $datos->idLocal=$request->idLocal;
+        $datos->tipo=$request->tipo;
+        $datos->cantidad=$request->cantidad;
+        $datos->valor=$request->valor;
+        $datos->observacion=$request->observacion;
+        $datos->fecha=$request->fecha;
+        $datos->save();
         
         return response()->json(['code'=>'200']);        
     }
@@ -103,12 +104,13 @@ class TransaccionController extends Controller
                 if($request->tipo == "Compra"){
                     $stock->stock=$stock->stock + $request->cantidad;
                 }else{
-                    if($stock->stock >= $stock->cantidad){
+                    if($stock->stock >= $request->cantidad){
                         $stock->stock=$stock->stock - $request->cantidad;
                     }else {
-                        return response()->json(['code'=>'400']); 
+                        return response()->json(['code'=>'204', 'total'=> $stock->stock]); 
                     }
                 }
+                $stock->update();
             }else{
                 if($request->tipo == "Compra"){
                     $nuevoStock=new Stock();

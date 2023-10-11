@@ -12,6 +12,9 @@ import { ProductosComponent } from './productos/productos.component';
 import { LocalesComponent } from './locales/locales.component';
 import { TransaccionesComponent } from './transacciones/transacciones.component';
 import { StocksComponent } from './stocks/stocks.component';
+import { nivel1Guard } from './../../guards/nivel1.guard';
+import { nivel2Guard } from './../../guards/nivel2.guard';
+import { nivel3Guard } from './../../guards/nivel3.guard';
 
 const routes: Routes = [
   {
@@ -47,56 +50,64 @@ const routes: Routes = [
     component: RolesComponent,
     data: {
       title: 'Roles'
-    }
+    }, 
+    canActivate: [nivel1Guard]
   },
   {
     path: 'usuarios',
     component: UsuariosComponent,
     data: {
       title: 'Usuarios'
-    }
+    }, 
+    canActivate: [nivel1Guard]
   },
   {
     path: 'categorias/tipos',
     component: TiposComponent,
     data: {
       title: 'Tipos Categorías'
-    }
+    }, 
+    canActivate: [nivel3Guard]
   },
   {
     path: 'categorias/categorias',
     component: CategoriasComponent,
     data: {
       title: 'Categorías'
-    }
+    }, 
+    canActivate: [nivel3Guard]
   },
   {
     path: 'productos',
     component: ProductosComponent,
     data: {
       title: 'Productos'
-    }
+    }, 
+    canActivate: [nivel3Guard]
   },
   {
     path: 'locales',
     component: LocalesComponent,
     data: {
       title: 'Locales'
-    }
+    }, 
+    canActivate: [nivel2Guard]
   },
   {
     path: 'transacciones',
     component: TransaccionesComponent,
     data: {
       title: 'Transacciones'
-    }
+    }, 
+    canActivate: [nivel3Guard]
   },
   {
     path: 'stocks',
     component: StocksComponent,
     data: {
       title: 'Stocks'
-    }
+    }, 
+    canActivate: [nivel3Guard]
   }
 ];
 

@@ -75,6 +75,8 @@ export class TransaccionesComponent implements OnInit {
         this.obtenerDatos();
         this.limpiarFormulario();
         this.visibleModal = false;
+      }else if(resp['code'] == '204'){
+        this.showToast("Solo existen " + resp['total'] + " en stock.", "info");
       }else {
         this.showToast("Se ha presentado un error al guardar.", "danger");
       }
@@ -119,6 +121,8 @@ export class TransaccionesComponent implements OnInit {
         this.obtenerDatos();
         this.limpiarFormulario();
         this.visibleModal = false;
+      }else if(resp['code'] == '204'){
+        this.showToast("Solo existen " + resp['total'] + " en stock.", "info");
       }else {
         this.showToast("Se ha presentado un error al editar.", "danger");
       }

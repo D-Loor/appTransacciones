@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToasterComponent, ToasterPlacement } from '@coreui/angular';
 
 import { ClassToggleService, HeaderComponent } from '@coreui/angular';
@@ -20,11 +21,24 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit{
   public nombreUsuario : any;
   public rolUsuario : any;
 
-  constructor(private classToggler: ClassToggleService) {
+  constructor(private classToggler: ClassToggleService, private ruta: Router) {
     super();
   }
   ngOnInit(){
     this.nombreUsuario = localStorage.getItem('nombreUser');
     this.rolUsuario = localStorage.getItem('rolUser');
+  }
+  
+  cerrarCesion(){
+    localStorage.removeItem('sesionLoginInicio');
+    localStorage.removeItem('imagenUser');
+    localStorage.removeItem('idUsuario');
+    localStorage.removeItem('rolUser');
+    localStorage.removeItem('nivelAcceso');
+    localStorage.removeItem('cedulaUser');
+    localStorage.removeItem('nombreUser');
+
+    this.ruta.navigate(["./"]);
+
   }
 }

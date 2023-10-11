@@ -21,24 +21,30 @@ class DatabaseSeeder extends Seeder
             'estado' => '1',            
         ],
         [
-            'rol' => 'Encargado de Ventas',
+            'rol' => 'Gerente',
             'acceso' => '2',
             'descripcion' => 'Rol encargado de la venta de los productos.',
             'estado' => '1',            
         ],
         [
-            'rol' => 'Inspector de Ventas',
+            'rol' => 'Encargado de Ventas',
             'acceso' => '3',
+            'descripcion' => 'Rol encargado de la venta de los productos.',
+            'estado' => '1',            
+        ],
+        [
+            'rol' => 'Inspector de Ventas',
+            'acceso' => '4',
             'descripcion' => 'Rol encargado de supervisar el stock de los productos.',
             'estado' => '1',            
         ]]);
 
         DB::table('usuarios')->insert([
             [
-                'idRol' => '1',
+                'idRol' => '2',
                 'nombres' => 'Rolando',
                 'apellidos' => 'Morán Chávez',
-                'cedula' => '111',
+                'cedula' => '1',
                 'password' => '123',
                 'estado' => '1',               
             ],
@@ -46,7 +52,7 @@ class DatabaseSeeder extends Seeder
                 'idRol' => '1',
                 'nombres' => 'Aaron',
                 'apellidos' => 'Loor Morán',
-                'cedula' => '222',
+                'cedula' => '2',
                 'password' => '123',
                 'estado' => '1',             
             ],
@@ -54,15 +60,15 @@ class DatabaseSeeder extends Seeder
                 'idRol' => '1',
                 'nombres' => 'Diego',
                 'apellidos' => 'Loor Morán',
-                'cedula' => '333',
+                'cedula' => '3',
                 'password' => '123',
                 'estado' => '1',           
             ],
             [
-                'idRol' => '2',
+                'idRol' => '3',
                 'nombres' => 'Toño',
                 'apellidos' => 'Morán Chávez',
-                'cedula' => '444',
+                'cedula' => '4',
                 'password' => '123',
                 'estado' => '1',           
             ]

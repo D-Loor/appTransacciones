@@ -77,6 +77,23 @@
         <form #browserDefaultsForm="ngForm" (ngSubmit)="registrarDatos()" [gutter]="3" [validated]="formularioValido"
             cForm cRow ngNativeValidate>
             <c-col [md]="6">
+                <label cLabel for="validationDefault09">Transacción</label>
+                <select [(ngModel)]="transaccion.tipo" cSelect id="validationDefault10"
+                    [ngModelOptions]="{standalone: true}" required>
+                    <option value="Compra">Compra</option>
+                    <option value="Venta">Venta</option>
+                </select>
+                <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback>
+            </c-col>
+            <c-col [md]="6">
+                <label cLabel for="validationDefault07">Local</label>
+                <select [(ngModel)]="transaccion.idLocal" cSelect id="validationDefault08"
+                    [ngModelOptions]="{standalone: true}" required>
+                    <option *ngFor="let item of listaLocales" [value]="item.idLocal">{{item.nombre}}</option>
+                </select>
+                <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback>
+            </c-col>
+            <c-col [md]="6">
                 <label cLabel for="validationDefault01">Categoria</label>
                 <select [(ngModel)]="categoriaSeleccionada" cSelect id="validationDefault02"
                     (change)="obtenerDatosTipos()" [ngModelOptions]="{standalone: true}" required>
@@ -99,24 +116,7 @@
                     <option *ngFor="let item of listaProductos" [value]="item.idProducto">{{item.nombre}}</option>
                 </select>
                 <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback>
-            </c-col>
-            <c-col [md]="6">
-                <label cLabel for="validationDefault07">Local</label>
-                <select [(ngModel)]="transaccion.idLocal" cSelect id="validationDefault08"
-                    [ngModelOptions]="{standalone: true}" required>
-                    <option *ngFor="let item of listaLocales" [value]="item.idLocal">{{item.nombre}}</option>
-                </select>
-                <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback>
-            </c-col>
-            <c-col [md]="6">
-                <label cLabel for="validationDefault09">Transacción</label>
-                <select [(ngModel)]="transaccion.tipo" cSelect id="validationDefault10"
-                    [ngModelOptions]="{standalone: true}" required>
-                    <option value="Compra">Compra</option>
-                    <option value="Venta">Venta</option>
-                </select>
-                <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback>
-            </c-col>
+            </c-col>        
 
             <c-col [md]="3">
                 <label cLabel for="validationDefault11">Cantidad</label>
@@ -133,7 +133,7 @@
             <c-col [md]="12">
                 <label cLabel for="validationDefault14">Descripcion</label>
                 <input cFormControl [(ngModel)]="transaccion.observacion" [ngModelOptions]="{standalone: true}"
-                    id="exampleFormControlTextarea2" required rows="3" />
+                    id="exampleFormControlTextarea2" rows="3" />
                 <c-form-feedback [valid]="false">Please provide a valid zip.</c-form-feedback>
             </c-col>
 
