@@ -15,6 +15,7 @@ import { StocksComponent } from './stocks/stocks.component';
 import { nivel1Guard } from './../../guards/nivel1.guard';
 import { nivel2Guard } from './../../guards/nivel2.guard';
 import { nivel3Guard } from './../../guards/nivel3.guard';
+import { nivel4Guard } from './../../guards/nivel4.guard';
 
 const routes: Routes = [
   {
@@ -107,7 +108,7 @@ const routes: Routes = [
     data: {
       title: 'Stocks'
     }, 
-    canActivate: [nivel3Guard]
+    canActivate: [nivel4Guard]
   }
 ];
 
