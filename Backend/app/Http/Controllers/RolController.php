@@ -4,26 +4,31 @@ namespace App\Http\Controllers;
 
 use App\Models\Rol;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Database\Eloquent\Builder;
+
 
 class RolController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index($estado)
+    public function index($estado, $paginado)
     {
-        if($estado == "*"){
-            $datos=Rol::orderBy('idRol', 'asc')->get();
-        }else{
-            $datos=Rol::orderBy('idRol', 'asc')->where('estado', $estado)->get();
+        
+        if ($estado == "*") {
+            $datos = Rol::orderBy('idRol', 'asc')->paginate($paginado);
+        } else {
+            $datos = Rol::orderBy('idRol', 'asc')->where('estado', $estado)->paginate($paginado);
         }
 
-        $num_rows = count($datos);
-        if($num_rows != 0){
-            return response()->json(['data'=>$datos, 'code'=>'200']);
-        }else{
-            return response()->json(['code'=>'204']);
-        }    
+        if ($datos->count() != 0) {
+            return response()->json(['code' => '200', 'data' => $datos]);
+        } else {
+            return response()->json(['code' => '204']);
+        }
+
     }
 
     /**

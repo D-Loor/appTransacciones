@@ -16,6 +16,9 @@ export class RolesComponent implements OnInit {
   placement = ToasterPlacement.TopEnd;
   listaRoles: RolModel[] = [];
   rol: RolModel = new RolModel;
+  pagina: number = 1;
+  totalPaginas: number = 1;
+  itemsPaginado: number = 1;
 
 
   @ViewChild(ToasterComponent) toaster!: ToasterComponent;
@@ -31,13 +34,15 @@ export class RolesComponent implements OnInit {
 
   obtenerDatos() {
     this.listaRoles = [];
-    this.rolService.obtener("*").then(data => {
+    this.totalPaginas = 1;
+    this.rolService.obtener("*", this.itemsPaginado, this.pagina).then(data => {
       let resp = data as any;
       if (resp['code'] === "204") {
         this.showToast('No existen Roles registrados.!', 'info');
       } else {
-        this.listaRoles = resp['data'];
-        console.log("lista ", this.listaRoles);
+        this.totalPaginas = Number(resp['data']['last_page']);
+        this.listaRoles = resp['data']['data'];
+        console.log("listaRoles ", this.listaRoles);
       }
     }).catch(error => {
       console.log(error);

@@ -21,7 +21,9 @@ export class UsuariosComponent implements OnInit {
   listaUsuarios: UsuarioModel[] = [];
   listaRoles: RolModel[] = [];
   usuario: UsuarioModel = new UsuarioModel;
-
+  pagina: number = 1;
+  totalPaginas: number = 1;
+  itemsPaginado: number = 1;
 
   @ViewChild(ToasterComponent) toaster!: ToasterComponent;
 
@@ -37,12 +39,13 @@ export class UsuariosComponent implements OnInit {
   obtenerDatos() {
     this.listaUsuarios = [];
     this.obtenerDatosRoles();
-    this.usuarioService.obtener("*").then(data => {
+    this.usuarioService.obtener("*", this.itemsPaginado, this.pagina).then(data => {
       let resp = data as any;
       if (resp['code'] === "204") {
         this.showToast('No existen Usuarios registrados.!', 'info');
       } else {
-        this.listaUsuarios = resp['data'];
+        this.totalPaginas = Number(resp['data']['last_page']);
+        this.listaUsuarios = resp['data']['data'];
         console.log("lista ", this.listaUsuarios);
       }
     }).catch(error => {
@@ -146,12 +149,12 @@ export class UsuariosComponent implements OnInit {
 
   obtenerDatosRoles() {
     this.listaRoles = [];
-    this.rolService.obtener("1").then(data => {
+    this.rolService.obtener("1", 100, 1).then(data => {
       let resp = data as any;
       if (resp['code'] === "204") {
         this.showToast('No existen Roles registrados.!', 'info');
       } else {
-        this.listaRoles = resp['data'];
+        this.listaRoles = resp['data']['data'];
         console.log("lista ", this.listaRoles);
       }
     }).catch(error => {
