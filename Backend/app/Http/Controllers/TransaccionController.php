@@ -11,9 +11,9 @@ class TransaccionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($paginado)
     {
-        $datos=Transaccion::orderBy('fecha', 'asc')->with('usuarioTransaccion', 'productoTransaccion', 'productoTransaccion.tipoProducto', 'localTransaccion')->get();
+        $datos=Transaccion::orderBy('fecha', 'asc')->with('usuarioTransaccion', 'productoTransaccion', 'productoTransaccion.tipoProducto', 'localTransaccion')->paginate($paginado);
         $num_rows = count($datos);
         if($num_rows != 0){
             return response()->json(['data'=>$datos, 'code'=>'200']);

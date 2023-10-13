@@ -24,6 +24,9 @@ export class ProductosComponent implements OnInit {
   listaTipos: TipoModel[] = [];
   producto: ProductoModel = new ProductoModel;
   categoriaSeleccionada: number = 0;
+  pagina: number = 1;
+  totalPaginas: number = 1;
+  itemsPaginado: number = 1;
 
   @ViewChild(ToasterComponent) toaster!: ToasterComponent;
 
@@ -39,12 +42,13 @@ export class ProductosComponent implements OnInit {
   obtenerDatos() {
     this.listaProductos = [];
     this.obtenerCategorias();
-    this.productoService.obtener("*").then(data => {
+    this.productoService.obtener("*", this.itemsPaginado, this.pagina).then(data => {
       let resp = data as any;
       if (resp['code'] === "204") {
         this.showToast('No existen Productos registrados.!', 'info');
       } else {
-        this.listaProductos = resp['data'];
+        this.totalPaginas = Number(resp['data']['last_page']);
+        this.listaProductos = resp['data']['data'];
         console.log("listaProductos ", this.listaProductos);
       }
     }).catch(error => {
@@ -137,12 +141,12 @@ export class ProductosComponent implements OnInit {
 
   obtenerCategorias() {
     this.listaCategorias = [];
-    this.categoriaService.obtener("1").then(data => {
+    this.categoriaService.obtener("1",1000,1).then(data => {
       let resp = data as any;
       if (resp['code'] === "204") {
         this.showToast('No existen Categorias registradas.!', 'info');
       } else {
-        this.listaCategorias = resp['data'];
+        this.listaCategorias = resp['data']['data'];
         console.log("listaCategorias ", this.listaCategorias);
       }
     }).catch(error => {

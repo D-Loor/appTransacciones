@@ -12,6 +12,9 @@ import { StockModel } from 'src/app/models/stock.model';
 export class StocksComponent implements OnInit {
   placement = ToasterPlacement.TopEnd;
   listaStocks: StockModel[] = [];
+  pagina: number = 1;
+  totalPaginas: number = 1;
+  itemsPaginado: number = 1;
 
 
   @ViewChild(ToasterComponent) toaster!: ToasterComponent;
@@ -26,12 +29,13 @@ export class StocksComponent implements OnInit {
 
   obtenerDatos() {
     this.listaStocks = [];
-    this.stockService.obtener().then(data => {
+    this.stockService.obtener(this.itemsPaginado, this.pagina).then(data => {
       let resp = data as any;
       if (resp['code'] === "204") {
         this.showToast('No existen Stocks registrados.!', 'info');
       } else {
-        this.listaStocks = resp['data'];
+        this.totalPaginas = Number(resp['data']['last_page']);
+        this.listaStocks = resp['data']['data'];
         console.log("lista ", this.listaStocks);
       }
     }).catch(error => {

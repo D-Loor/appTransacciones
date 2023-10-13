@@ -45,20 +45,14 @@
         </div>
       
         <c-pagination align="center" aria-label="Page navigation example">
-            <li cPageItem [disabled]="true">
-                <a cPageLink [routerLink]>Anterior</a>
+            <li cPageItem [disabled]="pagina == 1">
+                <a cPageLink (click)="pagina = pagina - 1; obtenerDatos()">Anterior</a>
             </li>
-            <li cPageItem>
-                <a cPageLink [routerLink]>1</a>
+            <li cPageItem *ngFor="let i of [].constructor(totalPaginas); let index = index" [active]="index + 1 == pagina">
+                <a cPageLink (click)="pagina = pagina = index + 1; obtenerDatos()">{{index + 1}}</a>
             </li>
-            <li cPageItem>
-                <a cPageLink [routerLink]>2</a>
-            </li>
-            <li cPageItem>
-                <a cPageLink [routerLink]>3</a>
-            </li>
-            <li cPageItem>
-                <a cPageLink [routerLink]>Siguiente</a>
+            <li cPageItem [disabled]="pagina == totalPaginas">
+                <a cPageLink (click)="pagina= pagina + 1; obtenerDatos()">Siguiente</a>
             </li>
         </c-pagination>
     </c-card-body>

@@ -22,9 +22,9 @@ export class StocksService {
     });
   }
 
-  obtener(){
+  obtener(paginado: number, pagina: number){
     return new Promise ((resolve, reject) => {
-      this.http.get(this.urlService).subscribe(res => {
+      this.http.get(this.urlService + "obtener/" + paginado +"?page=" + pagina).subscribe(res => {
         resolve(res);{
         }
       }, error => {

@@ -10,12 +10,12 @@ class LocalController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($estado)
+    public function index($estado, $paginado)
     {
         if($estado == "*"){
-            $datos=Local::orderBy('nombre', 'asc')->get();
+            $datos=Local::orderBy('nombre', 'asc')->paginate($paginado);
         }else{
-            $datos=Local::orderBy('nombre', 'asc')->where('estado', $estado)->get();
+            $datos=Local::orderBy('nombre', 'asc')->where('estado', $estado)->paginate($paginado);
         }
 
         $num_rows = count($datos);

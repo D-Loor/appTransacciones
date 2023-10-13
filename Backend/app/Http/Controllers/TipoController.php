@@ -10,12 +10,12 @@ class TipoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($estado)
+    public function index($estado, $paginado)
     {
         if($estado == "*"){
-            $datos=Tipo::orderBy('tipo', 'asc')->with('tipoCategoria')->get();
+            $datos=Tipo::orderBy('tipo', 'asc')->with('tipoCategoria')->paginate($paginado);
         }else{
-            $datos=Tipo::orderBy('tipo', 'asc')->where('estado', $estado)->with('tipoCategoria')->get();
+            $datos=Tipo::orderBy('tipo', 'asc')->where('estado', $estado)->with('tipoCategoria')->paginate($paginado);
         }
 
         $num_rows = count($datos);

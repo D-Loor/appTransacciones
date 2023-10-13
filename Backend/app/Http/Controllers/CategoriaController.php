@@ -10,12 +10,12 @@ class CategoriaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($estado)
+    public function index($estado, $paginado)
     {
         if($estado == "*"){
-            $datos=Categoria::orderBy('categoria', 'asc')->get();
+            $datos=Categoria::orderBy('categoria', 'asc')->paginate($paginado);
         }else{
-            $datos=Categoria::orderBy('categoria', 'asc')->where('estado', $estado)->get();
+            $datos=Categoria::orderBy('categoria', 'asc')->where('estado', $estado)->paginate($paginado);
         }
         
         $num_rows = count($datos);

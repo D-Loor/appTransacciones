@@ -10,9 +10,9 @@ class StockController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($paginado)
     {
-        $datos=Stock::orderBy('stock', 'asc')->with('productoStock', 'productoStock.tipoProducto', 'localStock')->get();
+        $datos=Stock::orderBy('stock', 'asc')->with('productoStock', 'productoStock.tipoProducto', 'localStock')->paginate($paginado);
         $num_rows = count($datos);
         if($num_rows != 0){
             return response()->json(['data'=>$datos, 'code'=>'200']);

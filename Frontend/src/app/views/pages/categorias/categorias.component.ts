@@ -21,7 +21,9 @@ export class CategoriasComponent implements OnInit {
   listaCategorias: CategoriaModel[] = [];
   listaTipos: TipoModel[] = [];
   categoria: CategoriaModel = new CategoriaModel;
-
+  pagina: number = 1;
+  totalPaginas: number = 1;
+  itemsPaginado: number = 1;
 
   @ViewChild(ToasterComponent) toaster!: ToasterComponent;
 
@@ -36,12 +38,13 @@ export class CategoriasComponent implements OnInit {
 
   obtenerDatos() {
     this.listaCategorias = [];
-    this.categoriaService.obtener("*").then(data => {
+    this.categoriaService.obtener("*", this.itemsPaginado, this.pagina).then(data => {
       let resp = data as any;
       if (resp['code'] === "204") {
         this.showToast('No existen Categorías registradas.!', 'info');
       } else {
-        this.listaCategorias = resp['data'];
+        this.totalPaginas = Number(resp['data']['last_page']);
+        this.listaCategorias = resp['data']['data'];
         console.log("lista ", this.listaCategorias);
       }
     }).catch(error => {

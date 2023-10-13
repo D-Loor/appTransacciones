@@ -42,8 +42,9 @@ Route::get('productos/obtenerProductosPorTipo/{idTipo}','App\Http\Controllers\Pr
 
 Route::get('roles/estado/{estado}/{paginado}', 'App\Http\Controllers\RolController@index');
 Route::get('usuarios/estado/{estado}/{paginado}', 'App\Http\Controllers\UsuarioController@index');
-Route::get('categorias/estado/{estado}', 'App\Http\Controllers\CategoriaController@index');
-Route::get('tipos/estado/{estado}', 'App\Http\Controllers\TipoController@index');
-Route::get('productos/estado/{estado}', 'App\Http\Controllers\ProductoController@index');
-Route::get('locales/estado/{estado}', 'App\Http\Controllers\LocalController@index');
-
+Route::get('categorias/estado/{estado}/{paginado}', 'App\Http\Controllers\CategoriaController@index');
+Route::get('tipos/estado/{estado}/{paginado}', 'App\Http\Controllers\TipoController@index');
+Route::get('productos/estado/{estado}/{paginado}', 'App\Http\Controllers\ProductoController@index');
+Route::get('locales/estado/{estado}/{paginado}', 'App\Http\Controllers\LocalController@index');
+Route::get('transacciones/obtener/{paginado}', 'App\Http\Controllers\TransaccionController@index');
+Route::get('stocks/obtener/{paginado}', 'App\Http\Controllers\StockController@index');

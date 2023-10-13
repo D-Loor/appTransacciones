@@ -33,6 +33,9 @@ export class TransaccionesComponent implements OnInit {
   tipoSeleccionado: number = 0;
   idUsario: any;
   fecha: Date = new Date;
+  pagina: number = 1;
+  totalPaginas: number = 1;
+  itemsPaginado: number = 1;
 
   @ViewChild(ToasterComponent) toaster!: ToasterComponent;
 
@@ -52,12 +55,13 @@ export class TransaccionesComponent implements OnInit {
     this.obtenerDatosCategorias();
     this.obtenerDatosLocales();
     this.listaTransacciones = [];
-    this.transaccionesService.obtener().then(data => {
+    this.transaccionesService.obtener(this.itemsPaginado, this.pagina).then(data => {
       let resp = data as any;
       if (resp['code'] === "204") {
         this.showToast('No existen Transacciones registradas.!', 'info');
       } else {
-        this.listaTransacciones = resp['data'];
+        this.totalPaginas = Number(resp['data']['last_page']);
+        this.listaTransacciones = resp['data']['data'];
         console.log("listaTransacciones ", this.listaTransacciones);
       }
     }).catch(error => {
@@ -138,7 +142,6 @@ export class TransaccionesComponent implements OnInit {
     this.transaccion.valor = undefined;
     this.transaccion.observacion = undefined;
     this.transaccion.idTransaccion = undefined;
-    this.transaccion.idUsuario = undefined;
     this.transaccion.tipo = undefined;
     this.tipoSeleccionado = 0;
     this.categoriaSeleccionada = 0;
@@ -157,12 +160,12 @@ export class TransaccionesComponent implements OnInit {
 
   obtenerDatosCategorias() {
     this.listaCategorias = [];
-    this.categoriasService.obtener("*").then(data => {
+    this.categoriasService.obtener("*", 1000, 1).then(data => {
       let resp = data as any;
       if (resp['code'] === "204") {
         this.showToast('No existen Categorías registradas.!', 'info');
       } else {
-        this.listaCategorias = resp['data'];
+        this.listaCategorias = resp['data']['data'];
         console.log("listaCategorias ", this.listaCategorias);
       }
     }).catch(error => {
@@ -205,12 +208,12 @@ export class TransaccionesComponent implements OnInit {
 
   obtenerDatosLocales() {
     this.listaLocales = [];
-    this.localService.obtener("1").then(data => {
+    this.localService.obtener("1", 1000, 1).then(data => {
       let resp = data as any;
       if (resp['code'] === "204") {
         this.showToast('No existen Locales registrados.!', 'info');
       } else {
-        this.listaLocales = resp['data'];
+        this.listaLocales = resp['data']['data'];
         console.log("listaLocales ", this.listaLocales);
       }
     }).catch(error => {
