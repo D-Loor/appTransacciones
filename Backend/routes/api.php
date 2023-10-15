@@ -48,3 +48,6 @@ Route::get('productos/estado/{estado}/{paginado}', 'App\Http\Controllers\Product
 Route::get('locales/estado/{estado}/{paginado}', 'App\Http\Controllers\LocalController@index');
 Route::get('transacciones/obtener/{paginado}', 'App\Http\Controllers\TransaccionController@index');
 Route::get('stocks/obtener/{paginado}', 'App\Http\Controllers\StockController@index');
+
+Route::get('transacciones/obtenerTransaccionesUsuarios/{fechaInicio}/{fechaFin}', 'App\Http\Controllers\TransaccionController@obtenerTransaccionesUsuarios');
+

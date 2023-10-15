@@ -10,7 +10,7 @@
         <button cButton class="float-end" color="primary">
           <svg cIcon name="cilCloudDownload"></svg>
         </button>
-        <form [formGroup]="trafficRadioGroup">
+        <form>
           <c-button-group class="float-end me-3" role="group">
             <input
               class="btn-check"
@@ -111,7 +111,7 @@
 <c-row>
   <c-col xs>
     <c-card class="mb-4">
-      <c-card-header>Movimientos Realizados en los Locales</c-card-header>
+      <c-card-header>Traffic {{ "&" }} Sales</c-card-header>
       <c-card-body>
         <c-row>
           <c-col md="12" xl="12" xs="12">
@@ -143,8 +143,8 @@
                 <span class="text-medium-emphasis small">Monday</span>
               </div>
               <div class="progress-group-bars">
-                <c-progress thin [height]="15">
-                  <c-progress-bar color="info" value="34">34</c-progress-bar>
+                <c-progress thin>
+                  <c-progress-bar color="info" value="34"></c-progress-bar>
                 </c-progress>
                 <c-progress thin>
                   <c-progress-bar color="danger" value="78"></c-progress-bar>
@@ -269,7 +269,7 @@
               <th>Usuario</th>
               <th class="text-center">Compras</th>
               <th class="text-center">Ventas</th>
-              <th class="text-center">Ganancia</th>
+              <th class="text-center">Total</th>
             </tr>
           </thead>
           <tbody>
@@ -285,20 +285,21 @@
                 <div>{{ usuario.usuario_transaccion.nombres }} {{ usuario.usuario_transaccion.apellidos }}</div>
                 <div class="small text-medium-emphasis text-nowrap">
                   <span>
-                    {{ usuario.usuario_transaccion.rol_usuario?.rol }} | Estado: {{ usuario.usuario_transaccion.rol_usuario?.estado === 1 ? 'Activo' : 'Inactivo' }}
+                    {{ usuario.usuario_transaccion.rol_usuario?.rol }} | Estado: {{ usuario.usuario_transaccion.rol_usuario?.estado }}
                   </span>
                 </div>
               </td>
               <td class="text-center">
-                <div class="small text-medium-emphasis"></div>
-                <div class="text-nowrap">$ {{ usuario.compras }}</div>
+                <div class="small text-medium-emphasis">{{ usuario.compras }}</div>
+                <div class="fw-semibold text-nowrap">t</div>
               </td>
               <td class="text-center">
-                <div class="text-nowrap">$ {{ usuario.ventas }}</div>
+                <div class="small text-medium-emphasis">{{ usuario.ventas }}</div>
+                <div class="fw-semibold text-nowrap">t</div>
               </td>
               <td class="text-center">
-                <div class="small text-medium-emphasis"></div>
-                <div class="fw-semibold text-nowrap">$ {{ usuario.total }}</div>
+                <div class="small text-medium-emphasis">{{ usuario.total }}</div>
+                <div class="fw-semibold text-nowrap">t</div>
               </td>
             </tr>
           </tbody>

@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 
-import { DashboardChartsData, IChartProps } from './dashboard-charts-data';
-import { UsuarioModel } from "./../../models/usuario.model";
+import { DashboardChartsData, IChartProps } from './../../dashboard/dashboard-charts-data';
+import { UsuarioModel } from "./../../../models/usuario.model";
 import { TransaccionesService } from 'src/app/services/transacciones.service';
 import { ToasterComponent, ToasterPlacement } from '@coreui/angular';
-import { NotificarComponent } from './../../views/pages/notify/notificar/notificar.component';
+import { NotificarComponent } from './../../../views/pages/notify/notificar/notificar.component';
 import { ViewChild  } from '@angular/core';
-
 
 interface MoviminetoUsuario {
   idUsuario?: string;
@@ -18,10 +17,11 @@ interface MoviminetoUsuario {
 }
 
 @Component({
-  templateUrl: 'dashboard.component.html',
-  styleUrls: ['dashboard.component.scss']
+  selector: 'app-estadisticas',
+  templateUrl: './estadisticas.component.html',
+  styleUrls: ['./estadisticas.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class EstadisticasComponent implements OnInit {
 
   public listaMovimientosUsuarios: MoviminetoUsuario[] = [];
   public mainChart: IChartProps = {};
@@ -40,7 +40,7 @@ export class DashboardComponent implements OnInit {
     trafficRadio: new UntypedFormControl('Month')
   });
 
-  obtenerDatosMoviminetosUsuarios() {
+  obtenerDatos() {
     this.listaMovimientosUsuarios = [];
     this.transaccionesService.obtenerTransaccionesUsuarios(this.fechaInicio, this.fechaFin).then(data => {
       let resp = data as any;
@@ -57,7 +57,6 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.initCharts();
-    this.obtenerDatosMoviminetosUsuarios();
   }
 
   initCharts(): void {

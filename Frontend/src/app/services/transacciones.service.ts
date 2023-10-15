@@ -66,4 +66,15 @@ export class TransaccionesService {
     });
   }
 
+  obtenerTransaccionesUsuarios(fechaInicio: String, fechaFin: String){
+    return new Promise ((resolve, reject) => {
+      this.http.get(this.urlService + "obtenerTransaccionesUsuarios/" + fechaInicio +"/" + fechaFin).subscribe(res => {
+        resolve(res);{
+        }
+      }, error => {
+        reject(error);
+      });
+    });
+  }
+
 }

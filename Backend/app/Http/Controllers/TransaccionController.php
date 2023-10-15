@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Transaccion;
 use App\Models\Stock;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TransaccionController extends Controller
 {
@@ -149,6 +150,24 @@ class TransaccionController extends Controller
             return response()->json(['code'=>'200']);
         }else{
             return response()->json(['code'=>'204']);
+        }
+    }
+
+    public function obtenerTransaccionesUsuarios($fechaInicio, $fechaFin)
+    {
+        $datos = Transaccion::whereBetween('fecha', [$fechaInicio, $fechaFin])
+        ->select('idUsuario', 
+                 DB::raw('SUM(CASE WHEN tipo = "Compra" THEN valor ELSE 0 END) as compras'),
+                 DB::raw('SUM(CASE WHEN tipo = "Venta" THEN valor ELSE 0 END) as ventas'),
+                 DB::raw('SUM(CASE WHEN tipo = "Venta" THEN valor ELSE 0 END) - SUM(CASE WHEN tipo = "Compra" THEN valor ELSE 0 END) as total'))
+        ->groupBy('idUsuario')
+        ->with('usuarioTransaccion', 'usuarioTransaccion.rolUsuario')
+        ->get();
+
+        if($datos->count() != 0){
+            return response()->json(['data' => $datos, 'code' => '200']);
+        } else {
+            return response()->json(['code' => '204']);
         }
     }
 }
