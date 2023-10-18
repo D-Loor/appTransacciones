@@ -77,4 +77,15 @@ export class TransaccionesService {
     });
   }
 
+  obtenerTransaccionesLocales(year: String, month: String, week: String){
+    debugger
+    return new Promise ((resolve, reject) => {
+      this.http.get(this.urlService + "obtenerTransaccionesLocales/" + year + "/" + month + "/" + week).subscribe(res => {
+        resolve(res);{
+        }
+      }, error => {
+        reject(error);
+      });
+    });
+  }
 }

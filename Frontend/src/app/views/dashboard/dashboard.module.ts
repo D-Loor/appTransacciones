@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
-import { ToastModule } from '@coreui/angular';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ModalModule, ToastModule } from '@coreui/angular';
 
 import {
   AvatarModule,
@@ -42,7 +42,9 @@ import { WidgetsModule } from '../widgets/widgets.module';
     AvatarModule,
     TableModule,
     WidgetsModule,
-    ToastModule
+    ToastModule,
+    FormsModule,
+    ModalModule
   ],
   declarations: [DashboardComponent]
 })

@@ -111,27 +111,21 @@
 <c-row>
   <c-col xs>
     <c-card class="mb-4">
-      <c-card-header>Movimientos Realizados en los Locales</c-card-header>
+      <c-card-header>Movimientos Realizados en los Locales
+        <button cButton class="float-end" style="color: white;" color="success" size="sm" [cModalToggle]="filtrarLocalesModal.id">
+          <svg cIcon name="cilFilter"></svg>
+        </button>
+      </c-card-header>
       <c-card-body>
         <c-row>
           <c-col md="12" xl="12" xs="12">
             <c-row>
-              <c-col sm="6">
+              <c-col sm="6" *ngFor="let local of listaMovimientosLocales; index as i">
                 <div
-                  class="border-start border-start-4 border-start-info py-1 px-3 mb-3"
+                  [class]="'border-start border-start-4 py-1 px-3 mb-3 border-start-' + colores[i]"
                 >
-                  <div class="text-medium-emphasis small">New Clients</div>
-                  <div class="fs-5 fw-semibold">9,123</div>
-                </div>
-              </c-col>
-              <c-col sm="6">
-                <div
-                  class="border-start border-start-4 border-start-danger py-1 px-3 mb-3"
-                >
-                  <div class="text-medium-emphasis small">
-                    Recurring Clients
-                  </div>
-                  <div class="fs-5 fw-semibold">22,643</div>
+                  <div class="text-medium-emphasis small">{{ local.local_transaccion.nombre }}</div>
+                  <div class="fs-5 fw-semibold">{{ local.total }}</div>
                 </div>
               </c-col>
             </c-row>
@@ -140,106 +134,82 @@
 
             <div class="progress-group mb-4">
               <div class="progress-group-prepend">
-                <span class="text-medium-emphasis small">Monday</span>
+                <small class="text-medium-emphasis text-nowrap fs-6">Lunes</small>
               </div>
               <div class="progress-group-bars">
-                <c-progress thin [height]="15">
-                  <c-progress-bar color="info" value="34">34</c-progress-bar>
-                </c-progress>
-                <c-progress thin>
-                  <c-progress-bar color="danger" value="78"></c-progress-bar>
+                <c-progress thin [height]="15" *ngFor="let local of listaMovimientosLocales; index as i">
+                  <c-progress-bar [color]="colores[i]" [value]="obtenerProgreso(local.lunes)" class="fw-bold">{{ local.lunes }}</c-progress-bar>
                 </c-progress>
               </div>
             </div>
             <div class="progress-group mb-4">
               <div class="progress-group-prepend">
-                <span class="text-medium-emphasis small">Tuesday</span>
+                <small class="text-medium-emphasis text-nowrap fs-6">Martes</small>
               </div>
               <div class="progress-group-bars">
-                <c-progress thin>
-                  <c-progress-bar color="info" value="56"></c-progress-bar>
-                </c-progress>
-                <c-progress thin>
-                  <c-progress-bar color="danger" value="94"></c-progress-bar>
+                <c-progress thin [height]="15" *ngFor="let local of listaMovimientosLocales; index as i">
+                  <c-progress-bar [color]="colores[i]" [value]="obtenerProgreso(local.martes)" class="fw-bold">{{ local.martes }}</c-progress-bar>
                 </c-progress>
               </div>
             </div>
             <div class="progress-group mb-4">
               <div class="progress-group-prepend">
-                <span class="text-medium-emphasis small">Wednesday</span>
+                <small class="text-medium-emphasis text-nowrap fs-6">Miércoles</small>
               </div>
               <div class="progress-group-bars">
-                <c-progress thin>
-                  <c-progress-bar color="info" value="12"></c-progress-bar>
-                </c-progress>
-                <c-progress thin>
-                  <c-progress-bar color="danger" value="67"></c-progress-bar>
+                <c-progress thin [height]="15" *ngFor="let local of listaMovimientosLocales; index as i">
+                  <c-progress-bar [color]="colores[i]" [value]="obtenerProgreso(local.miercoles)" class="fw-bold">{{ local.miercoles }}</c-progress-bar>
                 </c-progress>
               </div>
             </div>
             <div class="progress-group mb-4">
               <div class="progress-group-prepend">
-                <span class="text-medium-emphasis small">Thursday</span>
+                <small class="text-medium-emphasis text-nowrap fs-6">Jueves</small>
               </div>
               <div class="progress-group-bars">
-                <c-progress thin>
-                  <c-progress-bar color="info" value="43"></c-progress-bar>
-                </c-progress>
-                <c-progress thin>
-                  <c-progress-bar color="danger" value="91"></c-progress-bar>
+                <c-progress thin [height]="15" *ngFor="let local of listaMovimientosLocales; index as i">
+                  <c-progress-bar [color]="colores[i]" [value]="obtenerProgreso(local.jueves)" class="fw-bold">{{ local.jueves }}</c-progress-bar>
                 </c-progress>
               </div>
             </div>
             <div class="progress-group mb-4">
               <div class="progress-group-prepend">
-                <span class="text-medium-emphasis small">Friday</span>
+                <small class="text-medium-emphasis text-nowrap fs-6">Viernes</small>
               </div>
               <div class="progress-group-bars">
-                <c-progress thin>
-                  <c-progress-bar color="info" value="22"></c-progress-bar>
-                </c-progress>
-                <c-progress thin>
-                  <c-progress-bar color="danger" value="73"></c-progress-bar>
+                <c-progress thin [height]="15" *ngFor="let local of listaMovimientosLocales; index as i">
+                  <c-progress-bar [color]="colores[i]" [value]="obtenerProgreso(local.viernes)" class="fw-bold">{{ local.viernes }}</c-progress-bar>
                 </c-progress>
               </div>
             </div>
             <div class="progress-group mb-4">
               <div class="progress-group-prepend">
-                <span class="text-medium-emphasis small">Saturday</span>
+                <small class="text-medium-emphasis text-nowrap fs-6">Sábado</small>
               </div>
               <div class="progress-group-bars">
-                <c-progress thin>
-                  <c-progress-bar color="info" value="53"></c-progress-bar>
-                </c-progress>
-                <c-progress thin>
-                  <c-progress-bar color="danger" value="82"></c-progress-bar>
+                <c-progress thin [height]="15" *ngFor="let local of listaMovimientosLocales; index as i">
+                  <c-progress-bar [color]="colores[i]" [value]="obtenerProgreso(local.sabado)" class="fw-bold">{{ local.sabado }}</c-progress-bar>
                 </c-progress>
               </div>
             </div>
             <div class="progress-group mb-4">
               <div class="progress-group-prepend">
-                <span class="text-medium-emphasis small">Sunday</span>
+                <small class="text-medium-emphasis text-nowrap fs-6">Domingo</small>
               </div>
               <div class="progress-group-bars">
-                <c-progress thin>
-                  <c-progress-bar color="info" value="9"></c-progress-bar>
-                </c-progress>
-                <c-progress thin>
-                  <c-progress-bar color="danger" value="69"></c-progress-bar>
+                <c-progress thin [height]="15" *ngFor="let local of listaMovimientosLocales; index as i">
+                  <c-progress-bar [color]="colores[i]" [value]="obtenerProgreso(local.domingo)" class="fw-bold">{{ local.domingo }}</c-progress-bar>
                 </c-progress>
               </div>
             </div>
+            
             <div class="legend text-center" ngPreserveWhitespaces>
-              <small>
+              <small *ngFor="let local of listaMovimientosLocales; index as i">
                 <sup>
-                  <span class="badge badge-pill badge-sm bg-info">&nbsp;</span>
+                  <span [class]="'badge badge-pill badge-sm bg-' + colores[i]">&nbsp;</span>
                 </sup>
-                <span>New clients</span>
+                <span>{{ local.local_transaccion.nombre }}</span>
                 &nbsp;&nbsp;
-                <sup>
-                  <span class="badge badge-pill badge-sm bg-danger">&nbsp;</span>
-                </sup>
-                <span>Recurring clients</span>
               </small>
             </div>
           </c-col>
@@ -251,7 +221,11 @@
 <c-row>
   <c-col xs>
     <c-card class="mb-4">
-      <c-card-header>Movimientos Realizados por Usuarios</c-card-header>
+      <c-card-header>Movimientos Realizados por Usuarios
+        <button cButton class="float-end" style="color: white;" color="success" size="sm" [cModalToggle]="filtrarUsuariosModal.id">
+          <svg cIcon name="cilFilter"></svg>
+        </button>
+      </c-card-header>
       <c-card-body>
         <table
           [hover]="true"
@@ -309,3 +283,62 @@
 </c-row>
 
 <c-toaster class="p-3" position="fixed" [placement]="placement"></c-toaster>
+
+<c-modal #filtrarUsuariosModal backdrop="static" [visible]="visibleModalUsuarios" (visibleChange)="handleChangeUsuarios($event)" id="filtrarUsuariosModal" size="xl" alignment="center">
+  <c-modal-header>
+      <h5 cModalTitle>Filtrar por rango de Fechas</h5>
+      <button [cModalToggle]="filtrarUsuariosModal.id" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+      <form #browserDefaultsForm="ngForm" (ngSubmit)="obtenerDatosMoviminetosUsuarios()" [gutter]="3" [validated]="formularioValido"
+          cForm cRow ngNativeValidate>
+          <c-col [md]="6">
+              <label cLabel for="validationDefault01">Fecha Inicio</label>
+              <input cFormControl [(ngModel)]="fechaInicio" id="validationDefault02" autocomplete="off" required type="date" [ngModelOptions]="{standalone: true}"/>
+              <c-form-feedback [valid]="true">Looks good!</c-form-feedback>
+          </c-col>   
+          <c-col [md]="6">
+              <label cLabel for="validationDefault10">Fecha Fin</label>
+              <input cFormControl [(ngModel)]="fechaFin" id="validationDefault03" autocomplete="off" required type="date" [ngModelOptions]="{standalone: true}"/>
+              <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback>
+          </c-col>      
+          <c-col [xs]="12">
+              <div style="float: right;">
+                  <button [cModalToggle]="filtrarUsuariosModal.id" cButton color="secondary"
+                  style="margin-right: 10px;">
+                      Cancelar
+                  </button>
+                  <button cButton color="success" type="submit">Buscar</button>
+              </div>
+          </c-col>
+      </form>
+
+  </c-modal-body>
+</c-modal>
+
+<c-modal #filtrarLocalesModal backdrop="static" [visible]="visibleModalLocales" (visibleChange)="handleChangeLocales($event)" id="filtrarLocalesModal" size="lg" alignment="center">
+  <c-modal-header>
+      <h5 cModalTitle>Filtrar por Semana</h5>
+      <button [cModalToggle]="filtrarLocalesModal.id" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+      <form #browserDefaultsForm="ngForm" (ngSubmit)="obtenerDatosMoviminetosLocales()" [gutter]="3" [validated]="formularioValido"
+          cForm cRow ngNativeValidate>
+          <c-col [md]="8">
+              <label cLabel for="validationDefault01">Semana</label>
+              <input cFormControl [(ngModel)]="semana" id="validationDefault02" autocomplete="off" required type="week" [ngModelOptions]="{standalone: true}"/>
+              <c-form-feedback [valid]="true">Looks good!</c-form-feedback>
+          </c-col>        
+          <c-col [xs]="12">
+              <div style="float: right;">
+                  <button [cModalToggle]="filtrarLocalesModal.id" cButton color="secondary"
+                  style="margin-right: 10px;">
+                      Cancelar
+                  </button>
+                  <button cButton color="success" type="submit">Buscar</button>
+              </div>
+          </c-col>
+      </form>
+
+  </c-modal-body>
+</c-modal>

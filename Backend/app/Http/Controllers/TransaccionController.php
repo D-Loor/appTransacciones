@@ -170,4 +170,31 @@ class TransaccionController extends Controller
             return response()->json(['code' => '204']);
         }
     }
+
+    public function obtenerTransaccionesLocales($year, $month, $week)
+    {        
+        $datos = Transaccion::select('idLocal')
+            ->selectRaw('YEAR(fecha) AS year, MONTH(fecha) AS month, WEEK(fecha, 1) AS week')
+            ->selectRaw('SUM(CASE WHEN DAYOFWEEK(fecha) = 1 THEN valor ELSE 0 END) AS lunes')
+            ->selectRaw('SUM(CASE WHEN DAYOFWEEK(fecha) = 2 THEN valor ELSE 0 END) AS martes')
+            ->selectRaw('SUM(CASE WHEN DAYOFWEEK(fecha) = 3 THEN valor ELSE 0 END) AS miercoles')
+            ->selectRaw('SUM(CASE WHEN DAYOFWEEK(fecha) = 4 THEN valor ELSE 0 END) AS jueves')
+            ->selectRaw('SUM(CASE WHEN DAYOFWEEK(fecha) = 5 THEN valor ELSE 0 END) AS viernes')
+            ->selectRaw('SUM(CASE WHEN DAYOFWEEK(fecha) = 6 THEN valor ELSE 0 END) AS sabado')
+            ->selectRaw('SUM(CASE WHEN DAYOFWEEK(fecha) = 7 THEN valor ELSE 0 END) AS domingo')
+            ->selectRaw('SUM(valor) AS total')
+            ->whereYear('fecha', $year)
+            ->whereMonth('fecha', $month)
+            ->whereRaw('WEEK(fecha, 1) = ?', [$week])
+            ->where('tipo', 'Venta')
+            ->groupBy('idLocal', 'year', 'month', 'week')
+            ->with('localTransaccion')
+            ->get();
+
+        if($datos->count() != 0){
+            return response()->json(['data' => $datos, 'code' => '200']);
+        } else {
+            return response()->json(['code' => '204']);
+        }
+    }
 }
