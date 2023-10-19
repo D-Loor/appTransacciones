@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaccion;
+use App\Models\Local;
 use App\Models\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -197,4 +198,49 @@ class TransaccionController extends Controller
             return response()->json(['code' => '204']);
         }
     }
+
+    public function obtenerTransaccionesAnual($year)
+    {
+        $registrosPorLocal = Transaccion::whereYear('fecha', $year)
+        ->select('idLocal', DB::raw('MONTH(fecha) as mes'), DB::raw('SUM(valor) as total_valor'))
+        ->groupBy('idLocal', 'mes')
+        ->orderBy('idLocal', 'asc')
+        ->orderBy('mes', 'asc')
+        ->get();
+
+        $locales=Local::orderBy('nombre', 'asc')->get();
+
+
+        // Crear una colección vacía para los resultados
+        $resultados = collect([]);
+
+        // Agrupar los registros por idLocal
+        $gruposPorLocal = $registrosPorLocal->groupBy('idLocal');
+
+        foreach ($gruposPorLocal as $idLocal => $registros) {
+
+            $meses = $registros->pluck('total_valor', 'mes')->toArray();
+            ksort($meses); // Ordenar el arreglo por mes
+            $nombreLocal = "";
+            foreach ($locales as $local) {
+                if($local['idLocal'] === $idLocal){
+                    $nombreLocal = $local['nombre'];
+                    break;
+                }
+            }
+            $resultadoPorLocal = [
+                'local' => $nombreLocal,
+                'meses' => array_values(array_replace(array_fill(1, 12, 0), $meses)),
+            ];
+            $resultados->push($resultadoPorLocal);
+        }
+
+        if ($resultados->count() > 0) {
+            return response()->json(['data' => $resultados, 'code' => '200']);
+        } else {
+            return response()->json(['code' => '204']);
+        }
+
+    }
+
 }

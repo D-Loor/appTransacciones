@@ -51,4 +51,5 @@ Route::get('stocks/obtener/{paginado}', 'App\Http\Controllers\StockController@in
 
 Route::get('transacciones/obtenerTransaccionesUsuarios/{fechaInicio}/{fechaFin}', 'App\Http\Controllers\TransaccionController@obtenerTransaccionesUsuarios');
 Route::get('transacciones/obtenerTransaccionesLocales/{year}/{month}/{week}', 'App\Http\Controllers\TransaccionController@obtenerTransaccionesLocales');
+Route::get('transacciones/obtenerTransaccionesAnual/{year}', 'App\Http\Controllers\TransaccionController@obtenerTransaccionesAnual');
 
