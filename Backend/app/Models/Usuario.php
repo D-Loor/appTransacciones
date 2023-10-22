@@ -12,7 +12,7 @@ class Usuario extends Model
     protected $table = 'usuarios';
     protected $primaryKey = 'idUsuario';
     protected $fillable = [
-        'idRol', 'nombres', 'apellidos', 'cedula', 'password', 'estado'
+        'idRol', 'nombres', 'apellidos', 'cedula', 'password', 'estado', 'imagen'
     ];
 
     public function rolUsuario(){

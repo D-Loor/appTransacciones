@@ -24,6 +24,7 @@ export class UsuariosComponent implements OnInit {
   pagina: number = 1;
   totalPaginas: number = 1;
   itemsPaginado: number = 1;
+  url = ""; imagen = "0";
 
   @ViewChild(ToasterComponent) toaster!: ToasterComponent;
 
@@ -57,8 +58,9 @@ export class UsuariosComponent implements OnInit {
     if(this.validarPassword()){
       this.usuarioService.guardar(this.usuario).then(data => {
         let resp = data as any;
+        debugger
         if (resp['code'] == '400') {
-          this.showToast("Ya existe un usuario con este nombre.", "warning");
+          this.showToast("Ya existe un usuario con esta cedula.", "warning");
         } else if (resp['code'] == '200'){
           this.showToast("El usuario se ha creado correctamente.", "success");
           this.obtenerDatos();
@@ -169,5 +171,31 @@ export class UsuariosComponent implements OnInit {
   handleChangeConfirmacion(event: any) {
     this.visibleModalConfirmacion = event;
   }
+
+  public onSelectFile(event:any) {
+    if (event.target.files && event.target.files[0]) {
+      
+      let tipoImagen = event.target.files[0].type;
+      if( tipoImagen == "image/jpeg"  || tipoImagen == "image/png" || tipoImagen == "image/jpg"){
+
+        this.usuario.imagen = event.target.files[0];
+        var reader = new FileReader();
+        this.imagen="1";
+
+        reader.readAsDataURL(event.target.files[0]);
+
+        reader.onload = (event) => {
+          this.url = event.target!.result as string;
+        }
+      
+      }else{
+        this.showToast('Selecciones una imagen con formato jpg/jpeg/png.', 'warning');
+        this.imagen="0";
+        this.usuario.imagen = "";
+      }
+      
+    }
+  }
+
  
 }

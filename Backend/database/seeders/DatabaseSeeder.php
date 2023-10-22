@@ -46,7 +46,8 @@ class DatabaseSeeder extends Seeder
                 'apellidos' => 'Morán Chávez',
                 'cedula' => '1',
                 'password' => '123',
-                'estado' => '1',               
+                'estado' => '1',
+                'imagen' => '/imagenes/user.png'               
             ],
             [
                 'idRol' => '1',
@@ -54,7 +55,8 @@ class DatabaseSeeder extends Seeder
                 'apellidos' => 'Loor Morán',
                 'cedula' => '2',
                 'password' => '123',
-                'estado' => '1',             
+                'estado' => '1',
+                'imagen' => '/imagenes/user.png'               
             ],
             [
                 'idRol' => '1',
@@ -62,7 +64,8 @@ class DatabaseSeeder extends Seeder
                 'apellidos' => 'Loor Morán',
                 'cedula' => '3',
                 'password' => '123',
-                'estado' => '1',           
+                'estado' => '1',     
+                'imagen' => '/imagenes/user.png'        
             ],
             [
                 'idRol' => '3',
@@ -70,7 +73,8 @@ class DatabaseSeeder extends Seeder
                 'apellidos' => 'Morán Chávez',
                 'cedula' => '4',
                 'password' => '123',
-                'estado' => '1',           
+                'estado' => '1',    
+                'imagen' => '/imagenes/user.png'         
             ]
         ]);
 

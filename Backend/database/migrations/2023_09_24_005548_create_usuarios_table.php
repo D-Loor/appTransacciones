@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('cedula');
             $table->string('password');
             $table->boolean('estado');
+            $table->string('imagen');
 
             $table->foreign('idRol')->references('idRol')->on('roles')->onDelete('cascade');
         });

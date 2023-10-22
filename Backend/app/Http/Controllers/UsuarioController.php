@@ -42,6 +42,18 @@ class UsuarioController extends Controller
         if($valida != null){
             return response()->json(['code'=>'400']);
         }else{
+            if($request->file('nombre_imagen') === null){
+                $picture = '/imagenes/user.png';
+            }else{
+                $file=$request->file('nombre_imagen');
+                $nombre=$file->getClientMimeType();
+                $tipoImagen=str_replace('image/', '.',$nombre);
+                $fileName=uniqid() . $tipoImagen;
+                $path=public_path().'/imagenes';
+                $file->move($path,$fileName);
+                $picture = '/imagenes/'.$fileName;
+                
+            }
             $datos=new Usuario();
             $datos->idRol=$request->idRol;
             $datos->nombres=$request->nombres;
@@ -49,6 +61,7 @@ class UsuarioController extends Controller
             $datos->cedula=$request->cedula;
             $datos->password=$request->password;
             $datos->estado=$request->estado;
+            $datos->imagen=$picture;
             $datos->save();
             return response()->json(['code'=>'200']);
         }

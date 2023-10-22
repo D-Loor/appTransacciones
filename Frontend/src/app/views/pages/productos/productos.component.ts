@@ -17,6 +17,7 @@ export class ProductosComponent implements OnInit {
   tituloModal = "";
   visibleModal = false;
   visibleModalConfirmacion = false;
+  visibleModalBusqueda = false;
   formularioValido: boolean = false;
   placement = ToasterPlacement.TopEnd;
   listaProductos: ProductoModel[] = [];
@@ -175,6 +176,10 @@ export class ProductosComponent implements OnInit {
  
   handleChangeConfirmacion(event: any) {
     this.visibleModalConfirmacion = event;
+  }
+
+  handleChangeBusqueda(event: any) {
+    this.visibleModalBusqueda = event;
   }
 
 }

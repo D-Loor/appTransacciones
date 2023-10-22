@@ -8,5 +8,6 @@ export class UsuarioModel {
     cedula?: string;
     password?: string;
     estado?: number;
+    imagen?: string;
     rol_usuario?: RolModel;
 }

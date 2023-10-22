@@ -93,20 +93,28 @@
                 <input cFormControl type="password" [(ngModel)]="confirmarPass" [ngModelOptions]="{standalone: true}" id="exampleFormControlTextarea3"required rows="3"/>
                 <c-form-feedback [valid]="false">Please provide a valid zip.</c-form-feedback>
             </c-col>
-            <c-col [md]="8">
+            <c-col [md]="4">
                 <label cLabel for="validationDefault08">Rol</label>
                 <select [(ngModel)]="usuario.idRol" cSelect id="validationDefault09" [ngModelOptions]="{standalone: true}" required>
                     <option *ngFor="let item of listaRoles" [value]="item.idRol">{{item.rol}}</option>
                 </select>
                 <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback>
             </c-col>
-            <c-col [md]="4">
+            <c-col [md]="6" class="mb-3">
+                <label cLabel for="formFile" for="validationDefault10">Imagen</label>
+                <input cFormControl id="formFile" type="file" [(ngModel)]="usuario.imagen" [ngModelOptions]="{standalone: true}" id="validationDefault10" required rows="3" (change)="onSelectFile($event)"/>
+                <c-form-feedback [valid]="false">Please provide a valid zip.</c-form-feedback>
+            </c-col>
+            <c-col [md]="2">
                 <label cLabel for="validationDefault10">Estado</label>
                 <select cSelect id="validationDefault11" [(ngModel)]="usuario.estado" [ngModelOptions]="{standalone: true}" required>
                     <option value="1">Activo</option>
                     <option value="0">Inactivo</option>
                 </select>
                 <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback>
+            </c-col>
+            <c-col [md]="6">
+                <img height="150" class="tamanio" [src]="url" alt=""> <!--Editado-->
             </c-col>
 
             <hr>
