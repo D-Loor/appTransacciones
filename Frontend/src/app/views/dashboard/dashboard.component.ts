@@ -1,7 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
-
-import { DashboardChartsData, IChartProps } from './dashboard-charts-data';
 import { UsuarioModel } from "./../../models/usuario.model";
 import { LocalModel } from "./../../models/local.model";
 import { TransaccionesService } from 'src/app/services/transacciones.service';
@@ -10,6 +7,18 @@ import { NotificarComponent } from './../../views/pages/notify/notificar/notific
 import { ViewChild  } from '@angular/core';
 import { getStyle, hexToRgba } from '@coreui/utils';
 
+
+
+export interface IChartProps {
+  data?: any;
+  labels?: any;
+  options?: any;
+  colors?: any;
+  type?: any;
+  legend?: any;
+
+  [propName: string]: any;
+}
 
 interface MoviminetoUsuario {
   idUsuario?: string;
@@ -43,28 +52,101 @@ export class DashboardComponent implements OnInit {
 
   public listaMovimientosUsuarios: MoviminetoUsuario[] = [];
   public listaMovimientosLocales: MoviminetoLocal[] = [];
+  public listaMovimientosAnual: any [] = [];
   public mainChart: IChartProps = {};
-  public chart: Array<IChartProps> = [];
+  public dataChart : any;
+
   public placement = ToasterPlacement.TopEnd;
   visibleModalUsuarios = false;
   visibleModalLocales = false;
+  visibleModalAnual = false;
 
   today = new Date();
   fechaInicio: String = this.today.getFullYear() + "-" + (this.today.getMonth() +1) + "-" + (this.today.getDate()-7);
   fechaFin: String = this.today.getFullYear() + "-" + (this.today.getMonth() +1) + "-" + this.today.getDate();
   semana: String = "";
+  years: string[] = [];
+  year = ""; 
+  yearInicial = 2022;
   formularioValido: boolean = false;
   colores = ['info', 'danger', 'secondary', 'primary', 'success', 'warning', 'light', 'dark'];
-  public mainChart2: IChartProps = {};
 
   @ViewChild(ToasterComponent) toaster!: ToasterComponent;
 
-  constructor(private chartsData: DashboardChartsData, public transaccionesService: TransaccionesService) {
+  constructor(public transaccionesService: TransaccionesService) {
   }
-  
-  public trafficRadioGroup = new UntypedFormGroup({
-    trafficRadio: new UntypedFormControl('Month')
-  });
+
+  public cargarDataAnual(){
+    const brandSuccess = getStyle('--cui-success') ?? '#4dbd74';
+    const brandInfo = getStyle('--cui-info') ?? '#20a8d8';
+    const brandInfoBg = hexToRgba(brandInfo, 10);
+    const brandDanger = getStyle('--cui-danger') || '#f86c6b';
+
+    const colors = [
+      {
+        // brandInfo
+        backgroundColor: brandInfoBg,
+        borderColor: brandInfo,
+        pointHoverBackgroundColor: brandInfo,
+        borderWidth: 2,
+        fill: true
+      },
+      {
+        // brandSuccess
+        backgroundColor: 'transparent',
+        borderColor: brandSuccess || '#4dbd74',
+        pointHoverBackgroundColor: '#fff'
+      },
+      {
+        // brandDanger
+        backgroundColor: 'transparent',
+        borderColor: brandDanger || '#f86c6b',
+        pointHoverBackgroundColor: brandDanger,
+        borderWidth: 1,
+        borderDash: [8, 5]
+      }
+    ];
+
+    let datasets = [];
+    for (let local = 1; local <= this.listaMovimientosAnual.length; local++) {         
+      datasets.push(
+        {
+          label: this.listaMovimientosAnual[local-1]['local'],
+          data: this.listaMovimientosAnual[local-1]['meses'],
+          pointBackgroundColor: colors[local-1].borderColor,
+          pointBorderColor: '#fff',
+        ...colors[local-1]
+        }
+      )      
+    }
+
+    this.dataChart = {
+      labels: [
+        'Enero',
+        'Febrero',
+        'Marzo',
+        'Abril',
+        'Mayo',
+        'Junio',
+        'Julio',
+        'Agosto',
+        'Septiembre',
+        'Octubre',
+        'Noviembre',
+        'Diciembre'
+      ],
+      datasets: datasets
+    }
+  }
+
+  handleChartRef($chartRef: any) {
+    if ($chartRef) {
+      console.log('handleChartRef', $chartRef);
+      setTimeout(() => {
+        $chartRef?.update();
+      }, 3000);
+    }
+  }
 
   obtenerDatosMoviminetosUsuarios() {
     this.listaMovimientosUsuarios = [];
@@ -104,21 +186,33 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.initCharts();
+  obtenerDatosMoviminetosAnual() {
+    this.listaMovimientosAnual = [];
+    this.transaccionesService.obtenerTransaccionesAnual(this.year).then(data => {
+      let resp = data as any;
+      this.visibleModalAnual = false;
+      if (resp['code'] === "204") {
+        this.showToast('No existen Movimientos registrados en este año.!', 'info');
+        this.listaMovimientosAnual = [];
+      } else {
+        console.log("listaMovimientosAnual ", resp['data']);
+        this.listaMovimientosAnual = resp['data'];
+      }
+      this.cargarDataAnual();
+    }).catch(error => {
+      this.listaMovimientosAnual = [];      
+      console.log(error);
+      this.cargarDataAnual();
+    });
+  }
+  
+  async ngOnInit(): Promise<void> {
+    this.obtenerAnios();
+    this.obtenerDatosMoviminetosAnual();
     this.inicializarSemanaActual();
     this.obtenerDatosMoviminetosUsuarios();
     this.obtenerDatosMoviminetosLocales();
-  }
 
-  initCharts(): void {
-    this.mainChart = this.chartsData.mainChart;
-  }
-
-  setTrafficPeriod(value: string): void {
-    this.trafficRadioGroup.setValue({ trafficRadio: value });
-    this.chartsData.initMainChart(value);
-    this.initCharts();
   }
 
   showToast(mensaje: string, color: string) {
@@ -130,6 +224,15 @@ export class DashboardComponent implements OnInit {
       autohide: true,
     }
     const componentRef = this.toaster.addToast(NotificarComponent, { ...options });
+  }
+
+  obtenerAnios() {
+    this.years = [];
+    this.year = new Date().getFullYear().toString();
+    
+    for (let item = Number(this.yearInicial); item <= Number(this.year); item++) {
+      this.years.push(item.toString());
+    }
   }
 
   obtenerProgreso(venta:any){    
@@ -174,136 +277,9 @@ export class DashboardComponent implements OnInit {
     this.visibleModalLocales = event;
   }
 
-  initMainChart(period: string = 'Month') {
-    const brandSuccess = getStyle('--cui-success') ?? '#4dbd74';
-    const brandInfo = getStyle('--cui-info') ?? '#20a8d8';
-    const brandInfoBg = hexToRgba(brandInfo, 10);
-    const brandDanger = getStyle('--cui-danger') || '#f86c6b';
-
-    this.mainChart['elements'] = 12;
-    this.mainChart['Data1'] = [];
-    this.mainChart['Data2'] = [];
-    this.mainChart['Data3'] = [];
-
-    // generate random values for mainChart
-    for (let i = 0; i <= this.mainChart['elements']; i++) {
-      this.mainChart['Data1'].push(0);
-      this.mainChart['Data2'].push(0);
-      this.mainChart['Data3'].push(65);
-    }
-
-    let labels: string[] = [];
-    if (period === 'Month') {
-      labels = [
-        'Enero',
-        'Febrero',
-        'Marzo',
-        'Abril',
-        'Mayo',
-        'Junio',
-        'Julio',
-        'Agosto',
-        'Septiembre',
-        'Octubre',
-        'Noviembre',
-        'Diciembre'
-      ];
-    } 
-
-    const colors = [
-      {
-        // brandInfo
-        backgroundColor: brandInfoBg,
-        borderColor: brandInfo,
-        pointHoverBackgroundColor: brandInfo,
-        borderWidth: 2,
-        fill: true
-      },
-      {
-        // brandSuccess
-        backgroundColor: 'transparent',
-        borderColor: brandSuccess || '#4dbd74',
-        pointHoverBackgroundColor: '#fff'
-      },
-      {
-        // brandDanger
-        backgroundColor: 'transparent',
-        borderColor: brandDanger || '#f86c6b',
-        pointHoverBackgroundColor: brandDanger,
-        borderWidth: 1,
-        borderDash: [8, 5]
-      }
-    ];
-
-    const datasets = [
-      {
-        data: this.mainChart['Data1'],
-        label: 'Current',
-        ...colors[0]
-      },
-      {
-        data: this.mainChart['Data2'],
-        label: 'Previous',
-        ...colors[1]
-      },
-      {
-        data: this.mainChart['Data3'],
-        label: 'BEP',
-        ...colors[2]
-      }
-    ];
-
-    const plugins = {
-      legend: {
-        display: false
-      },
-      tooltip: {
-        callbacks: {
-          labelColor: function(context: any) {
-            return {
-              backgroundColor: context.dataset.borderColor
-            };
-          }
-        }
-      }
-    };
-
-    const options = {
-      maintainAspectRatio: false,
-      plugins,
-      scales: {
-        x: {
-          grid: {
-            drawOnChartArea: false
-          }
-        },
-        y: {
-          beginAtZero: true,
-          max: 250,
-          ticks: {
-            maxTicksLimit: 5,
-            stepSize: Math.ceil(250 / 5)
-          }
-        }
-      },
-      elements: {
-        line: {
-          tension: 0.4
-        },
-        point: {
-          radius: 0,
-          hitRadius: 10,
-          hoverRadius: 4,
-          hoverBorderWidth: 3
-        }
-      }
-    };
-
-    this.mainChart.type = 'line';
-    this.mainChart.options = options;
-    this.mainChart.data = {
-      datasets,
-      labels
-    };
+  handleChangeAnual(event: any) {
+    this.visibleModalAnual = event;
   }
+
+
 }

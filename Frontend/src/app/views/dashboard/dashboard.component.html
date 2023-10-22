@@ -2,64 +2,23 @@
   <c-card-body>
     <c-row>
       <c-col sm="5">
-        <h4 class="card-title mb-0" id="traffic">Ventas Mensuales</h4>
+        <h4 class="card-title mb-0" id="traffic">Ventas Mensuales realizadas en el año {{year}}</h4>
         <div class="small text-medium-emphasis">Gráfico de ventas mensuales por año.</div>
       </c-col>
       <c-col class="d-none d-md-block" sm="7">
-        <button cButton class="float-end" color="info">
-          <svg cIcon name="cilCloudDownload"></svg>
+        <button cButton class="float-end" style="color: white;" color="success" [cModalToggle]="filtrarAnualModal.id">
+          <svg cIcon name="cilFilter"></svg>
         </button>
       </c-col>
     </c-row>
     <c-chart
-      [data]="mainChart.data"
-      [height]="300"
-      [ngStyle]="{ 'marginTop.px': 40 }"
-      [options]="mainChart.options"
-      [type]="mainChart.type"
-    >
-      Main chart
-    </c-chart>
+    [data]="dataChart"
+    type="line"
+    [height]="350"
+    (chartRef)="handleChartRef($event)">
+  </c-chart>
   </c-card-body>
-  <c-card-footer>
-    <c-row class="text-center" [md]="5" [xs]="1">
-      <c-col class="mb-sm-2 mb-0">
-        <div class="text-medium-emphasis">Visits</div>
-        <strong>29.703 Users (40%)</strong>
-        <c-progress class="mt-2" thin>
-          <c-progress-bar color="success" value="40"></c-progress-bar>
-        </c-progress>
-      </c-col>
-      <c-col class="mb-sm-2 mb-0">
-        <div class="text-medium-emphasis">Unique</div>
-        <strong>24.093 Users (20%)</strong>
-        <c-progress class="mt-2" thin>
-          <c-progress-bar color="info" value="20"></c-progress-bar>
-        </c-progress>
-      </c-col>
-      <c-col class="mb-sm-2 mb-0">
-        <div class="text-medium-emphasis">Page views</div>
-        <strong>78.706 Views (60%)</strong>
-        <c-progress class="mt-2" thin>
-          <c-progress-bar color="warning" value="60"></c-progress-bar>
-        </c-progress>
-      </c-col>
-      <c-col class="mb-sm-2 mb-0">
-        <div class="text-medium-emphasis">New Users</div>
-        <strong>22.123 Users (80%)</strong>
-        <c-progress class="mt-2" thin>
-          <c-progress-bar color="danger" value="80"></c-progress-bar>
-        </c-progress>
-      </c-col>
-      <c-col class="mb-sm-2 mb-0">
-        <div class="text-medium-emphasis">Bounce Rate</div>
-        <strong>Average Rate (40.15%)</strong>
-        <c-progress class="mt-2" thin>
-          <c-progress-bar value="40"></c-progress-bar>
-        </c-progress>
-      </c-col>
-    </c-row>
-  </c-card-footer>
+  
 </c-card>
 
 <c-row>
@@ -285,6 +244,35 @@
           <c-col [xs]="12">
               <div style="float: right;">
                   <button [cModalToggle]="filtrarLocalesModal.id" cButton color="secondary"
+                  style="margin-right: 10px;">
+                      Cancelar
+                  </button>
+                  <button cButton color="success" type="submit">Buscar</button>
+              </div>
+          </c-col>
+      </form>
+
+  </c-modal-body>
+</c-modal>
+
+<c-modal #filtrarAnualModal backdrop="static" [visible]="visibleModalAnual" (visibleChange)="handleChangeAnual($event)" id="filtrarAnualModal" size="lg" alignment="center">
+  <c-modal-header>
+      <h5 cModalTitle>Filtrar por Año</h5>
+      <button [cModalToggle]="filtrarAnualModal.id" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+      <form #browserDefaultsForm="ngForm" (ngSubmit)="obtenerDatosMoviminetosAnual()" [gutter]="3" [validated]="formularioValido"
+          cForm cRow ngNativeValidate>
+          <c-col [md]="8">
+              <label cLabel for="validationDefault01">Año</label>
+              <select [(ngModel)]="year" cSelect id="validationDefault09" [ngModelOptions]="{standalone: true}" required>
+                <option *ngFor="let item of years" [value]="item">{{item}}</option>
+            </select>
+            <c-form-feedback [valid]="true">Looks good!</c-form-feedback>
+          </c-col>        
+          <c-col [xs]="12">
+              <div style="float: right;">
+                  <button [cModalToggle]="filtrarAnualModal.id" cButton color="secondary"
                   style="margin-right: 10px;">
                       Cancelar
                   </button>

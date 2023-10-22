@@ -87,4 +87,15 @@ export class TransaccionesService {
       });
     });
   }
+
+  obtenerTransaccionesAnual(year: String){
+    return new Promise ((resolve, reject) => {
+      this.http.get(this.urlService + "obtenerTransaccionesAnual/" + year).subscribe(res => {
+        resolve(res);{
+        }
+      }, error => {
+        reject(error);
+      });
+    });
+  }
 }

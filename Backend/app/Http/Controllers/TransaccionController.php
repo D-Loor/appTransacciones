@@ -206,6 +206,7 @@ class TransaccionController extends Controller
         ->groupBy('idLocal', 'mes')
         ->orderBy('idLocal', 'asc')
         ->orderBy('mes', 'asc')
+        ->where('tipo', 'Venta')
         ->get();
 
         $locales=Local::orderBy('nombre', 'asc')->get();
