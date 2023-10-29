@@ -10,10 +10,23 @@ class StockController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($paginado)
+    public function index($nombreProducto, $idLocal, $paginado)
     {
-        $datos=Stock::orderBy('stock', 'asc')->with('productoStock', 'productoStock.tipoProducto', 'localStock')->paginate($paginado);
+        $query=Stock::orderBy('stock', 'asc')->with('productoStock', 'productoStock.tipoProducto', 'localStock');
+
+        if ($nombreProducto !== "*") {
+            $query->whereHas('productoStock', function ($subquery) use ($nombreProducto) {
+                $subquery->where('nombre', 'LIKE', '%' . $nombreProducto . '%');
+            });
+        }
+
+        if ($idLocal !== "*") {
+            $query->where('idLocal', $idLocal);
+        }
+
+        $datos = $query->paginate($paginado);
         $num_rows = count($datos);
+        
         if($num_rows != 0){
             return response()->json(['data'=>$datos, 'code'=>'200']);
         }else{

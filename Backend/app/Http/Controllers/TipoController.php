@@ -10,13 +10,23 @@ class TipoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($estado, $paginado)
+    public function index($nombreTipo, $idCategoria, $estado, $paginado)
     {
         if($estado == "*"){
-            $datos=Tipo::orderBy('tipo', 'asc')->with('tipoCategoria')->paginate($paginado);
+            $query=Tipo::orderBy('tipo', 'asc')->with('tipoCategoria');
         }else{
-            $datos=Tipo::orderBy('tipo', 'asc')->where('estado', $estado)->with('tipoCategoria')->paginate($paginado);
+            $query=Tipo::orderBy('tipo', 'asc')->where('estado', $estado)->with('tipoCategoria');
         }
+
+        if ($nombreTipo !== "*") {
+            $query->where('tipo', 'LIKE', '%' . $nombreTipo . '%');
+        }
+
+        if ($idCategoria !== "*") {
+            $query->where('idCategoria', $idCategoria);
+        }
+
+        $datos = $query->paginate($paginado);
 
         $num_rows = count($datos);
         if($num_rows != 0){

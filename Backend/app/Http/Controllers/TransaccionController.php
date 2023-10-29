@@ -13,14 +13,37 @@ class TransaccionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($paginado)
+    public function index($idLocal, $idProducto, $idUsuario, $idCategoria, $paginado)
     {
-        $datos=Transaccion::orderBy('fecha', 'asc')->with('usuarioTransaccion', 'productoTransaccion', 'productoTransaccion.tipoProducto', 'localTransaccion')->paginate($paginado);
+        $query = Transaccion::orderBy('fecha', 'asc')
+            ->with('usuarioTransaccion', 'productoTransaccion', 'productoTransaccion.tipoProducto', 'localTransaccion');
+
+        if ($idLocal !== "*") {
+            $query->where('idLocal', $idLocal);
+        }
+
+        if ($idProducto !== "*") {
+            $query->where('idProducto', $idProducto);
+        }
+
+        if ($idUsuario !== "*") {
+            $query->where('idUsuario', $idUsuario);
+        }
+
+        if ($idCategoria !== "*") {
+            $query->whereHas('productoTransaccion.tipoProducto', function ($subquery) use ($idCategoria) {
+                $subquery->where('idCategoria', $idCategoria);
+            });
+        }
+
+        $datos = $query->paginate($paginado);
+        
         $num_rows = count($datos);
-        if($num_rows != 0){
-            return response()->json(['data'=>$datos, 'code'=>'200']);
-        }else{
-            return response()->json(['code'=>'204']);
+
+        if ($num_rows !== 0) {
+            return response()->json(['data' => $datos, 'code' => '200']);
+        } else {
+            return response()->json(['code' => '204']);
         }
     }
 

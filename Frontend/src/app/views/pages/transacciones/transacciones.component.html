@@ -3,10 +3,13 @@
         <strong>Transacciones</strong>
         <button cButton [cModalToggle]="registroModal.id" class="float-end" style="color: white;" color="success"
             (click)="tituloModal = 'Agregar'">
-            <svg cIcon name="cilNotes"></svg>
+            <svg cIcon name="cilPlus"></svg>
         </button>
-        <button cButton class="float-end" style="color: white; margin-right: 5px;" color="info" (click)="obtenerDatos()">
-            <svg cIcon name="cilShare"></svg>
+        <button cButton [cModalToggle]="busquedaModal.id" class="float-end" style="color: white; margin-right: 5px" color="info">
+            <svg cIcon name="cil-magnifying-glass"></svg>
+        </button>
+        <button cButton class="float-end" style="color: white; margin-right: 5px;" color="dark" (click)="obtenerDatos()">
+            <svg cIcon name="cilReload"></svg>
         </button>
     </c-card-header>
     <c-card-body>
@@ -88,7 +91,7 @@
                 <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback>
             </c-col>
             <c-col [md]="6">
-                <label cLabel for="validationDefault01">Categoria</label>
+                <label cLabel for="validationDefault01">Categoría</label>
                 <select [(ngModel)]="categoriaSeleccionada" cSelect id="validationDefault02"
                     (change)="obtenerDatosTipos()" [ngModelOptions]="{standalone: true}" required>
                     <option *ngFor="let item of listaCategorias" [value]="item.idCategoria">{{item.categoria}}</option>
@@ -178,6 +181,61 @@
             Cerrar
         </button>
     </c-modal-footer>
+</c-modal>
+
+<c-modal #busquedaModal backdrop="static" [visible]="visibleModalBusqueda" (visibleChange)="handleChangeBusqueda($event)" id="busquedaModal" size="sm" alignment="center">
+    <c-modal-header>
+        <h5 cModalTitle>Buscar Transacción</h5>
+        <button [cModalToggle]="busquedaModal.id" cButtonClose (click)="limpiarFormularioBusqueda()"></button>
+    </c-modal-header>
+    <c-modal-body>
+        <form #browserDefaultsForm="ngForm" (ngSubmit)="obtenerDatos()" [gutter]="3" [validated]="formularioValido"
+            cForm cRow ngNativeValidate>
+            <c-col [md]="12">
+                <label cLabel for="validationDefault07">Local</label>
+                <select [(ngModel)]="localSeleccionado" cSelect id="validationDefault08"
+                    [ngModelOptions]="{standalone: true}">
+                    <option *ngFor="let item of listaLocales" [value]="item.idLocal">{{item.nombre}}</option>
+                </select>
+                <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback>
+            </c-col>   
+            <c-col [md]="12">
+                <label cLabel for="validationDefault05">Producto</label>
+                <select [(ngModel)]="productoSeleccionado" cSelect id="validationDefault06"
+                    [ngModelOptions]="{standalone: true}">
+                    <option *ngFor="let item of listaProductosCompleta" [value]="item.idProducto">{{item.nombre}}</option>
+                </select>
+                <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback>
+            </c-col> 
+            <c-col [md]="12">
+                <label cLabel for="validationDefault01">Usuario</label>
+                <select [(ngModel)]="usuarioSeleccionado" cSelect id="validationDefault03"
+                    [ngModelOptions]="{standalone: true}">
+                    <option *ngFor="let item of listaUsuarios" [value]="item.idUsuario">{{item.nombres}} {{item.apellidos}}</option>
+                </select>
+                <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback>
+            </c-col> 
+            <c-col [md]="12">
+                <label cLabel for="validationDefault01">Categoría</label>
+                <select [(ngModel)]="categoriaSeleccionada" cSelect id="validationDefault02"
+                    [ngModelOptions]="{standalone: true}">
+                    <option *ngFor="let item of listaCategorias" [value]="item.idCategoria">{{item.categoria}}</option>
+                </select>
+                <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback>
+            </c-col>  
+            
+            <hr>
+            <c-col [xs]="12">
+                <div style="float: right;">
+                    <button [cModalToggle]="busquedaModal.id" cButton color="secondary" (click)="limpiarFormularioBusqueda()"
+                    style="margin-right: 10px;">
+                        Cancelar
+                    </button>
+                    <button cButton color="success" type="submit" (click)="pagina = 1;">Buscar</button>
+                </div>
+            </c-col>
+        </form>
+    </c-modal-body>
 </c-modal>
 
 <c-toaster class="p-3" position="fixed" [placement]="placement"></c-toaster>

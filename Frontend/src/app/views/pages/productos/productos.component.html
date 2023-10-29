@@ -2,13 +2,13 @@
     <c-card-header>
         <strong>Productos</strong>
         <button cButton [cModalToggle]="registroModal.id" class="float-end" style="color: white;" color="success" (click)="tituloModal = 'Agregar'">
-            <svg cIcon name="cilNotes"></svg>
+            <svg cIcon name="cilPlus"></svg>
         </button>
-        <button cButton class="float-end" style="color: white; margin-right: 5px;" color="info" (click)="obtenerDatos()">
-            <svg cIcon name="cilShare"></svg>
-        </button>
-        <button cButton [cModalToggle]="busquedaModal.id" class="float-end" style="color: white; margin-right: 5px" color="info" (click)="tituloModal = 'Buscar'">
+        <button cButton [cModalToggle]="busquedaModal.id" class="float-end" style="color: white; margin-right: 5px" color="info">
             <svg cIcon name="cil-magnifying-glass"></svg>
+        </button>
+        <button cButton class="float-end" style="color: white; margin-right: 5px;" color="dark" (click)="obtenerDatos()">
+            <svg cIcon name="cilReload"></svg>
         </button>
     </c-card-header>
     <c-card-body>
@@ -143,20 +143,20 @@
 
 <c-modal #busquedaModal backdrop="static" [visible]="visibleModalBusqueda" (visibleChange)="handleChangeBusqueda($event)" id="busquedaModal" size="sm" alignment="center">
     <c-modal-header>
-        <h5 cModalTitle>{{tituloModal}} producto</h5>
-        <button [cModalToggle]="busquedaModal.id" cButtonClose (click)="limpiarFormulario()"></button>
+        <h5 cModalTitle>Buscar Producto</h5>
+        <button [cModalToggle]="busquedaModal.id" cButtonClose (click)="limpiarFormularioBusqueda()"></button>
     </c-modal-header>
     <c-modal-body>
-        <form #browserDefaultsForm="ngForm" (ngSubmit)="registrarDatos()" [gutter]="3" [validated]="formularioValido"
+        <form #browserDefaultsForm="ngForm" (ngSubmit)="obtenerDatos()" [gutter]="3" [validated]="formularioValido"
             cForm cRow ngNativeValidate>
             <c-col [md]="12">
                 <label cLabel for="validationDefault01">Nombre</label>
-                <input cFormControl [(ngModel)]="producto.nombre" id="validationDefault02" autocomplete="off" required type="text" [ngModelOptions]="{standalone: true}"/>
+                <input cFormControl [(ngModel)]="nombreProducto" id="validationDefault02" autocomplete="off" type="text" [ngModelOptions]="{standalone: true}"/>
                 <c-form-feedback [valid]="true">Looks good!</c-form-feedback>
             </c-col>
             <c-col [md]="12">
                 <label cLabel for="validationDefault08">Categoría</label>
-                <select [(ngModel)]="categoriaSeleccionada" cSelect id="validationDefault09" [ngModelOptions]="{standalone: true}" required>
+                <select [(ngModel)]="categoriaSeleccionada" cSelect id="validationDefault09" [ngModelOptions]="{standalone: true}">
                     <option *ngFor="let item of listaCategorias" [value]="item.idCategoria">{{item.categoria}}</option>
                 </select>
                 <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback>
@@ -164,11 +164,11 @@
             <hr>
             <c-col [xs]="12">
                 <div style="float: right;">
-                    <button [cModalToggle]="busquedaModal.id" cButton color="secondary" (click)="limpiarFormulario()"
+                    <button [cModalToggle]="busquedaModal.id" cButton color="secondary" (click)="limpiarFormularioBusqueda()"
                     style="margin-right: 10px;">
                         Cancelar
                     </button>
-                    <button cButton color="success" type="submit" *ngIf="tituloModal === 'Buscar'">Buscar</button>
+                    <button cButton color="success" type="submit" (click)="pagina = 1;">Buscar</button>
                 </div>
             </c-col>
         </form>

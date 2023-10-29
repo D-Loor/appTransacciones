@@ -1,8 +1,11 @@
 <c-card>
     <c-card-header>
-        <strong>Roles</strong>
-        <button cButton class="float-end" style="color: white;" color="info" (click)="obtenerDatos()">
-            <svg cIcon name="cilShare"></svg>
+        <strong>Stocks</strong>
+        <button cButton [cModalToggle]="busquedaModal.id" class="float-end" style="color: white;" color="info">
+            <svg cIcon name="cil-magnifying-glass"></svg>
+        </button>
+        <button cButton class="float-end" style="color: white; margin-right: 5px" color="dark" (click)="obtenerDatos()">
+            <svg cIcon name="cilReload"></svg>
         </button>
     </c-card-header>
     <c-card-body>
@@ -43,5 +46,40 @@
     </c-card-body>
 
 </c-card>
+
+<c-modal #busquedaModal backdrop="static" [visible]="visibleModalBusqueda" (visibleChange)="handleChangeBusqueda($event)" id="busquedaModal" size="sm" alignment="center">
+    <c-modal-header>
+        <h5 cModalTitle>Buscar Stock</h5>
+        <button [cModalToggle]="busquedaModal.id" cButtonClose (click)="limpiarFormulario()"></button>
+    </c-modal-header>
+    <c-modal-body>
+        <form #browserDefaultsForm="ngForm" (ngSubmit)="obtenerDatos()" [gutter]="3" [validated]="formularioValido"
+            cForm cRow ngNativeValidate>
+            <c-col [md]="12">
+                <label cLabel for="validationDefault01">Nombre Producto</label>
+                <input cFormControl [(ngModel)]="nombreProducto" id="validationDefault02" autocomplete="off" type="text" [ngModelOptions]="{standalone: true}"/>
+                <c-form-feedback [valid]="true">Looks good!</c-form-feedback>
+            </c-col>
+            <c-col [md]="12">
+                <label cLabel for="validationDefault07">Local</label>
+                <select [(ngModel)]="localSeleccionado" cSelect id="validationDefault08"
+                    [ngModelOptions]="{standalone: true}">
+                    <option *ngFor="let item of listaLocales" [value]="item.idLocal">{{item.nombre}}</option>
+                </select>
+                <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback>
+            </c-col>     
+            <hr>
+            <c-col [xs]="12">
+                <div style="float: right;">
+                    <button [cModalToggle]="busquedaModal.id" cButton color="secondary" (click)="limpiarFormulario()"
+                    style="margin-right: 10px;">
+                        Cancelar
+                    </button>
+                    <button cButton color="success" type="submit" (click)="pagina = 1;">Buscar</button>
+                </div>
+            </c-col>
+        </form>
+    </c-modal-body>
+</c-modal>
 
 <c-toaster class="p-3" position="fixed" [placement]="placement" ></c-toaster>

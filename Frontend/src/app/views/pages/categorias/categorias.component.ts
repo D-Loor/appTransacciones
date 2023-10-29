@@ -13,8 +13,10 @@ import { TipoModel } from 'src/app/models/tipo.model';
 })
 export class CategoriasComponent implements OnInit {
   confirmarPass: any;
-  tituloModal = "";
+  tituloModal = "";  
+  nombreCategoria: String = "";
   visibleModal = false;
+  visibleModalBusqueda = false;
   visibleModalConfirmacion = false;
   formularioValido: boolean = false;
   placement = ToasterPlacement.TopEnd;
@@ -38,7 +40,11 @@ export class CategoriasComponent implements OnInit {
 
   obtenerDatos() {
     this.listaCategorias = [];
-    this.categoriaService.obtener("*", this.itemsPaginado, this.pagina).then(data => {
+    let nombre = this.nombreCategoria.toString();
+    if(this.nombreCategoria === "" || this.nombreCategoria === undefined || this.nombreCategoria === null){
+      nombre = "*";
+    }
+    this.categoriaService.obtener(nombre, "*", this.itemsPaginado, this.pagina).then(data => {
       let resp = data as any;
       if (resp['code'] === "204") {
         this.showToast('No existen Categorías registradas.!', 'info');
@@ -46,6 +52,7 @@ export class CategoriasComponent implements OnInit {
         this.totalPaginas = Number(resp['data']['last_page']);
         this.listaCategorias = resp['data']['data'];
         console.log("lista ", this.listaCategorias);
+        this.visibleModalBusqueda = false;
       }
     }).catch(error => {
       console.log(error);
@@ -129,12 +136,20 @@ export class CategoriasComponent implements OnInit {
     const componentRef = this.toaster.addToast(NotificarComponent, { ...options });
   }
 
+  limpiarFormularioBusqueda(){
+    this.nombreCategoria = "";
+  }
+
   handleLiveDemoChange(event: any) {
     this.visibleModal = event;
   }
 
   handleChangeConfirmacion(event: any) {
     this.visibleModalConfirmacion = event;
+  }
+
+  handleChangeBusqueda(event: any) {
+    this.visibleModalBusqueda = event;
   }
   
 }

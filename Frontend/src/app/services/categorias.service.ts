@@ -22,9 +22,9 @@ export class CategoriasService {
     });
   }
 
-  obtener(estado: string, paginado: number, pagina: number){
+  obtener(nombreCatergoria: String, estado: String, paginado: number, pagina: number){
     return new Promise ((resolve, reject) => {
-      this.http.get(this.urlService + "estado/" + estado + "/" + paginado +"?page=" + pagina).subscribe(res => {
+      this.http.get(this.urlService + "estado/" + nombreCatergoria + "/" + estado + "/" + paginado +"?page=" + pagina).subscribe(res => {
         resolve(res);{
         }
       }, error => {

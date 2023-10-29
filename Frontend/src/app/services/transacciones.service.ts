@@ -22,9 +22,10 @@ export class TransaccionesService {
     });
   }
 
-  obtener(paginado: number, pagina: number){
+  obtener(idLocal: String, idProducto: String, idUsuario: String, idCategoria: String, paginado: number, pagina: number){
     return new Promise ((resolve, reject) => {
-      this.http.get(this.urlService + "obtener/" + paginado +"?page=" + pagina).subscribe(res => {
+      this.http.get(this.urlService + "obtener/" + idLocal + "/" + idProducto + "/" + idUsuario + 
+      "/" + idCategoria + "/" + paginado +"?page=" + pagina).subscribe(res => {
         resolve(res);{
         }
       }, error => {

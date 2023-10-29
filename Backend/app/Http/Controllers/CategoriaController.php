@@ -10,14 +10,19 @@ class CategoriaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($estado, $paginado)
+    public function index($nombreCatergoria, $estado, $paginado)
     {
         if($estado == "*"){
-            $datos=Categoria::orderBy('categoria', 'asc')->paginate($paginado);
+            $query=Categoria::orderBy('categoria', 'asc');
         }else{
-            $datos=Categoria::orderBy('categoria', 'asc')->where('estado', $estado)->paginate($paginado);
+            $query=Categoria::orderBy('categoria', 'asc')->where('estado', $estado);
         }
         
+        if ($nombreCatergoria !== "*") {
+            $query->where('categoria', 'LIKE', '%' . $nombreCatergoria . '%');
+        }
+
+        $datos = $query->paginate($paginado);
         $num_rows = count($datos);
         if($num_rows != 0){
             return response()->json(['data'=>$datos, 'code'=>'200']);

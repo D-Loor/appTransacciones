@@ -13,7 +13,10 @@ import { CategoriasService } from 'src/app/services/categorias.service';
 })
 export class TiposComponent implements OnInit{
   tituloModal = "";
+  categoriaSeleccionada: String = "*";
+  nombreTipo: String = "";
   visibleModal = false;
+  visibleModalBusqueda = false;
   visibleModalConfirmacion = false;
   formularioValido: boolean = false;
   placement = ToasterPlacement.TopEnd;
@@ -39,7 +42,11 @@ export class TiposComponent implements OnInit{
   obtenerDatos() {
     this.listaTipos = [];
     this.obtenerCategorias();
-    this.tipoService.obtener("*", this.itemsPaginado, this.pagina).then(data => {
+    let nombre = this.nombreTipo.toString();
+    if(this.nombreTipo === "" || this.nombreTipo === undefined || this.nombreTipo === null){
+      nombre = "*";
+    }
+    this.tipoService.obtener(nombre, this.categoriaSeleccionada ,"*", this.itemsPaginado, this.pagina).then(data => {
       let resp = data as any;
       if (resp['code'] === "204") {
         this.showToast('No existen Tipos registrados.!', 'info');
@@ -47,6 +54,7 @@ export class TiposComponent implements OnInit{
         this.totalPaginas = Number(resp['data']['last_page']);
         this.listaTipos = resp['data']['data'];
         console.log("lista ", this.listaTipos);
+        this.visibleModalBusqueda = false;
       }
     }).catch(error => {
       console.log(error);
@@ -114,7 +122,7 @@ export class TiposComponent implements OnInit{
 
   obtenerCategorias() {
     this.listaCategorias = [];
-    this.categoriaService.obtener("1",1000,1).then(data => {
+    this.categoriaService.obtener("*", "1",1000,1).then(data => {
       let resp = data as any;
       if (resp['code'] === "204") {
         this.showToast('No existen Categorias registradas.!', 'info');
@@ -135,6 +143,11 @@ export class TiposComponent implements OnInit{
     this.tipo.idCategoria = undefined;
   }
 
+  limpiarFormularioBusqueda(){
+    this.categoriaSeleccionada = "*";
+    this.nombreTipo = "";
+  }
+
   showToast(mensaje: string, color: string) {
     const options = {
       title: mensaje,
@@ -153,4 +166,9 @@ export class TiposComponent implements OnInit{
   handleChangeConfirmacion(event: any) {
     this.visibleModalConfirmacion = event;
   }
+
+  handleChangeBusqueda(event: any) {
+    this.visibleModalBusqueda = event;
+  }
+  
 }

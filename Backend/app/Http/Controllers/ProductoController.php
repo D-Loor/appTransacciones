@@ -10,13 +10,25 @@ class ProductoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($estado, $paginado)
+    public function index($nombreProducto, $idCategoria, $estado, $paginado)
     {
         if($estado == "*"){
-            $datos=Producto::orderBy('nombre', 'asc')->with('tipoProducto', 'tipoProducto.tipoCategoria')->paginate($paginado);
+            $query=Producto::orderBy('nombre', 'asc')->with('tipoProducto', 'tipoProducto.tipoCategoria');
         }else{
-            $datos=Producto::orderBy('nombre', 'asc')->where('estado', $estado)->with('tipoProducto', 'tipoProducto.tipoCategoria')->paginate($paginado);
+            $query=Producto::orderBy('nombre', 'asc')->where('estado', $estado)->with('tipoProducto', 'tipoProducto.tipoCategoria');
         }
+
+        if ($nombreProducto !== "*") {
+            $query->where('nombre', 'LIKE', '%' . $nombreProducto . '%');
+        }
+
+        if ($idCategoria !== "*") {
+            $query->whereHas('tipoProducto', function ($subquery) use ($idCategoria) {
+                $subquery->where('idCategoria', $idCategoria);
+            });
+        }
+
+        $datos = $query->paginate($paginado);
 
         $num_rows = count($datos);
         if($num_rows != 0){

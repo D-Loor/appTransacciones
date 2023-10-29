@@ -24,7 +24,8 @@ export class ProductosComponent implements OnInit {
   listaCategorias: CategoriaModel[] = [];
   listaTipos: TipoModel[] = [];
   producto: ProductoModel = new ProductoModel;
-  categoriaSeleccionada: number = 0;
+  categoriaSeleccionada: String = "*";
+  nombreProducto: String = "";
   pagina: number = 1;
   totalPaginas: number = 1;
   itemsPaginado: number = 1;
@@ -43,7 +44,11 @@ export class ProductosComponent implements OnInit {
   obtenerDatos() {
     this.listaProductos = [];
     this.obtenerCategorias();
-    this.productoService.obtener("*", this.itemsPaginado, this.pagina).then(data => {
+    let nombre = this.nombreProducto.toString();
+    if(this.nombreProducto === "" || this.nombreProducto === undefined || this.nombreProducto === null){
+      nombre = "*";
+    }
+    this.productoService.obtener(nombre, this.categoriaSeleccionada, "*", this.itemsPaginado, this.pagina).then(data => {
       let resp = data as any;
       if (resp['code'] === "204") {
         this.showToast('No existen Productos registrados.!', 'info');
@@ -51,6 +56,7 @@ export class ProductosComponent implements OnInit {
         this.totalPaginas = Number(resp['data']['last_page']);
         this.listaProductos = resp['data']['data'];
         console.log("listaProductos ", this.listaProductos);
+        this.visibleModalBusqueda = false;
       }
     }).catch(error => {
       console.log(error);
@@ -94,7 +100,7 @@ export class ProductosComponent implements OnInit {
 
   cargarDatos(datosModal: ProductoModel){
     this.tituloModal = "Editar";
-    this.categoriaSeleccionada = datosModal.tipo_producto?.idCategoria || 0;
+    this.categoriaSeleccionada = datosModal.tipo_producto?.idCategoria?.toString() || "";
     this.obtenerTipos();
     this.producto = { ...datosModal };
     this.visibleModal = true;
@@ -123,10 +129,15 @@ export class ProductosComponent implements OnInit {
     this.producto.idProducto = undefined
     this.producto.idTipo = undefined;
     this.producto.nombre = undefined;
-    this.categoriaSeleccionada = 0;
+    this.categoriaSeleccionada = "";
     this.producto.descripcion = undefined;
     this.producto.precio = undefined;
     this.producto.estado = undefined;
+  }
+
+  limpiarFormularioBusqueda(){
+    this.nombreProducto = ""
+    this.categoriaSeleccionada = "*";
   }
 
   showToast(mensaje: string, color: string) {
@@ -142,7 +153,7 @@ export class ProductosComponent implements OnInit {
 
   obtenerCategorias() {
     this.listaCategorias = [];
-    this.categoriaService.obtener("1",1000,1).then(data => {
+    this.categoriaService.obtener("*","1",1000,1).then(data => {
       let resp = data as any;
       if (resp['code'] === "204") {
         this.showToast('No existen Categorias registradas.!', 'info');

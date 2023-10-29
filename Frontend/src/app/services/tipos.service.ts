@@ -22,9 +22,9 @@ export class TiposService {
     });
   }
 
-  obtener(estado: string, paginado: number, pagina: number){
+  obtener(nombreTipo: String, idCategoria: String, estado: String, paginado: number, pagina: number){
     return new Promise ((resolve, reject) => {
-      this.http.get(this.urlService +  "estado/" + estado + "/" + paginado +"?page=" + pagina).subscribe(res => {
+      this.http.get(this.urlService + "estado/" + nombreTipo + "/" + idCategoria + "/" + estado + "/" + paginado +"?page=" + pagina).subscribe(res => {
         resolve(res);{
         }
       }, error => {
@@ -55,7 +55,7 @@ export class TiposService {
     });
   }
 
-  obtenerPorCategoria(idCategoria: number){
+  obtenerPorCategoria(idCategoria: String){
     return new Promise ((resolve, reject) => {
       this.http.get(this.urlService + "obtenerTiposPorCategoria/" + idCategoria).subscribe(res => {
         resolve(res);{
