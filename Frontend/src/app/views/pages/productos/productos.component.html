@@ -18,6 +18,9 @@
             <table cTable class="table">
                 <thead cTableColor="dark">
                     <tr>
+                        <th class="text-center">
+                            <svg cIcon name="cilPeople"></svg>
+                        </th>
                         <th scope="col">Nombre</th>
                         <th scope="col">Tipo</th>
                         <th scope="col">Precio</th>
@@ -27,6 +30,18 @@
                 </thead>
                 <tbody *ngFor="let item of listaProductos">
                     <tr>
+                        <td class="text-center">
+                            <c-avatar *ngIf="item.estado == 1"
+                              size="md"
+                              [src]="'http://127.0.0.1:8000' + item.imagen"
+                              status="success"
+                            ></c-avatar>
+                            <c-avatar *ngIf="item.estado != 1"
+                              size="md"
+                              [src]="'http://127.0.0.1:8000' + item.imagen"
+                              status="secondary"
+                            ></c-avatar>
+                          </td>
                         <td>{{item.nombre}}</td>
                         <td>{{item.tipo_producto?.tipo_categoria?.categoria}}/{{item.tipo_producto?.tipo}}</td>
                         <td >{{item.precio}}</td>

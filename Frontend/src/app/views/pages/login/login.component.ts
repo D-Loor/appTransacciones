@@ -34,7 +34,7 @@ export class LoginComponent {
           this.showToast('Credenciales Incorrectas.!', 'danger');
         } else {
           localStorage.setItem('sesionLoginInicio', 'iniciar');
-          localStorage.setItem('imagenUser', "");
+          localStorage.setItem('imagenUser', resp['data'].imagen);
           localStorage.setItem('idUsuario', resp['data'].idUsuario);
           localStorage.setItem('rolUser', resp['data'].rol_usuario.rol);
           localStorage.setItem('nivelAcceso', resp['data'].rol_usuario.acceso);

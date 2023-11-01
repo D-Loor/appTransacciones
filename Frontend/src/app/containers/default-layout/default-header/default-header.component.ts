@@ -20,6 +20,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit{
   public newNotifications = new Array(5)
   public nombreUsuario : any;
   public rolUsuario : any;
+  public imagenUsuario : any = "";
 
   constructor(private classToggler: ClassToggleService, private ruta: Router) {
     super();
@@ -27,6 +28,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit{
   ngOnInit(){
     this.nombreUsuario = localStorage.getItem('nombreUser');
     this.rolUsuario = localStorage.getItem('rolUser');
+    this.imagenUsuario= "http://127.0.0.1:8000"+localStorage.getItem('imagenUser');
   }
   
   cerrarCesion(){

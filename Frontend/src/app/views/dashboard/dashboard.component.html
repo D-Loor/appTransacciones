@@ -161,11 +161,16 @@
           <tbody>
             <tr *ngFor="let usuario of listaMovimientosUsuarios; index as i">
               <td class="text-center">
-                <!--c-avatar
+                <c-avatar *ngIf="usuario.usuario_transaccion.estado == 1"
                   size="md"
-                  src="{{ usuario.avatar }}"
-                  status="{{ usuario.status }}"
-                ></c-avatar-->
+                  [src]="'http://127.0.0.1:8000' + usuario.usuario_transaccion.imagen"
+                  status="success"
+                ></c-avatar>
+                <c-avatar *ngIf="usuario.usuario_transaccion.estado != 1"
+                  size="md"
+                  [src]="'http://127.0.0.1:8000' + usuario.usuario_transaccion.imagen"
+                  status="secondary"
+                ></c-avatar>
               </td>
               <td>
                 <div>{{ usuario.usuario_transaccion.nombres }} {{ usuario.usuario_transaccion.apellidos }}</div>

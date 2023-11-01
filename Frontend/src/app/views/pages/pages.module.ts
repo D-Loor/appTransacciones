@@ -15,7 +15,7 @@ import { TiposComponent } from './tipos/tipos.component';
 import { CategoriasComponent } from './categorias/categorias.component';
 import { ProductosComponent } from './productos/productos.component';
 import { StocksComponent } from './stocks/stocks.component';
-import { TableModule, UtilitiesModule, PaginationModule, BadgeModule, ModalModule } from '@coreui/angular';
+import { TableModule, UtilitiesModule, PaginationModule, BadgeModule, ModalModule, AvatarModule } from '@coreui/angular';
 import { NotificarComponent } from './notify/notificar/notificar.component';
 import { LocalesComponent } from './locales/locales.component';
 import { TransaccionesComponent } from './transacciones/transacciones.component';
@@ -50,6 +50,7 @@ import { TransaccionesComponent } from './transacciones/transacciones.component'
     PaginationModule,
     BadgeModule,
     ModalModule,
+    AvatarModule,
     ToastModule
   ]
 })

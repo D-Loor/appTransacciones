@@ -7,5 +7,6 @@ export class ProductoModel {
     descripcion?: string;
     precio?: number;
     estado?: number;
+    imagen?: string;
     tipo_producto?: TipoModel;
 }
