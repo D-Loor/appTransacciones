@@ -12,7 +12,7 @@ class Producto extends Model
     protected $table = 'productos';
     protected $primaryKey = 'idProducto';
     protected $fillable = [
-        'idTipo', 'nombre', 'descripcion', 'precio', 'estado'
+        'idTipo', 'nombre', 'descripcion', 'precio', 'estado', 'imagen'
     ];
 
     public function tipoProducto(){

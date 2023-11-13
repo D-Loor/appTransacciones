@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('descripcion');
             $table->double('precio');
             $table->boolean('estado');
+            $table->string('imagen');
 
             $table->foreign('idTipo')->references('idTipo')->on('tipos')->onDelete('cascade');
         });

@@ -29,6 +29,8 @@ export class ProductosComponent implements OnInit {
   pagina: number = 1;
   totalPaginas: number = 1;
   itemsPaginado: number = 1;
+  url = ""; imagen = "0";
+  imagenProducto : any;
 
   @ViewChild(ToasterComponent) toaster!: ToasterComponent;
 
@@ -64,7 +66,7 @@ export class ProductosComponent implements OnInit {
   }
 
   registrarDatos() {
-    this.productoService.guardar(this.producto).then(data => {
+    this.productoService.guardar(this.producto, this.imagenProducto).then(data => {
       let resp = data as any;
       if (resp['code'] == '400') {
         this.showToast("Ya existe un producto con este nombre.", "warning");
@@ -133,6 +135,7 @@ export class ProductosComponent implements OnInit {
     this.producto.descripcion = undefined;
     this.producto.precio = undefined;
     this.producto.estado = undefined;
+    this.imagenProducto = undefined;
   }
 
   limpiarFormularioBusqueda(){
@@ -191,6 +194,30 @@ export class ProductosComponent implements OnInit {
 
   handleChangeBusqueda(event: any) {
     this.visibleModalBusqueda = event;
+  }
+
+  public onSelectFile(event:any) {
+    if (event.target.files && event.target.files[0]) {
+      
+      let tipoImagen = event.target.files[0].type;
+      if( tipoImagen == "image/jpeg"  || tipoImagen == "image/png" || tipoImagen == "image/jpg"){
+
+        this.imagenProducto = event.target.files[0];
+        var reader = new FileReader();
+        this.imagen="1";
+
+        reader.readAsDataURL(event.target.files[0]);
+
+        reader.onload = (event) => {
+          this.url = event.target!.result as string;
+        }
+      
+      }else{
+        this.showToast('Selecciones una imagen con formato jpg/jpeg/png.', 'warning');
+        this.imagen="0";
+      }
+      
+    }
   }
 
 }

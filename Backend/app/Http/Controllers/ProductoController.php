@@ -55,12 +55,25 @@ class ProductoController extends Controller
         if($valida != null){
             return response()->json(['code'=>'400']);
         }else{
+            if($request->file('imagen') === null){
+                $picture = '/imagenes/producto.png';
+            }else{
+                $file=$request->file('imagen');
+                $nombre=$file->getClientMimeType();
+                $tipoImagen=str_replace('image/', '.',$nombre);
+                $fileName=uniqid() . $tipoImagen;
+                $path=public_path().'/imagenes';
+                $file->move($path,$fileName);
+                $picture = '/imagenes/'.$fileName;
+                
+            }
             $datos=new Producto();
             $datos->idTipo=$request->idTipo;
             $datos->nombre=$request->nombre;
             $datos->descripcion=$request->descripcion;
             $datos->precio=$request->precio; 
-            $datos->estado=$request->estado; 
+            $datos->estado=$request->estado;
+            $datos->imagen=$picture;
             $datos->save();
             
             return response()->json(['code'=>'200']);

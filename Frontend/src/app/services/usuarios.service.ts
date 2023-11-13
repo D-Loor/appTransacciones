@@ -22,9 +22,17 @@ export class UsuariosService {
     });
   }
 
-  guardar(data: UsuarioModel){
+  guardar(data: UsuarioModel, imagen:any){
+    var formData = new FormData();
+    formData.append('imagen', imagen);
+    formData.append('idRol', data.idRol !== undefined ? data.idRol.toString() : '');
+    formData.append('nombres', data.nombres !== undefined ? data.nombres : '');
+    formData.append('apellidos', data.apellidos !== undefined ? data.apellidos : '');
+    formData.append('cedula', data.cedula !== undefined ? data.cedula : '');
+    formData.append('password', data.password !== undefined ? data.password : '');
+    formData.append('estado', data.estado !== undefined ? data.estado.toString() : '');
     return new Promise ((resolve, reject) => {
-      this.http.post(this.urlService, data).subscribe(res => {
+      this.http.post(this.urlService, formData).subscribe(res => {
         resolve(res);{
         }
       }, error => {

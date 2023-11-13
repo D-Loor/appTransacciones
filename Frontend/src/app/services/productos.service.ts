@@ -11,9 +11,16 @@ export class ProductosService {
 
   constructor(private http: HttpClient) { }
 
-  guardar(data: ProductoModel){
+  guardar(data: ProductoModel, imagen:any){
+    var formData = new FormData();
+    formData.append('imagen', imagen);
+    formData.append('idTipo', data.idTipo !== undefined ? data.idTipo.toString() : '');
+    formData.append('nombre', data.nombre !== undefined ? data.nombre : '');
+    formData.append('descripcion', data.descripcion !== undefined ? data.descripcion : '');
+    formData.append('precio', data.precio !== undefined ? data.precio.toString() : '');
+    formData.append('estado', data.estado !== undefined ? data.estado.toString() : '');
     return new Promise ((resolve, reject) => {
-      this.http.post(this.urlService, data).subscribe(res => {
+      this.http.post(this.urlService, formData).subscribe(res => {
         resolve(res);{
         }
       }, error => {

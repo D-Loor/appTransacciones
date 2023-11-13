@@ -25,6 +25,7 @@ export class UsuariosComponent implements OnInit {
   totalPaginas: number = 1;
   itemsPaginado: number = 1;
   url = ""; imagen = "0";
+  imagenUsuario : any;
 
   @ViewChild(ToasterComponent) toaster!: ToasterComponent;
 
@@ -56,7 +57,7 @@ export class UsuariosComponent implements OnInit {
 
   registrarDatos() {
     if(this.validarPassword()){
-      this.usuarioService.guardar(this.usuario).then(data => {
+      this.usuarioService.guardar(this.usuario, this.imagenUsuario).then(data => {
         let resp = data as any;
         debugger
         if (resp['code'] == '400') {
@@ -128,6 +129,7 @@ export class UsuariosComponent implements OnInit {
     this.usuario.password = undefined;
     this.usuario.estado = undefined;
     this.confirmarPass = undefined;
+    this.imagenUsuario = undefined;
   }
 
   showToast(mensaje: string, color: string) {
@@ -178,7 +180,7 @@ export class UsuariosComponent implements OnInit {
       let tipoImagen = event.target.files[0].type;
       if( tipoImagen == "image/jpeg"  || tipoImagen == "image/png" || tipoImagen == "image/jpg"){
 
-        this.usuario.imagen = event.target.files[0];
+        this.imagenUsuario = event.target.files[0];
         var reader = new FileReader();
         this.imagen="1";
 
@@ -191,7 +193,6 @@ export class UsuariosComponent implements OnInit {
       }else{
         this.showToast('Selecciones una imagen con formato jpg/jpeg/png.', 'warning');
         this.imagen="0";
-        this.usuario.imagen = "";
       }
       
     }

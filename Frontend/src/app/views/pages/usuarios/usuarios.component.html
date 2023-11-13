@@ -101,8 +101,8 @@
                 <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback>
             </c-col>
             <c-col [md]="6" class="mb-3">
-                <label cLabel for="formFile" for="validationDefault10">Imagen</label>
-                <input cFormControl id="formFile" type="file" [(ngModel)]="usuario.imagen" [ngModelOptions]="{standalone: true}" id="validationDefault10" required rows="3" (change)="onSelectFile($event)"/>
+                <label cLabel for="imagenUsuario" for="validationDefault10">Imagen</label>
+                <input cFormControl id="imagenUsuario" type="file" [(ngModel)]="imagenUsuario" [ngModelOptions]="{standalone: true}" id="validationDefault10" required rows="3" (change)="onSelectFile($event)"/>
                 <c-form-feedback [valid]="false">Please provide a valid zip.</c-form-feedback>
             </c-col>
             <c-col [md]="2">
