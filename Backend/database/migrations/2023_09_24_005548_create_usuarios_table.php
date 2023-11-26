@@ -21,7 +21,7 @@ return new class extends Migration
             $table->boolean('estado');
             $table->string('imagen');
 
-            $table->foreign('idRol')->references('idRol')->on('roles')->onDelete('cascade');
+            $table->foreign('idRol')->references('idRol')->on('roles')->onDelete('restrict');
         });
     }
 

@@ -90,6 +90,7 @@ export class CategoriasComponent implements OnInit {
         this.showToast("Se ha presentado un error al eliminar.", "danger");
       }
     }).catch(error => {
+      this.showToast("Se ha presentado un error al eliminar.", "danger");
       console.log(error);
     });
   }

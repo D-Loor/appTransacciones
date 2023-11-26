@@ -129,7 +129,7 @@
             </c-col>
             <c-col [md]="12">
                 <label cLabel for="validationDefault14">Descripcion</label>
-                <input cFormControl [(ngModel)]="transaccion.observacion" [ngModelOptions]="{standalone: true}"
+                <input cFormControl [(ngModel)]="transaccion.observacion" [ngModelOptions]="{standalone: true}" required
                     id="exampleFormControlTextarea2" rows="3" />
                 <c-form-feedback [valid]="false">Please provide a valid zip.</c-form-feedback>
             </c-col>

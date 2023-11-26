@@ -28,7 +28,7 @@ export class ProductosComponent implements OnInit {
   nombreProducto: String = "";
   pagina: number = 1;
   totalPaginas: number = 1;
-  itemsPaginado: number = 1;
+  itemsPaginado: number = 8;
   url = ""; imagen = "0";
   imagenProducto : any;
 
@@ -96,6 +96,7 @@ export class ProductosComponent implements OnInit {
         this.showToast("Se ha presentado un error al eliminar.", "danger");
       }
     }).catch(error => {
+      this.showToast("Se ha presentado un error al eliminar.", "danger");
       console.log(error);
     });
   }

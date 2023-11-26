@@ -18,7 +18,7 @@ export class RolesComponent implements OnInit {
   rol: RolModel = new RolModel;
   pagina: number = 1;
   totalPaginas: number = 1;
-  itemsPaginado: number = 1;
+  itemsPaginado: number = 8;
 
 
   @ViewChild(ToasterComponent) toaster!: ToasterComponent;
@@ -79,7 +79,8 @@ export class RolesComponent implements OnInit {
       }else {
         this.showToast("Se ha presentado un error al eliminar.", "danger");
       }
-    }).catch(error => {
+    }).catch(error => {            
+      this.showToast("Se ha presentado un error al eliminar.", "danger");
       console.log(error);
     });
   }

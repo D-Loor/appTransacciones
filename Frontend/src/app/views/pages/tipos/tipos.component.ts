@@ -25,7 +25,7 @@ export class TiposComponent implements OnInit{
   tipo: TipoModel = new TipoModel;
   pagina: number = 1;
   totalPaginas: number = 1;
-  itemsPaginado: number = 1;
+  itemsPaginado: number = 8;
 
 
   @ViewChild(ToasterComponent) toaster!: ToasterComponent;
@@ -92,6 +92,7 @@ export class TiposComponent implements OnInit{
         this.showToast("Se ha presentado un error al eliminar.", "danger");
       }
     }).catch(error => {
+      this.showToast("Se ha presentado un error al eliminar.", "danger");
       console.log(error);
     });
   }

@@ -43,7 +43,7 @@ export class TransaccionesComponent implements OnInit {
   fecha: Date = new Date;
   pagina: number = 1;
   totalPaginas: number = 1;
-  itemsPaginado: number = 1;
+  itemsPaginado: number = 8;
 
   @ViewChild(ToasterComponent) toaster!: ToasterComponent;
 
@@ -83,7 +83,8 @@ export class TransaccionesComponent implements OnInit {
 
   registrarDatos() {
     this.fecha = new Date();
-    this.transaccion.fecha = this.fecha.toISOString().slice(0, 19).replace('T', ' ');
+    this.transaccion.fecha = this.formatearFecha(this.fecha);
+
     this.transaccionesService.guardar(this.transaccion).then(data => {
       let resp = data as any;
       if (resp['code'] == '200'){
@@ -101,6 +102,21 @@ export class TransaccionesComponent implements OnInit {
     });
   }
 
+
+  formatearFecha(fecha: Date) {
+    const year = fecha.getFullYear();
+    const month = this.agregarCeroDelante(fecha.getMonth() + 1);
+    const day = this.agregarCeroDelante(fecha.getDate());
+    const hours = this.agregarCeroDelante(fecha.getHours());
+    const minutes = this.agregarCeroDelante(fecha.getMinutes());
+    const seconds = this.agregarCeroDelante(fecha.getSeconds());
+
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+  }
+
+  agregarCeroDelante(valor: number) {
+    return valor < 10 ? `0${valor}` : valor;
+  }
   eliminarDato(idtransaccion: number){
     this.transaccionesService.eliminar(idtransaccion).then(data => {
       let resp = data as any;
@@ -113,6 +129,7 @@ export class TransaccionesComponent implements OnInit {
         this.showToast("Se ha presentado un error al eliminar.", "danger");
       }
     }).catch(error => {
+      this.showToast("Se ha presentado un error al eliminar.", "danger");
       console.log(error);
     });
   }

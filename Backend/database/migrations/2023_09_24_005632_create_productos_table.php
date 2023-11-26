@@ -20,7 +20,7 @@ return new class extends Migration
             $table->boolean('estado');
             $table->string('imagen');
 
-            $table->foreign('idTipo')->references('idTipo')->on('tipos')->onDelete('cascade');
+            $table->foreign('idTipo')->references('idTipo')->on('tipos')->onDelete('restrict');
         });
     }
 

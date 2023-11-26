@@ -17,8 +17,8 @@ return new class extends Migration
             $table->unsignedBigInteger('idProducto');
             $table->integer('stock');
 
-            $table->foreign('idLocal')->references('idLocal')->on('locales')->onDelete('cascade');
-            $table->foreign('idProducto')->references('idProducto')->on('productos')->onDelete('cascade');
+            $table->foreign('idLocal')->references('idLocal')->on('locales')->onDelete('restrict');
+            $table->foreign('idProducto')->references('idProducto')->on('productos')->onDelete('restrict');
         });
     }
 

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('descripcion');
             $table->boolean('estado');
 
-            $table->foreign('idCategoria')->references('idCategoria')->on('categorias')->onDelete('cascade');
+            $table->foreign('idCategoria')->references('idCategoria')->on('categorias')->onDelete('restrict');
 
         });
     }

@@ -22,9 +22,9 @@ return new class extends Migration
             $table->string('observacion');
             $table->timestamp('fecha');
 
-            $table->foreign('idUsuario')->references('idUsuario')->on('usuarios')->onDelete('cascade');
-            $table->foreign('idProducto')->references('idProducto')->on('productos')->onDelete('cascade');
-            $table->foreign('idLocal')->references('idLocal')->on('locales')->onDelete('cascade');
+            $table->foreign('idUsuario')->references('idUsuario')->on('usuarios')->onDelete('restrict');
+            $table->foreign('idProducto')->references('idProducto')->on('productos')->onDelete('restrict');
+            $table->foreign('idLocal')->references('idLocal')->on('locales')->onDelete('restrict');
         });
     }
 

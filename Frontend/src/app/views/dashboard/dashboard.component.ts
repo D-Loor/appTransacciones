@@ -239,7 +239,6 @@ export class DashboardComponent implements OnInit {
     if(venta == 0){
       return 0;
     }
-    console.log(Number(venta-100));
     return Number(venta-100) > 0 ? 100 : Number(venta);
   }
 

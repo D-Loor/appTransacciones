@@ -15,7 +15,7 @@ class TransaccionController extends Controller
      */
     public function index($idLocal, $idProducto, $idUsuario, $idCategoria, $paginado)
     {
-        $query = Transaccion::orderBy('fecha', 'asc')
+        $query = Transaccion::orderBy('fecha', 'desc')
             ->with('usuarioTransaccion', 'productoTransaccion', 'productoTransaccion.tipoProducto', 'localTransaccion');
 
         if ($idLocal !== "*") {
@@ -179,7 +179,7 @@ class TransaccionController extends Controller
 
     public function obtenerTransaccionesUsuarios($fechaInicio, $fechaFin)
     {
-        $datos = Transaccion::whereBetween('fecha', [$fechaInicio, $fechaFin])
+        $datos = Transaccion::whereBetween('fecha', [$fechaInicio . ' 00:00:00', $fechaFin . ' 23:59:59'])
         ->select('idUsuario', 
                  DB::raw('SUM(CASE WHEN tipo = "Compra" THEN valor ELSE 0 END) as compras'),
                  DB::raw('SUM(CASE WHEN tipo = "Venta" THEN valor ELSE 0 END) as ventas'),
@@ -199,13 +199,13 @@ class TransaccionController extends Controller
     {        
         $datos = Transaccion::select('idLocal')
             ->selectRaw('YEAR(fecha) AS year, MONTH(fecha) AS month, WEEK(fecha, 1) AS week')
-            ->selectRaw('SUM(CASE WHEN DAYOFWEEK(fecha) = 1 THEN valor ELSE 0 END) AS lunes')
-            ->selectRaw('SUM(CASE WHEN DAYOFWEEK(fecha) = 2 THEN valor ELSE 0 END) AS martes')
-            ->selectRaw('SUM(CASE WHEN DAYOFWEEK(fecha) = 3 THEN valor ELSE 0 END) AS miercoles')
-            ->selectRaw('SUM(CASE WHEN DAYOFWEEK(fecha) = 4 THEN valor ELSE 0 END) AS jueves')
-            ->selectRaw('SUM(CASE WHEN DAYOFWEEK(fecha) = 5 THEN valor ELSE 0 END) AS viernes')
-            ->selectRaw('SUM(CASE WHEN DAYOFWEEK(fecha) = 6 THEN valor ELSE 0 END) AS sabado')
-            ->selectRaw('SUM(CASE WHEN DAYOFWEEK(fecha) = 7 THEN valor ELSE 0 END) AS domingo')
+            ->selectRaw('SUM(CASE WHEN DAYOFWEEK(fecha) = 1 THEN valor ELSE 0 END) AS domingo')
+            ->selectRaw('SUM(CASE WHEN DAYOFWEEK(fecha) = 2 THEN valor ELSE 0 END) AS lunes')
+            ->selectRaw('SUM(CASE WHEN DAYOFWEEK(fecha) = 3 THEN valor ELSE 0 END) AS martes')
+            ->selectRaw('SUM(CASE WHEN DAYOFWEEK(fecha) = 4 THEN valor ELSE 0 END) AS miercoles')
+            ->selectRaw('SUM(CASE WHEN DAYOFWEEK(fecha) = 5 THEN valor ELSE 0 END) AS jueves')
+            ->selectRaw('SUM(CASE WHEN DAYOFWEEK(fecha) = 6 THEN valor ELSE 0 END) AS viernes')
+            ->selectRaw('SUM(CASE WHEN DAYOFWEEK(fecha) = 7 THEN valor ELSE 0 END) AS sabado')
             ->selectRaw('SUM(valor) AS total')
             ->whereYear('fecha', $year)
             ->whereMonth('fecha', $month)
